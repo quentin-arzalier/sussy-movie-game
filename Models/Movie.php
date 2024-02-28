@@ -16,7 +16,7 @@ class Movie extends CRUDAble
     private $release_date;
 
     /**
-     * @var int Durée du film en secondes
+     * @var int Durée du film en minute
      */
     private $runtime;
 
@@ -120,5 +120,4 @@ class Movie extends CRUDAble
         return $response->fetchAll(PDO::FETCH_CLASS, 'Movie');
     }
 
-    public function get
 }
