@@ -21,6 +21,26 @@ class Movie extends CRUDAble
     private $runtime;
 
     /**
+     * @var array
+     */
+    private $movie_actor;
+
+    /**
+     * @var array
+     */
+    private $movie_kind;
+
+    /**
+     * @var array
+     */
+    private $movie_directors;
+
+    /**
+     * @var array
+     */
+    private $movie_name;
+
+    /**
      */
     public function __construct()
     {
@@ -99,4 +119,6 @@ class Movie extends CRUDAble
         $response = $this->getPDO()->query("SELECT * FROM movie");
         return $response->fetchAll(PDO::FETCH_CLASS, 'Movie');
     }
+
+    public function get
 }
