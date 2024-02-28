@@ -91,6 +91,9 @@ class Movie extends CRUDAble
         $this->runtime = $runtime;
     }
 
+    /**
+     * @return array<Movie>
+     */
     public function getAllMovies()
     {
         $response = $this->getPDO()->query("SELECT * FROM movie");
