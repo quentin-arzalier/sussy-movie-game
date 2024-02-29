@@ -21,7 +21,7 @@
             <td>$language</td>
             <td>$release_date</td>
             <td>$runtime</td>
-        </tr>
+        </tr>       
         ";
     }
     ?>

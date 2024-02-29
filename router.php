@@ -1,6 +1,14 @@
 <?php
 
-$url_parts = explode("/", $_SERVER['REQUEST_URI']);
+$url = explode("?", $_SERVER['REQUEST_URI'])[0];
+
+// Pour transformer les /////controller///////action en /controller/action
+while (str_contains($url, "//"))
+{
+    $url = str_replace("//", "/", $url);
+}
+
+$url_parts = explode("/", $url);
 
 $count = count($url_parts);
 
@@ -8,11 +16,11 @@ $count = count($url_parts);
 $controllerName = "HomeController";
 $action = "index";
 
-if (count($url_parts) > 1)
+if (count($url_parts) > 1 && strlen($url_parts[1]) > 0)
 {
     $controllerName = ucfirst(strtolower($url_parts[1])) . "Controller";
 }
-if (count($url_parts) > 2)
+if (count($url_parts) > 2 && strlen($url_parts[2]) > 0)
 {
     $action = strtolower($url_parts[2]);
 }

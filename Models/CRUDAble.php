@@ -1,6 +1,4 @@
 <?php
-require_once 'Config/dbconfig.php';
-
 abstract class CRUDAble
 {
 

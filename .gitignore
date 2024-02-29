@@ -1,2 +1,3 @@
 ./idea
 Config/dbconfig.php
+Config/apiconfig.php

@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Resources/styles/styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <title>Sussy Movie Game</title>
 </head>
 <body>
 <header>
+    <h1 class="main-title">The Sussy Movie Game</h1>
     <nav>
+        <a href="/">Home</a>
         <a href="/movie/">Movies</a>
     </nav>
 </header>
