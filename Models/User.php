@@ -1,5 +1,5 @@
 <?php
-include 'Models/CRUDAble.php';
+
 class User extends CRUDAble{
     /**
      * @var int
@@ -26,6 +26,11 @@ class User extends CRUDAble{
      */
     private $is_admin;
 
+    /**
+     * @var boolean
+     */
+    private $is_verify;
+
 
     public function __construct(){
         parent::__construct();
@@ -41,7 +46,7 @@ class User extends CRUDAble{
     /**
      * @param int $id_user
      */
-    public function setIdUser($id_user){
+    private function setIdUser($id_user){
         $this->id_user = $id_user;
     }
 
@@ -55,7 +60,7 @@ class User extends CRUDAble{
     /**
      * @param string $username
      */
-    public function setUsername($username){
+    private function setUsername($username){
         $this->username = $username;
     }
 
@@ -69,7 +74,7 @@ class User extends CRUDAble{
     /**
      * @param string $email_address
      */
-    public function setEmailAddress($email_address){
+    private function setEmailAddress($email_address){
          $this->email_address = $email_address;
     }
 
@@ -83,7 +88,7 @@ class User extends CRUDAble{
     /**
      * @param string $password_hash
      */
-    public function setPasswordHash($password_hash){
+    private function setPasswordHash($password_hash){
         $this->password_hash = $password_hash;
     }
 
@@ -97,8 +102,66 @@ class User extends CRUDAble{
     /**
      * @param boolean $is_admin
      */
-    public function setIsAdmin($is_admin){
+    private function setIsAdmin($is_admin){
         $this->is_admin = $is_admin;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsVerify(){
+        return $this->is_verify;
+    }
+    
+    /**
+     * @param boolean $is_verify
+     */
+    private function setIsVerify($is_verify){
+        $this->is_verify = $is_verify;
+    }
+
+    private function setUser($user){
+        $this->setIdUser($user->getIdUser());
+        $this->setUsername($user->getUsername());
+        $this->setEmailAddress($user->getEmailAddress());
+        $this->setPasswordHash($user->getPasswordHash());
+        $this->setIsAdmin($user->getIsAdmin());
+        $this->setIsVerify($user->getIsVerify());
+    }
+
+    public function newUser($username, $email_address, $password){
+        $password_hash = password_hash($password . HASH_SALT, PASSWORD_DEFAULT);
+        $req = $this->getPDO()->prepare('INSERT INTO user (username, email_address, password_hash) VALUES (:champ1, :champ2, :champ3)');
+        $req->execute(array(
+        'champ1' => $username,
+        'champ2' => $email_address,
+        'champ3' => $password_hash
+        ));
+        $this->setUsername($username);
+        $this->setEmailAddress($email_address);
+        $this->setPasswordHash($password_hash);
+        $this->setIsAdmin(false);
+        $this->setIsVerify(false);
+        mail($this->getEmailAddress(), 'Check mail The Sussy Movie Game', "Cliquer ici pour valider votre inscription a The Sussy Movie Game !");
+    }
+
+    /**
+     * @return boolean
+     */
+    public function connectUser($username, $password){
+        $req = $this->getPDO()->prepare("SELECT * FROM user WHERE username =:champ1");
+        $req->execute(array(
+            'champ1'=> $username,
+            ));
+        $response = $req->fetchAll(PDO::FETCH_CLASS, 'User');
+        if(count($response) == 1){
+            $user = $response[0];
+            $is_password = password_verify($password . HASH_SALT, $user->getPasswordHash());
+            $this->setUser($user);
+            return $is_password;
+        } else {
+            return false;
+        }        
     }
     
     /**
@@ -108,4 +171,7 @@ class User extends CRUDAble{
 
     }
 
+    public function __toString(){
+        return 'ID Utilisateur : ' . $this->id_user . 'Nom utilisateur : ' . $this->username .'Adresse mail : '. $this->email_address .'Est administrateur : '. $this->is_admin;
+    }
 }

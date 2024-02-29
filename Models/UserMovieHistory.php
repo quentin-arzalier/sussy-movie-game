@@ -1,5 +1,4 @@
 <?php
-include 'Models/CRUDAble.php';
 Class UserMovieHistory extends CRUDAble{
     
     /**

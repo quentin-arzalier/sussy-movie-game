@@ -14,6 +14,7 @@
     <nav>
         <a href="/">Home</a>
         <a href="/movie/">Movies</a>
+        <a href="/user/">Account</a>
     </nav>
 </header>
 <main>
