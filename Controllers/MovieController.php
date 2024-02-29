@@ -11,9 +11,9 @@ class MovieController
         require_once "Views/Shared/layout.php";
     }
 
-    public static function search()
+    public static function add()
     {
-        $view_name = "Views/Movie/search.php";
+        $view_name = "Views/Movie/add.php";
         require_once "Views/Shared/layout.php";
     }
 }

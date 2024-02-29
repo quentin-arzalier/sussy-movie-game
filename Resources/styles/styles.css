@@ -8,6 +8,13 @@
     box-sizing: border-box;
 }
 
+.hidden{
+    display: none !important;
+}
+.transparent{
+    opacity: 0 !important;
+}
+
 body {
     min-height: 99vh;
     display: flex;
@@ -56,3 +63,81 @@ main{
     flex-grow: 1;
 }
 
+
+
+/* CUSTOM INPUTS */
+.custom-input {
+    display: flex;
+    min-height: 45px;
+    flex-direction: row;
+}
+.custom-input > *{
+    border: 1px solid rgba(58, 50, 43, 0.25);
+    padding: 0.5em 0.75em;
+}
+.custom-input > label {
+    min-width: 50px;
+    border-radius: .25em 0 0 .25em;
+    background-color: lightgray;
+    color: #444444;
+    font: inherit;
+    font-weight: normal;
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.custom-input > input {
+    flex: 1;
+    border-radius: 0 .25em .25em 0;
+}
+
+
+
+/* CUSTOM DROPDOWN */
+ul.movie-list {
+    border: 2px black solid;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    max-height: 60vh;
+    overflow-y: scroll;
+    padding: 0;
+    width: 75vw;
+}
+
+
+
+ul.movie-list::-webkit-scrollbar {
+    width: 5px;
+    position: fixed;
+    display: none;
+}
+
+ul.movie-list > li:hover {
+    background-color: #36b3f6;
+}
+ul.movie-list > li:not(:last-child)
+{
+    border-bottom: 2px black solid;
+}
+ul.movie-list > li {
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+}
+
+.movie-list-info{
+    padding-left: 10px;
+}
+
+.movie-list-title{
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: .5em;
+}
+.movie-list-desc {
+    color: gray;
+}
