@@ -126,6 +126,7 @@ ul.movie-list > li:not(:last-child)
 ul.movie-list > li {
     display: flex;
     flex-direction: row;
+    align-items: center;
     padding: 1em;
 }
 

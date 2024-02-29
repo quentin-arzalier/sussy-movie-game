@@ -71,17 +71,11 @@ INSERT INTO `director` (`id_director`, `first_name`, `last_name`) VALUES
 
 DROP TABLE IF EXISTS `genre`;
 CREATE TABLE IF NOT EXISTS `genre` (
-  `id_genre` int(11) NOT NULL AUTO_INCREMENT,
+  `id_genre` int(11) NOT NULL,
   `genre` text NOT NULL,
   PRIMARY KEY (`id_genre`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `genre`
---
-
-INSERT INTO `genre` (`id_genre`, `genre`) VALUES
-(1, 'action');
 
 -- --------------------------------------------------------
 

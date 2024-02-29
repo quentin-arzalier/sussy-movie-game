@@ -1,12 +1,7 @@
 <?php
 abstract class CRUDAble
 {
-
-
-    /**
-     * @var PDO
-     */
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct()
     {
@@ -19,8 +14,14 @@ abstract class CRUDAble
         $this->pdo->exec("set names utf8");
     }
 
-    protected function getPDO()
+    protected function getPDO(): PDO
     {
         return $this->pdo;
     }
+
+    /**
+     * Sauvegarde l'entité dans la base de données en se basant sur les champs renseignés dans l'instance de l'objet.
+     * @return bool Indique si l'opération de sauvegarde a réussi
+     */
+    public abstract function save(): bool;
 }

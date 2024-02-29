@@ -28,14 +28,28 @@ class ApiController
 
         $details_json = file_get_contents($details_url);
         $details_obj = json_decode($details_json, true);
-        $mov = new Movie();
 
-        $mov->save(
+        $mov = Movie::CreateMovie(
             $details_obj["id"],
             $details_obj["original_language"],
             $details_obj["release_date"],
             $details_obj["runtime"]
         );
+        if ($mov->save()){
+
+            $titles_json = file_get_contents($titles_url);
+            $titles_obj = json_decode($titles_json, true);
+
+            foreach ($titles_obj["titles"] as $title_obj)
+            {
+                $movname = MovieName::CreateMovieName($mov->getIdMovie(), $title_obj["iso_3166_1"], $title_obj["title"]);
+                $movname->save();
+            }
+        }
+    }
+
+    public static function addAllNewGenres()
+    {
 
     }
 }

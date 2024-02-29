@@ -1,24 +1,22 @@
 <?php
-include 'Models/CRUDAble.php';
-
 class Movie extends CRUDAble
 {
     /**
-     * @var int
+     * Id du film tel qu'indiqué par TMDB
      */
-    private $id_movie;
-
+    private int $id_movie;
     /**
-     * @var string
+     * Country code du pays d'origine du film
      */
-    private $original_language;
-
-    private $release_date;
-
+    private string $original_language;
     /**
-     * @var int Durée du film en minute
+     * Date de sortie du film en format chaîne de caractères
      */
-    private $runtime;
+    private string $release_date;
+    /**
+     * Durée du film en minute
+     */
+    private int $runtime;
 
     /**
      */
@@ -27,66 +25,41 @@ class Movie extends CRUDAble
         parent::__construct();
     }
 
-    /**
-     * @return int
-     */
-    public function getIdMovie()
+
+    public function getIdMovie(): int
     {
         return $this->id_movie;
     }
-
-    /**
-     * @param int $id_movie
-     */
-    public function setIdMovie($id_movie)
+    public function setIdMovie(int $id_movie): void
     {
         $this->id_movie = $id_movie;
     }
 
-    /**
-     * @return string
-     */
-    public function getOriginalLanguage()
+
+    public function getOriginalLanguage(): string
     {
         return $this->original_language;
     }
-
-    /**
-     * @param string $original_language
-     */
-    public function setOriginalLanguage($original_language)
+    public function setOriginalLanguage(string $original_language): void
     {
         $this->original_language = $original_language;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getReleaseDate()
+    public function getReleaseDate(): string
     {
         return $this->release_date;
     }
-
-    /**
-     * @param mixed $release_date
-     */
-    public function setReleaseDate($release_date)
+    public function setReleaseDate(string $release_date): void
     {
         $this->release_date = $release_date;
     }
 
-    /**
-     * @return int
-     */
-    public function getRuntime()
+
+    public function getRuntime(): int
     {
         return $this->runtime;
     }
-
-    /**
-     * @param int $runtime
-     */
-    public function setRuntime($runtime)
+    public function setRuntime(int $runtime): void
     {
         $this->runtime = $runtime;
     }
@@ -94,13 +67,13 @@ class Movie extends CRUDAble
     /**
      * @return array<Movie>
      */
-    public function getAllMovies()
+    public function getAllMovies(): array
     {
         $response = $this->getPDO()->query("SELECT * FROM movie");
         return $response->fetchAll(PDO::FETCH_CLASS, 'Movie');
     }
 
-    public function getById($movie_id)
+    public function get($movie_id): Movie|null
     {
         $query = $this->getPDO()->prepare("
 SELECT * FROM movie
@@ -118,10 +91,19 @@ WHERE id_movie=:id_movie
             return null;
     }
 
-
-    public function save($movie_id, $original_language, $release_date, $runtime): bool
+    public static function CreateMovie(int $movie_id, string $original_language, string $release_date, int $runtime): Movie
     {
-        if ($this->getById($movie_id))
+        $mov = new Movie();
+        $mov->setIdMovie($movie_id);
+        $mov->setOriginalLanguage($original_language);
+        $mov->setReleaseDate($release_date);
+        $mov->setRuntime($runtime);
+        return $mov;
+    }
+
+    public function save(): bool
+    {
+        if ($this->get($this->getIdMovie()) != null)
             return false;
 
         $query = $this->getPDO()->prepare("
@@ -129,41 +111,24 @@ INSERT INTO movie(id_movie, original_language, release_date, runtime)
 VALUES (:id_movie, :original_language, :release_date, :runtime);
         ");
 
+
         return $query->execute(array(
-            'id_movie' => $movie_id,
-            'original_language' => $original_language,
-            'release_date' => $release_date,
-            'runtime' => $runtime,
+            'id_movie' => $this->getIdMovie(),
+            'original_language' => $this->getOriginalLanguage(),
+            'release_date' => $this->getReleaseDate(),
+            'runtime' => $this->getRuntime(),
         ));
     }
 
 
 
     //faire des GET requets SQL
-        /**
-     * @return array
-     */
     public function getMovieActor(){
     }
-
-    /**
-     * @return array
-     */
     public function getMoviekKnd(){
-
     }
-
-    /**
-     * @return array
-     */
     public function getMovieDirectors(){
-
     }
-
-    /**
-     * @return array
-     */
-    public function getMovieName(){
-
+    public function getMovieNames(){
     }
 }
