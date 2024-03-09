@@ -30,8 +30,8 @@ Class UserController
     public static function connection(){
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $user = new User();
-            $is_admin = $user->connectUser($_POST['username'], $_POST['password']);
-            if($is_admin == false){
+            $is_ok = $user->connectUser($_POST['username'], $_POST['password']);
+            if($is_ok == false){
                 echo "Votre nom d'utilisateur et/ou votre mot de passe est incorrect";
                 UserController::index();
                 return;
@@ -39,9 +39,26 @@ Class UserController
             session_start();
             $_SESSION['login'] = $_POST['username'];
             $_SESSION['password'] = $_POST['password'];
-            $_SESSION['is_admin'] = $is_admin;
+            $_SESSION['is_admin'] = $user->getIsAdmin();
             echo $user->__tostring();
         }
     }
-    
+
+    public static function verifyaccount(){
+        if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['token'])){
+            $token = $_GET['token'];
+            $user = new User();
+            $is_modified = $user->verifyAccount($token);
+            if($is_modified > 0){
+                echo "Mail vérifié";
+            }else{
+                echo "Problème lors de la vérification";
+            }
+            UserController::index();
+            return;
+        } else {
+            $view_name = "Views/Error/404.php";
+            require_once "Views/Shared/layout.php";
+        }
+    }
 }

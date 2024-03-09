@@ -131,18 +131,34 @@ class User extends CRUDAble{
 
     public function newUser($username, $email_address, $password){
         $password_hash = password_hash($password . HASH_SALT, PASSWORD_DEFAULT);
-        $req = $this->getPDO()->prepare('INSERT INTO user (username, email_address, password_hash) VALUES (:champ1, :champ2, :champ3)');
+        $token = bin2hex(random_bytes(50));
+
+        $req = $this->getPDO()->prepare('INSERT INTO user (username, email_address, password_hash, token_verify) VALUES (:champ1, :champ2, :champ3, :champ4)');
         $req->execute(array(
         'champ1' => $username,
         'champ2' => $email_address,
-        'champ3' => $password_hash
+        'champ3' => $password_hash,
+        'champ4' => $token
         ));
         $this->setUsername($username);
         $this->setEmailAddress($email_address);
         $this->setPasswordHash($password_hash);
         $this->setIsAdmin(false);
         $this->setIsVerify(false);
-        mail($this->getEmailAddress(), 'Check mail The Sussy Movie Game', "Cliquer ici pour valider votre inscription a The Sussy Movie Game !");
+
+        $verification_url = "http://sussy-movie-game/user/verifyaccount?token=$token";
+        mail($this->getEmailAddress(), 'Vérifiez votre email pour The Sussy Movie Game', "Cliquez ici pour valider votre inscription à The Sussy Movie Game ! \n\n $verification_url");
+    }
+
+    /**
+     * @return int
+     */
+    public function verifyAccount($token){
+        $req = $this->getPDO()->prepare("UPDATE user SET email_chek = 1 WHERE token_verify =:champ1");
+        $req->execute(array(
+            'champ1' => $token
+        ));
+        return $req->rowCount();
     }
 
     /**
@@ -174,4 +190,7 @@ class User extends CRUDAble{
     public function __toString(){
         return 'ID Utilisateur : ' . $this->id_user . 'Nom utilisateur : ' . $this->username .'Adresse mail : '. $this->email_address .'Est administrateur : '. $this->is_admin;
     }
+
+    public function save(): bool{ 
+    } 
 }

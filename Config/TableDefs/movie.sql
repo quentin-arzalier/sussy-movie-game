@@ -195,19 +195,22 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(64) NOT NULL,
-  `email_adress` varchar(64) NOT NULL,
+  `email_address` varchar(64) NOT NULL,
   `password_hash` text NOT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `token_verify` text NOT NULL,
+  `email_chek` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id_user`, `username`, `email_adress`, `password_hash`, `is_admin`) VALUES
-(1, 'Aaa', 'Aaa@ab.c', 'aze', 0),
-(2, 'Bb', 'B@b.b', 'admin', 1);
+INSERT INTO `user` (`id_user`, `username`, `email_address`, `password_hash`, `is_admin`, `token_verify`, `email_chek`) VALUES
+(1, 'Aaa', 'Aaa@ab.c', 'aze', 0, '', 0),
+(2, 'Bb', 'B@b.b', 'admin', 1, '', 0);
+COMMIT;
 
 -- --------------------------------------------------------
 

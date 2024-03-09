@@ -12,8 +12,8 @@ include_once "Controllers/ApiController.php";
 include_once "Controllers/UserController.php";
 
 // Models
-include_once 'Models/Movie.php';
 include_once 'Models/CRUDAble.php';
+include_once 'Models/Movie.php';
 include_once 'Models/User.php';
 include_once 'Models/MovieName.php';
 
