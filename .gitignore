@@ -1,4 +1,4 @@
-./idea
+.idea/
 Config/dbconfig.php
 Config/apiconfig.php
 Config/hashconfig.php

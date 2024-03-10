@@ -1,65 +1,70 @@
 <?php
-include 'Models/CRUDAble.php';
+
 Class Actor extends CRUDAble{
 
-    /**
-     * @var int
-     */
-    private $id_actor;
+    private int $id_actor;
 
-    /**
-     * @var string
-     */
-    private $first_name;
-
-    /**
-     * @var string
-     */
-    private $last_name;
+    private string $full_name;
 
     public function __construct(){
         parent::__construct();
     }
 
-    /**
-     * @return int
-     */
-    public function getIdActor(){
+    public function getIdActor(): int{
         return $this->id_actor;
     }
 
-    /**
-     * @param int $id_actor
-     */
-    public function setIdActor($id_actor){  
+    public function setIdActor(int $id_actor): void{
         $this->id_actor = $id_actor;
     }
 
-    /**
-     * @return string
-     */
-    public function getFirstName(){
-        return $this->first_name;
-    }   
-
-    /**
-     * @param string $first_name
-     */
-    public function setFitstName($first_name){
-        $this->fitst_name = $first_name;
+    public function getFullName(): string
+    {
+        return $this->full_name;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName(){
-        return $this->last_name;
+    public function setFullName(string $full_name): void
+    {
+        $this->full_name = $full_name;
     }
 
-    /**
-     * @param string $last_name
-     */
-    public function setLasttName($last_name){
-        $this->fitst_name = $last_name;
+
+
+    public static function CreateActor(int $id_actor, string $full_name): Actor
+    {
+        $obj = new Actor();
+        $obj->setIdActor($id_actor);
+        $obj->setFullName($full_name);
+
+        return $obj;
     }
+    public function get($actor_id): Actor|null
+    {
+        $query = $this->getPDO()->prepare("SELECT * FROM actor WHERE id_actor=:id_actor");
+        $success = $query->execute(array('id_actor' => $actor_id));
+        if (!$success)
+            return null;
+        $array = $query->fetchAll(PDO::FETCH_CLASS, "Actor");
+        if (count($array) == 1)
+            return $array[0];
+        else
+            return null;
+    }
+
+    public function save(): bool
+    {
+        if ($this->get($this->getIdActor()))
+            return false;
+
+        $query = $this->getPDO()->prepare("
+INSERT INTO actor(id_actor, full_name) 
+VALUES (:id_actor, :full_name);
+        ");
+
+        return $query->execute(array(
+            "id_actor" => $this->getIdActor(),
+            "full_name" => $this->getFullName(),
+        ));
+    }
+
 }

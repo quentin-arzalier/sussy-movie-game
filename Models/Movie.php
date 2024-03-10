@@ -111,12 +111,53 @@ INSERT INTO movie(id_movie, original_language, release_date, runtime)
 VALUES (:id_movie, :original_language, :release_date, :runtime);
         ");
 
-
         return $query->execute(array(
             'id_movie' => $this->getIdMovie(),
             'original_language' => $this->getOriginalLanguage(),
             'release_date' => $this->getReleaseDate(),
             'runtime' => $this->getRuntime(),
+        ));
+    }
+
+    public function delete(): bool{
+        $query = $this->getPDO()->prepare("
+DELETE FROM movie
+WHERE id_movie=:id_movie;
+        ");
+        return $query->execute(array(
+            "id_movie" => $this->getIdMovie()
+        ));
+    }
+
+    public function addGenre(int $genre_id): bool
+    {
+        $genre_query_obj = new Genre();
+        if ($this->get($this->getIdMovie()) == null || $genre_query_obj->get($genre_id) == null)
+            return false;
+
+        $query = $this->getPDO()->prepare("
+INSERT INTO movie_genre(id_movie, id_genre) 
+VALUES (:id_movie, :id_genre);
+");
+        return $query->execute(array(
+            'id_movie' => $this->getIdMovie(),
+            'id_genre' => $genre_id,
+        ));
+    }
+
+    public function addActor(int $actor_id): bool
+    {
+        $actor_query_obj = new Actor();
+        if ($this->get($this->getIdMovie()) == null || $actor_query_obj->get($actor_id) == null)
+            return false;
+
+        $query = $this->getPDO()->prepare("
+INSERT INTO movie_actor(id_movie, id_actor) 
+VALUES (:id_movie, :id_actor);
+");
+        return $query->execute(array(
+            'id_movie' => $this->getIdMovie(),
+            'id_actor' => $actor_id,
         ));
     }
 

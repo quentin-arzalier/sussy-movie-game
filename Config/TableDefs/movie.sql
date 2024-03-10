@@ -29,18 +29,10 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `actor`;
 CREATE TABLE IF NOT EXISTS `actor` (
-  `id_actor` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` text NOT NULL,
-  `last_name` text NOT NULL,
+  `id_actor` int(11) NOT NULL,
+  `full_name` text NOT NULL,
   PRIMARY KEY (`id_actor`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
-
---
--- Déchargement des données de la table `actor`
---
-
-INSERT INTO `actor` (`id_actor`, `first_name`, `last_name`) VALUES
-(1, 'monica', 'bellucci');
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 -- --------------------------------------------------------
 
@@ -110,16 +102,8 @@ DROP TABLE IF EXISTS `movie_actor`;
 CREATE TABLE IF NOT EXISTS `movie_actor` (
   `id_movie` int(11) NOT NULL,
   `id_actor` int(11) NOT NULL,
-  PRIMARY KEY (`id_actor`),
-  KEY `id_movie` (`id_movie`)
+  PRIMARY KEY (`id_actor`, `id_movie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
-
---
--- Déchargement des données de la table `movie_actor`
---
-
-INSERT INTO `movie_actor` (`id_movie`, `id_actor`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -152,8 +136,7 @@ DROP TABLE IF EXISTS `movie_genre`;
 CREATE TABLE IF NOT EXISTS `movie_genre` (
   `id_movie` int(11) NOT NULL,
   `id_genre` int(11) NOT NULL,
-  PRIMARY KEY (`id_movie`),
-  KEY `id_kind` (`id_genre`)
+  PRIMARY KEY (`id_movie`, `id_genre` )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 --
