@@ -22,6 +22,14 @@ class ApiController
         }
 
         $movie_id = $_POST["movie_id"];
+
+        if ((new Movie())->get($movie_id) != null)
+        {
+            http_response_code(409); // Already exists => conflict
+            return false;
+        }
+
+
         $id_param = urlencode($movie_id);
         $details_url = "https://api.themoviedb.org/3/movie/$id_param?api_key=" . API_KEY;
         $titles_url = "https://api.themoviedb.org/3/movie/$id_param/alternative_titles?api_key=" . API_KEY;
@@ -30,69 +38,110 @@ class ApiController
         $details_json = file_get_contents_utf8($details_url);
         $details_obj = json_decode($details_json, true);
 
+
         $mov = Movie::CreateMovie(
             $details_obj["id"],
             $details_obj["original_language"],
             $details_obj["release_date"],
             $details_obj["runtime"]
         );
-        if ($mov->save()){
-            foreach ($details_obj["genres"] as $genre) {
-                if (!$mov->addGenre($genre["id"]))
-                {
-                    http_response_code(500);
-                    echo "Error encountered while adding genre $genre[name] to movie $movie_id";
-                    $mov->delete();
-                    return false;
-                }
-            }
-
-            $titles_json = file_get_contents_utf8($titles_url);
-            $titles_obj = json_decode($titles_json, true);
-            $countries = array();
-            foreach ($titles_obj["titles"] as $title_obj)
-            {
-                // Précaution pour éviter d'avoir des pays en double. On veut un seul titre par pays.
-                if ($title_obj["type"] != "" || $title_obj["type"] != null || in_array($title_obj["iso_3166_1"], $countries))
-                    continue;
-
-                $movname = MovieName::CreateMovieName($mov->getIdMovie(), $title_obj["iso_3166_1"], $title_obj["title"]);
-                if (!$movname->save())
-                {
-                    http_response_code(500);
-                    echo "Error encountered while adding title $title_obj[title] to movie $movie_id";
-                    $mov->delete();
-                    return false;
-                }
-                $countries[] = $title_obj["iso_3166_1"];
-            }
-
-            $credits_json = file_get_contents_utf8($credits_url);
-            $credits_obj = json_decode($credits_json, true);
-
-            $actor_query_obj = new Actor();
-            foreach ($credits_obj["cast"] as $api_actor)
-            {
-                $actor = $actor_query_obj->get($api_actor["id"]);
-                if ($actor == null)
-                {
-                    $actor = Actor::CreateActor($api_actor["id"], $api_actor["name"]);
-                    if (!$actor->save())
+        try {
+            if ($mov->save()){
+                foreach ($details_obj["genres"] as $genre) {
+                    if (!$mov->addGenre($genre["id"]))
                     {
                         http_response_code(500);
-                        echo "Error encountered while adding actor $api_actor[name] to database";
+                        echo "Error encountered while adding genre $genre[name] to movie $movie_id";
                         $mov->delete();
                         return false;
                     }
                 }
-                if (!$mov->addActor($actor->getIdActor()))
+
+                $titles_json = file_get_contents_utf8($titles_url);
+                $titles_obj = json_decode($titles_json, true);
+                $countries = array();
+                foreach ($titles_obj["titles"] as $title_obj)
                 {
-                    http_response_code(500);
-                    echo "Error encountered while adding actor $api_actor[name] to movie $movie_id";
-                    $mov->delete();
-                    return false;
+                    // Précaution pour éviter d'avoir des pays en double. On veut un seul titre par pays.
+                    if ($title_obj["type"] != "" || $title_obj["type"] != null || in_array($title_obj["iso_3166_1"], $countries))
+                        continue;
+
+                    $movname = MovieName::CreateMovieName($mov->getIdMovie(), $title_obj["iso_3166_1"], $title_obj["title"]);
+                    if (!$movname->save())
+                    {
+                        http_response_code(500);
+                        echo "Error encountered while adding title $title_obj[title] to movie $movie_id";
+                        $mov->delete();
+                        return false;
+                    }
+                    $countries[] = $title_obj["iso_3166_1"];
+                }
+
+                $credits_json = file_get_contents_utf8($credits_url);
+                $credits_obj = json_decode($credits_json, true);
+
+                $actor_query_obj = new Actor();
+                $actors = array();
+                foreach ($credits_obj["cast"] as $api_actor)
+                {
+                    // Pour éviter la duplication acteur/film si jamais le film crédite plusieurs fois le même acteur
+                    if (in_array($api_actor["id"], $actors))
+                        continue;
+
+                    $actor = $actor_query_obj->get($api_actor["id"]);
+                    if ($actor == null)
+                    {
+                        $actor = Actor::CreateActor($api_actor["id"], $api_actor["name"]);
+                        if (!$actor->save())
+                        {
+                            http_response_code(500);
+                            echo "Error encountered while adding actor $api_actor[name] to database";
+                            $mov->delete();
+                            return false;
+                        }
+                    }
+                    if (!$mov->addActor($actor->getIdActor()))
+                    {
+                        http_response_code(500);
+                        echo "Error encountered while adding actor $api_actor[name] to movie $movie_id";
+                        $mov->delete();
+                        return false;
+                    }
+                    $actors[] = $api_actor["id"];
+                }
+
+                $director_query_obj = new Director();
+                foreach ($credits_obj["crew"] as $api_crew) {
+                    if (strtolower($api_crew["job"]) != "director")
+                        continue;
+                    $director = $director_query_obj->get($api_crew["id"]);
+                    if ($director == null)
+                    {
+                        $director = Director::CreateDirector($api_crew["id"], $api_crew["name"]);
+                        if (!$director->save())
+                        {
+                            http_response_code(500);
+                            echo "Error encountered while adding director $api_crew[name] to database";
+                            $mov->delete();
+                            return false;
+                        }
+                    }
+                    if (!$mov->addDirector($director->getIdDirector()))
+                    {
+                        http_response_code(500);
+                        echo "Error encountered while adding actor $api_crew[name] to movie $movie_id";
+                        $mov->delete();
+                        return false;
+                    }
+                    break;
                 }
             }
+        }
+        catch (Exception $e)
+        {
+            http_response_code(500);
+            $mov->delete();
+            throw $e; // TODO : Remplacer par return false
         }
         return true;
     }

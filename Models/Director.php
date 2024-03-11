@@ -1,66 +1,73 @@
 <?php
-include 'Controllers.CRUDAble.php';
 Class Director extends CRUDAble{
 
-    /**
-     * @var int
-     */
-    private $id_director;
-
-    /**
-     * @var string
-     */
-    private $first_name;
-
-    /**
-     * @var string
-     */
-    private $last_name;
+    private int $id_director;
+    private string $full_name;
 
     public function __construct(){
-    parent::__construct();
+        parent::__construct();
     }
 
-    /**
-     * @return int
-     */
-    public function getIdDirector(){ 
+    public function getIdDirector(): int{
         return $this->id_director;
     }
 
-    /**
-     * @param int $id_director
-     */
-    public function setIdDirector($id_director){
+    public function setIdDirector(int $id_director): void{
         $this->id_director = $id_director;
     }
 
-    /**
-     * @return string
-     */
-    public function getFirstName(){
-        return $this->first_name;
+    public function getFullName(): string
+    {
+        return $this->full_name;
     }
 
-    /**
-     * @param string $fist_name
-     */
-    public function setFirstName($first_name){
-        $this->first_name = $first_name;
+    public function setFullName(string $full_name): void
+    {
+        $this->full_name = $full_name;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName(){
-        return $this->last_name;
+
+    public static function CreateDirector(int $id_director, string $full_name): Director
+    {
+        $dir = new Director();
+        $dir->setIdDirector($id_director);
+        $dir->setFullName($full_name);
+        return $dir;
     }
 
-    /**
-     * @param string $last_name
-     */
-    public function setLastName($last_name){
-        $this->last_name = $last_name;
+    public function get(int $id_director): Director|null {
+        $query = $this->getPDO()->prepare("
+SELECT * FROM director
+WHERE id_director=:id_director
+        ");
+        $response = $query->execute(array('id_director' => $id_director));
+        if (!$response)
+            return null;
+
+        $array = $query->fetchAll(PDO::FETCH_CLASS, 'Director');
+
+        if (count($array) == 1)
+            return $array[0];
+        else
+            return null;
     }
+
+
+    public function save(): bool
+    {
+        if ($this->get($this->getIdDirector()))
+            return false;
+
+        $query = $this->getPDO()->prepare("
+INSERT INTO director(id_director, full_name) 
+VALUES(:id_director, :full_name);
+        ");
+
+        return $query->execute(array(
+           "id_director" => $this->getIdDirector(),
+           "full_name" => $this->getFullName()
+        ));
+    }
+
 
 }

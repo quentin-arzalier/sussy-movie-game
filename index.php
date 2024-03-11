@@ -21,6 +21,7 @@ include_once 'Models/Movie.php';
 include_once 'Models/User.php';
 include_once 'Models/Actor.php';
 include_once 'Models/Genre.php';
+include_once 'Models/Director.php';
 include_once 'Models/MovieName.php';
 
 // router
