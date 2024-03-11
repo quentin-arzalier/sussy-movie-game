@@ -41,10 +41,13 @@ class ApiController
 
         $mov = Movie::CreateMovie(
             $details_obj["id"],
-            $details_obj["original_language"],
+            $details_obj["original_title"],
             $details_obj["release_date"],
-            $details_obj["runtime"]
+            $details_obj["runtime"],
+            $details_obj["backdrop_path"],
+            $details_obj["poster_path"],
         );
+
         try {
             if ($mov->save()){
                 foreach ($details_obj["genres"] as $genre) {
@@ -60,6 +63,7 @@ class ApiController
                 $titles_json = file_get_contents_utf8($titles_url);
                 $titles_obj = json_decode($titles_json, true);
                 $countries = array();
+                $movie_names = array();
                 foreach ($titles_obj["titles"] as $title_obj)
                 {
                     // Précaution pour éviter d'avoir des pays en double. On veut un seul titre par pays.
@@ -67,14 +71,15 @@ class ApiController
                         continue;
 
                     $movname = MovieName::CreateMovieName($mov->getIdMovie(), $title_obj["iso_3166_1"], $title_obj["title"]);
-                    if (!$movname->save())
-                    {
-                        http_response_code(500);
-                        echo "Error encountered while adding title $title_obj[title] to movie $movie_id";
-                        $mov->delete();
-                        return false;
-                    }
                     $countries[] = $title_obj["iso_3166_1"];
+                    $movie_names[] = $movname;
+                }
+                if (!MovieName::SaveManyMovieNames($movie_names))
+                {
+                    http_response_code(500);
+                    echo "Error encountered while adding titles to movie $movie_id";
+                    $mov->delete();
+                    return false;
                 }
 
                 $credits_json = file_get_contents_utf8($credits_url);
@@ -91,7 +96,7 @@ class ApiController
                     $actor = $actor_query_obj->get($api_actor["id"]);
                     if ($actor == null)
                     {
-                        $actor = Actor::CreateActor($api_actor["id"], $api_actor["name"]);
+                        $actor = Actor::CreateActor($api_actor["id"], $api_actor["name"], $api_actor["profile_path"]);
                         if (!$actor->save())
                         {
                             http_response_code(500);
@@ -100,24 +105,25 @@ class ApiController
                             return false;
                         }
                     }
-                    if (!$mov->addActor($actor->getIdActor()))
-                    {
-                        http_response_code(500);
-                        echo "Error encountered while adding actor $api_actor[name] to movie $movie_id";
-                        $mov->delete();
-                        return false;
-                    }
                     $actors[] = $api_actor["id"];
+                }
+                if (!$mov->addManyActors($actors))
+                {
+                    http_response_code(500);
+                    echo "Error encountered while adding actors to movie $movie_id";
+                    $mov->delete();
+                    return false;
                 }
 
                 $director_query_obj = new Director();
+                $directors = array();
                 foreach ($credits_obj["crew"] as $api_crew) {
                     if (strtolower($api_crew["job"]) != "director")
                         continue;
                     $director = $director_query_obj->get($api_crew["id"]);
                     if ($director == null)
                     {
-                        $director = Director::CreateDirector($api_crew["id"], $api_crew["name"]);
+                        $director = Director::CreateDirector($api_crew["id"], $api_crew["name"], $api_crew["profile_path"]);
                         if (!$director->save())
                         {
                             http_response_code(500);
@@ -126,15 +132,16 @@ class ApiController
                             return false;
                         }
                     }
-                    if (!$mov->addDirector($director->getIdDirector()))
-                    {
-                        http_response_code(500);
-                        echo "Error encountered while adding actor $api_crew[name] to movie $movie_id";
-                        $mov->delete();
-                        return false;
-                    }
-                    break;
+                    $directors[] = $api_crew["id"];
                 }
+                if (!$mov->addManyDirectors($directors))
+                {
+                    http_response_code(500);
+                    echo "Error encountered while adding directors to movie $movie_id";
+                    $mov->delete();
+                    return false;
+                }
+
             }
         }
         catch (Exception $e)

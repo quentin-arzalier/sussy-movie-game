@@ -49,6 +49,9 @@ h1.main-title {
     filter: drop-shadow(2px 2px black) drop-shadow(0px 0px yellow);
     color: #D91A2A;
     margin: .5em;
+    pointer-events: none;
+    cursor: pointer;
+    user-select: none;
 }
 
 a {
@@ -141,4 +144,128 @@ ul.movie-list > li {
 }
 .movie-list-desc {
     color: gray;
+}
+
+
+
+.movie-details{
+    display: flex;
+    --background-url: url("/Resources/img/no_poster.jpg");
+    background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--background-url);
+    background-size: contain;
+    aspect-ratio: 780 / 440;
+    flex-direction: row;
+    border: 8px solid #374E59;
+    border-radius: 50px;
+    align-items: center;
+    margin-top: 1em;
+    min-height: 350px;
+}
+
+.movie-details > * {
+    padding: 2em;
+    width: 33%;
+}
+
+.movie-title-card {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.movie-title-card span {
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    margin-top: 1em;
+    text-align: center;
+}
+
+
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+}
+
+.movie-info-part {
+    display: flex;
+    flex-direction: row;
+}
+
+.movie-info-part span {
+    min-height: 50px;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.movie-info-part :first-child {
+    background-color: #374E59;
+    border-radius: 10px 0 0 10px;
+    color: white;
+    width: 40%;
+}
+
+.movie-info-part :last-child {
+    background-color: #FFFFFF;
+    border-radius: 0 10px 10px 0;
+    color: black;
+    flex-grow: 1;
+}
+
+.movie-people-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+
+.movie-people-list span:first-child {
+    background-color: #374E59;
+    border-radius: 10px 10px 0 0;
+    min-height: 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.movie-people-list .movie-people-item {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: .5em 1em;
+}
+
+.movie-people-list .movie-people-item:last-child
+{
+    border-radius: 0 0 10px 10px;
+}
+
+.movie-people-item > span {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.movie-actors{
+   height: 100%;
+}
+ul.movie-people-list-items {
+    border-radius: 0 0 1em 1em  ;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    overflow-y: scroll;
+    padding: 0;
+    margin: 0;
+}
+
+ul.movie-people-list-items::-webkit-scrollbar {
+    display: none;
 }

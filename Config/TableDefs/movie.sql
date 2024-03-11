@@ -31,6 +31,7 @@ DROP TABLE IF EXISTS `actor`;
 CREATE TABLE IF NOT EXISTS `actor` (
   `id_actor` int(11) NOT NULL,
   `full_name` text NOT NULL,
+  `profile_path` VARCHAR(64) NULL,
   PRIMARY KEY (`id_actor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
@@ -44,6 +45,7 @@ DROP TABLE IF EXISTS `director`;
 CREATE TABLE IF NOT EXISTS `director` (
   `id_director` int(11) NOT NULL,
   `full_name` text NOT NULL,
+  `profile_path` VARCHAR(64) NULL,
   PRIMARY KEY (`id_director`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
@@ -73,6 +75,8 @@ CREATE TABLE IF NOT EXISTS `movie` (
   `original_language` char(2) NOT NULL,
   `release_date` date NOT NULL,
   `runtime` int(11) NOT NULL,
+  `backdrop_path` VARCHAR(64) NULL,
+  `poster_path` VARCHAR(64) NULL,
   PRIMARY KEY (`id_movie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
@@ -100,8 +104,7 @@ DROP TABLE IF EXISTS `movie_director`;
 CREATE TABLE IF NOT EXISTS `movie_director` (
   `id_movie` int(11) NOT NULL,
   `id_director` int(11) NOT NULL,
-  PRIMARY KEY (`id_movie`),
-  KEY `id_director` (`id_director`)
+  PRIMARY KEY (`id_movie`, `id_director`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 

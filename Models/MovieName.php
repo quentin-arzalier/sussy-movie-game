@@ -1,66 +1,47 @@
 <?php
 Class MovieName extends CRUDAble{
 
-    /**
-     * @var int
-     */
-    private $id_movie;
+    private int $id_movie;
 
-    /**
-     * @var string
-     */
-    private $country_code;
+    private string $country_code;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     public function __construct(){
         parent::__construct();
     }
 
-    /**
-     * @return int
-     */
-    public function getIdMovie(){
+    public function getIdMovie(): int
+    {
         return $this->id_movie;
     }
 
-    /**
-     * @param int $id_movie
-     */
-    public function setIdMovie($id_movie){
+    public function setIdMovie(int $id_movie): void
+    {
         $this->id_movie = $id_movie;
     }
 
-    /**
-     * @return string
-     */
-    public function getCountryCode(){
+    public function getCountryCode(): string
+    {
         return $this->country_code;
     }
-    
-    /**
-     * @param string $country_code
-     */
-    public function setCountyCode($country_code){
+
+    public function setCountryCode(string $country_code): void
+    {
         $this->country_code = $country_code;
     }
 
-    /**
-     * @return string
-     */
-    public function getName(){
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    /**
-     * @param string
-     */
-    public function setName($name){
+    public function setName(string $name): void
+    {
         $this->name = $name;
     }
+
+
 
     public function get($movie_id, $country_code): MovieName|null
     {
@@ -87,9 +68,42 @@ WHERE id_movie=:id_movie AND country_code=:country_code
     {
         $movname = new MovieName();
         $movname->setIdMovie($movie_id);
-        $movname->setCountyCode($country_code);
+        $movname->setCountryCode($country_code);
         $movname->setName($name);
         return $movname;
+    }
+
+    public static function SaveManyMovieNames(array $movie_names): bool
+    {
+        $query_obj = new MovieName();
+        try {
+            $queryString = "
+INSERT INTO movie_name(country_code, id_movie, name)
+VALUES
+            ";
+            $i = 0;
+            $params = array();
+            $count = count($movie_names);
+            foreach ($movie_names as $movie_name)
+            {
+                $queryString = $queryString . "(:country_code_$i, :id_movie_$i, :name_$i)";
+                if ($i < $count - 1)
+                    $queryString = $queryString . ",\n";
+                else
+                    $queryString = $queryString . ";";
+
+                $params["country_code_$i"] = $movie_name->getCountryCode();
+                $params["id_movie_$i"] = $movie_name->getIdMovie();
+                $params["name_$i"] = $movie_name->getName();
+                $i++;
+            }
+            $query = $query_obj->getPDO()->prepare($queryString);
+            return $query->execute($params);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public function save(): bool

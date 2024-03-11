@@ -6,9 +6,9 @@ class Movie extends CRUDAble
      */
     private int $id_movie;
     /**
-     * Country code du pays d'origine du film
+     * Le nom original du film
      */
-    private string $original_language;
+    private string $original_name;
     /**
      * Date de sortie du film en format chaîne de caractères
      */
@@ -18,8 +18,9 @@ class Movie extends CRUDAble
      */
     private int $runtime;
 
-    /**
-     */
+    private string|null $backdrop_path;
+    private string|null $poster_path;
+
     public function __construct()
     {
         parent::__construct();
@@ -36,13 +37,13 @@ class Movie extends CRUDAble
     }
 
 
-    public function getOriginalLanguage(): string
+    public function getOriginalName(): string
     {
-        return $this->original_language;
+        return $this->original_name;
     }
-    public function setOriginalLanguage(string $original_language): void
+    public function setOriginalName(string $original_name): void
     {
-        $this->original_language = $original_language;
+        $this->original_name = $original_name;
     }
 
     public function getReleaseDate(): string
@@ -54,6 +55,25 @@ class Movie extends CRUDAble
         $this->release_date = $release_date;
     }
 
+    public function getBackdropPath(): string|null
+    {
+        return $this->backdrop_path;
+    }
+
+    public function setBackdropPath(string|null $backdrop_path): void
+    {
+        $this->backdrop_path = $backdrop_path;
+    }
+
+    public function getPosterPath(): string|null
+    {
+        return $this->poster_path;
+    }
+
+    public function setPosterPath(string|null $poster_path): void
+    {
+        $this->poster_path = $poster_path;
+    }
 
     public function getRuntime(): int
     {
@@ -63,6 +83,25 @@ class Movie extends CRUDAble
     {
         $this->runtime = $runtime;
     }
+
+
+
+    public function getPosterUrl(): string
+    {
+        if ($this->getPosterPath() == null || $this->getPosterPath() == "")
+            return "/resources/img/no_poster.jpg";
+        return "https://image.tmdb.org/t/p/w185" . $this->getPosterPath();
+    }
+    public function getBackdropUrl(): string
+    {
+        if ($this->getBackdropPath() == null || $this->getBackdropPath() == "")
+            return "";
+        return "https://image.tmdb.org/t/p/w780" . $this->getBackdropPath();
+    }
+
+
+
+
 
     public function getAllMovies(): array
     {
@@ -88,13 +127,17 @@ WHERE id_movie=:id_movie
             return null;
     }
 
-    public static function CreateMovie(int $movie_id, string $original_language, string $release_date, int $runtime): Movie
+    public static function CreateMovie(
+        int $movie_id, string $original_name, string $release_date,
+        int $runtime, string|null $backdrop_path, string|null $poster_path): Movie
     {
         $mov = new Movie();
         $mov->setIdMovie($movie_id);
-        $mov->setOriginalLanguage($original_language);
+        $mov->setOriginalName($original_name);
         $mov->setReleaseDate($release_date);
         $mov->setRuntime($runtime);
+        $mov->setBackdropPath($backdrop_path);
+        $mov->setPosterPath($poster_path);
         return $mov;
     }
 
@@ -104,15 +147,17 @@ WHERE id_movie=:id_movie
             return false;
 
         $query = $this->getPDO()->prepare("
-INSERT INTO movie(id_movie, original_language, release_date, runtime) 
-VALUES (:id_movie, :original_language, :release_date, :runtime);
+INSERT INTO movie(id_movie, original_name, release_date, runtime, backdrop_path, poster_path) 
+VALUES (:id_movie, :original_name, :release_date, :runtime, :backdrop_path, :poster_path);
         ");
 
         return $query->execute(array(
             'id_movie' => $this->getIdMovie(),
-            'original_language' => $this->getOriginalLanguage(),
+            'original_name' => $this->getOriginalName(),
             'release_date' => $this->getReleaseDate(),
             'runtime' => $this->getRuntime(),
+            'backdrop_path' => $this->getBackdropPath(),
+            'poster_path' => $this->getPosterPath()
         ));
     }
 
@@ -158,6 +203,66 @@ VALUES (:id_movie, :id_actor);
         ));
     }
 
+    public function addManyActors(array $actor_ids): bool
+    {
+        try {
+            $queryString = "
+INSERT INTO movie_actor(id_movie, id_actor)
+VALUES
+            ";
+            $i = 0;
+            $params = array();
+            $count = count($actor_ids);
+            foreach ($actor_ids as $actor_id)
+            {
+                $queryString = $queryString . "(:id_movie_$i, :id_actor_$i)";
+                if ($i < $count - 1)
+                    $queryString = $queryString . ",\n";
+                else
+                    $queryString = $queryString . ";";
+                $params["id_actor_$i"] = $actor_id;
+                $params["id_movie_$i"] = $this->getIdMovie();
+                $i++;
+            }
+            $query = $this->getPDO()->prepare($queryString);
+            return $query->execute($params);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public function addManyDirectors(array $director_ids): bool
+    {
+        try {
+            $queryString = "
+INSERT INTO movie_director(id_movie, id_director)
+VALUES
+            ";
+            $i = 0;
+            $params = array();
+            $count = count($director_ids);
+            foreach ($director_ids as $director_id)
+            {
+                $queryString = $queryString . "(:id_movie_$i, :id_director_$i)";
+                if ($i < $count - 1)
+                    $queryString = $queryString . ",\n";
+                else
+                    $queryString = $queryString . ";";
+                $params["id_director_$i"] = $director_id;
+                $params["id_movie_$i"] = $this->getIdMovie();
+                $i++;
+            }
+            $query = $this->getPDO()->prepare($queryString);
+            return $query->execute($params);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
     public function addDirector(int $director_id): bool
     {
         $director_query_obj = new Director();
@@ -173,4 +278,37 @@ VALUES (:id_movie, :id_director);
             'id_director' => $director_id,
         ));
     }
+
+    public function getActors(): array|null
+    {
+        $query = $this->getPDO()->prepare("
+SELECT a.* 
+FROM actor a
+NATURAL JOIN movie_actor ma
+WHERE ma.id_movie = :id_movie;
+        ");
+
+        $response = $query->execute(array('id_movie' => $this->getIdMovie()));
+        if (!$response)
+            return null;
+
+        return $query->fetchAll(PDO::FETCH_CLASS, 'Actor');
+    }
+
+    public function getDirectors(): array|null
+    {
+        $query = $this->getPDO()->prepare("
+SELECT d.* 
+FROM director d
+NATURAL JOIN movie_director md
+WHERE md.id_movie = :id_movie;
+        ");
+
+        $response = $query->execute(array('id_movie' => $this->getIdMovie()));
+        if (!$response)
+            return null;
+
+        return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
+    }
+
 }

@@ -3,6 +3,7 @@ Class Director extends CRUDAble{
 
     private int $id_director;
     private string $full_name;
+    private string|null $profile_path;
 
     public function __construct(){
         parent::__construct();
@@ -26,12 +27,30 @@ Class Director extends CRUDAble{
         $this->full_name = $full_name;
     }
 
+    public function getProfilePath(): string|null
+    {
+        return $this->profile_path;
+    }
 
-    public static function CreateDirector(int $id_director, string $full_name): Director
+    public function setProfilePath(string|null $profile_path): void
+    {
+        $this->profile_path = $profile_path;
+    }
+
+    public function getPictureUrl(): string
+    {
+        if ($this->getProfilePath() == null || $this->getProfilePath() == "")
+            return "/resources/img/no_picture.jpg";
+        return "https://image.tmdb.org/t/p/w45" . $this->getProfilePath();
+    }
+
+
+    public static function CreateDirector(int $id_director, string $full_name, string|null $profile_path): Director
     {
         $dir = new Director();
         $dir->setIdDirector($id_director);
         $dir->setFullName($full_name);
+        $dir->setProfilePath($profile_path);
         return $dir;
     }
 
@@ -59,13 +78,14 @@ WHERE id_director=:id_director
             return false;
 
         $query = $this->getPDO()->prepare("
-INSERT INTO director(id_director, full_name) 
-VALUES(:id_director, :full_name);
+INSERT INTO director(id_director, full_name, profile_path) 
+VALUES(:id_director, :full_name, :profile_path);
         ");
 
         return $query->execute(array(
            "id_director" => $this->getIdDirector(),
-           "full_name" => $this->getFullName()
+           "full_name" => $this->getFullName(),
+            "profile_path" => $this->getProfilePath()
         ));
     }
 

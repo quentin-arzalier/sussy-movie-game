@@ -1,7 +1,7 @@
 <?php
 abstract class CRUDAble
 {
-    private PDO $pdo;
+    private PDO|null $pdo;
 
     public function __construct()
     {
@@ -17,6 +17,10 @@ abstract class CRUDAble
     protected function getPDO(): PDO
     {
         return $this->pdo;
+    }
+
+    function __destruct() {
+        $this->pdo = null;
     }
 
     /**

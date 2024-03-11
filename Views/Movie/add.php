@@ -38,6 +38,7 @@
                 data: {movie_id: movie_id},
                 success: function() {
                     alert("Film ajouté à la base de données!");
+                    movieIdsInDatabase.push(movie_id);
                     // On supprime réellement la ligne
                     container.get(0).removeChild(toRemove);
                     if (container.childNodes.length === 0)
