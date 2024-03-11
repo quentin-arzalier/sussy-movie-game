@@ -13,6 +13,9 @@ class MovieController
 
     public static function add()
     {
+        $mov = new Movie();
+        $movies = $mov->getAllMovies();
+
         $view_name = "Views/Movie/add.php";
         require_once "Views/Shared/layout.php";
     }

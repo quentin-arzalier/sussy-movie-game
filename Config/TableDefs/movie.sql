@@ -42,18 +42,10 @@ CREATE TABLE IF NOT EXISTS `actor` (
 
 DROP TABLE IF EXISTS `director`;
 CREATE TABLE IF NOT EXISTS `director` (
-  `id_director` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` text NOT NULL,
-  `last_name` text NOT NULL,
+  `id_director` int(11) NOT NULL,
+  `full_name` text NOT NULL,
   PRIMARY KEY (`id_director`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
-
---
--- Déchargement des données de la table `director`
---
-
-INSERT INTO `director` (`id_director`, `first_name`, `last_name`) VALUES
-(1, 'Sckott', 'ridley');
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 -- --------------------------------------------------------
 
@@ -84,13 +76,6 @@ CREATE TABLE IF NOT EXISTS `movie` (
   PRIMARY KEY (`id_movie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `movie`
---
-
-INSERT INTO `movie` (`id_movie`, `original_language`, `release_date`, `runtime`) VALUES
-(1, 'fr', '2024-02-07', 120),
-(2, 'en', '2017-02-08', 160);
 
 -- --------------------------------------------------------
 
@@ -119,12 +104,6 @@ CREATE TABLE IF NOT EXISTS `movie_director` (
   KEY `id_director` (`id_director`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `movie_director`
---
-
-INSERT INTO `movie_director` (`id_movie`, `id_director`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -139,12 +118,7 @@ CREATE TABLE IF NOT EXISTS `movie_genre` (
   PRIMARY KEY (`id_movie`, `id_genre` )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `movie_genre`
---
 
-INSERT INTO `movie_genre` (`id_movie`, `id_genre`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -161,12 +135,7 @@ CREATE TABLE IF NOT EXISTS `movie_name` (
   KEY `id_movie` (`id_movie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `movie_name`
---
 
-INSERT INTO `movie_name` (`country_code`, `id_movie`, `name`) VALUES
-('FR', 1, 'Oui');
 
 -- --------------------------------------------------------
 
@@ -185,9 +154,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `user`
---
 
 INSERT INTO `user` (`username`, `email_address`, `password_hash`, `is_admin`, `token_verify`, `email_chek`) VALUES
 ('Aaa', 'Aaa@ab.c', 'aze', 0, '', 0),
@@ -212,13 +178,6 @@ CREATE TABLE IF NOT EXISTS `usermoviehistory` (
   KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `usermoviehistory`
---
-
-INSERT INTO `usermoviehistory` (`id_user`, `id_movie`, `attempt_count`, `date_of_success`) VALUES
-(1, 2, 28, '2024-04-11'),
-(1, 1, 64, '2024-05-22');
 
 --
 -- Contraintes pour les tables déchargées

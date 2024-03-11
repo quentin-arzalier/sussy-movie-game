@@ -64,9 +64,6 @@ class Movie extends CRUDAble
         $this->runtime = $runtime;
     }
 
-    /**
-     * @return array<Movie>
-     */
     public function getAllMovies(): array
     {
         $response = $this->getPDO()->query("SELECT * FROM movie");
@@ -161,15 +158,19 @@ VALUES (:id_movie, :id_actor);
         ));
     }
 
+    public function addDirector(int $director_id): bool
+    {
+        $director_query_obj = new Director();
+        if ($this->get($this->getIdMovie()) == null || $director_query_obj->get($director_id) == null)
+            return false;
 
-
-    //faire des GET requets SQL
-    public function getMovieActor(){
-    }
-    public function getMoviekKnd(){
-    }
-    public function getMovieDirectors(){
-    }
-    public function getMovieNames(){
+        $query = $this->getPDO()->prepare("
+INSERT INTO movie_director(id_movie, id_director) 
+VALUES (:id_movie, :id_director);
+");
+        return $query->execute(array(
+            'id_movie' => $this->getIdMovie(),
+            'id_director' => $director_id,
+        ));
     }
 }

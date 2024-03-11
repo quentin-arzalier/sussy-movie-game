@@ -14,6 +14,12 @@
 
 
 <script>
+    let movieIdsInDatabase = [
+        <?php
+            foreach ($movies as $movie)
+                echo $movie->getIdMovie() . ','
+        ?>
+    ];
     let currentTimeout;
     const searchBar = $("#movie-search-bar");
     const container = $("#movie-list-ajax");
@@ -30,7 +36,7 @@
                 type: "POST",
                 url: "/api/addMovieToDatabase",
                 data: {movie_id: movie_id},
-                success: function(res) {
+                success: function() {
                     alert("Film ajouté à la base de données!");
                     // On supprime réellement la ligne
                     container.get(0).removeChild(toRemove);
@@ -39,7 +45,7 @@
                         container.addClass("transparent");
                     }
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
+                error: function () {
                     // On réaffiche le film.
                     toRemove.classList.remove("hidden");
                     alert("Le film n'a pas pu être ajouté, veuillez réessayer plus tard");
@@ -69,6 +75,9 @@
                    const movies = JSON.parse(res);
                    container.get(0).innerHTML = "";
                    for (const movie of movies.results) {
+                       if (movieIdsInDatabase.includes(movie.id))
+                           continue;
+
                        const li = document.createElement("li");
                        li.innerHTML = `
                             <img src="https://image.tmdb.org/t/p/w92${movie.poster_path}" alt="poster">
@@ -83,7 +92,7 @@
                    }
                    container.removeClass("transparent");
                },
-               error: function (xhr, ajaxOptions, thrownError) {
+               error: function () {
                    alert("Une erreur a eu lieu, veuillez réessayer.")
                }
            });
