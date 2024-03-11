@@ -1,10 +1,7 @@
 <?php
 
 class User extends CRUDAble{
-    /**
-     * @var int
-     */
-    private $id_user;
+
 
     /**
      * @var string
@@ -31,7 +28,9 @@ class User extends CRUDAble{
      */
     private $is_verify;
 
+    private $token_verify;
 
+    private $email_chek;
     public function __construct(){
         parent::__construct();
     }
@@ -39,16 +38,6 @@ class User extends CRUDAble{
     /**
      * @return int
      */
-    public function getIdUser(){
-        return $this->id_user;
-    }
-
-    /**
-     * @param int $id_user
-     */
-    private function setIdUser($id_user){
-        $this->id_user = $id_user;
-    }
 
     /**
      * @return string
@@ -121,7 +110,6 @@ class User extends CRUDAble{
     }
 
     private function setUser($user){
-        $this->setIdUser($user->getIdUser());
         $this->setUsername($user->getUsername());
         $this->setEmailAddress($user->getEmailAddress());
         $this->setPasswordHash($user->getPasswordHash());
@@ -131,14 +119,14 @@ class User extends CRUDAble{
 
     public function newUser($username, $email_address, $password){
         $password_hash = password_hash($password . HASH_SALT, PASSWORD_DEFAULT);
-        $token = bin2hex(random_bytes(50));
+        $token_verify = bin2hex(random_bytes(50));
 
         $req = $this->getPDO()->prepare('INSERT INTO user (username, email_address, password_hash, token_verify) VALUES (:champ1, :champ2, :champ3, :champ4)');
         $req->execute(array(
         'champ1' => $username,
         'champ2' => $email_address,
         'champ3' => $password_hash,
-        'champ4' => $token
+        'champ4' => $token_verify
         ));
         $this->setUsername($username);
         $this->setEmailAddress($email_address);
@@ -146,7 +134,7 @@ class User extends CRUDAble{
         $this->setIsAdmin(false);
         $this->setIsVerify(false);
 
-        $verification_url = "http://sussy-movie-game/user/verifyaccount?token=$token";
+        $verification_url = "http://sussy-movie-game/user/verifyaccount?token=$token_verify";
         mail($this->getEmailAddress(), 'Vérifiez votre email pour The Sussy Movie Game', "Cliquez ici pour valider votre inscription à The Sussy Movie Game ! \n\n $verification_url");
     }
 
@@ -165,7 +153,8 @@ class User extends CRUDAble{
      * @return boolean
      */
     public function connectUser($username, $password){
-        $req = $this->getPDO()->prepare("SELECT * FROM user WHERE username =:champ1");
+        $req = $this->getPDO()->prepare("SELECT * FROM user 
+        WHERE username =:champ1");
         $req->execute(array(
             'champ1'=> $username,
             ));
@@ -188,7 +177,7 @@ class User extends CRUDAble{
     }
 
     public function __toString(){
-        return 'ID Utilisateur : ' . $this->id_user . 'Nom utilisateur : ' . $this->username .'Adresse mail : '. $this->email_address .'Est administrateur : '. $this->is_admin;
+        return 'Nom utilisateur : ' . $this->username .'Adresse mail : '. $this->email_address .'Est administrateur : '. $this->is_admin;
     }
 
     public function save(): bool{ 

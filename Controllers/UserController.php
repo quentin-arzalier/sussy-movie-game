@@ -19,12 +19,12 @@ Class UserController
                 UserController::createpage();
                 return;
             }
-            session_start();
             $_SESSION['login'] = $_POST['username'];
             $_SESSION['password'] = $_POST['password'];
             $user = new User();
             $user->newUser($_POST['username'],$_POST['email'],$_POST['password']);
-               
+            UserController::account();
+            return;
         }
     }
     public static function connection(){
@@ -36,11 +36,11 @@ Class UserController
                 UserController::index();
                 return;
             }
-            session_start();
             $_SESSION['login'] = $_POST['username'];
             $_SESSION['password'] = $_POST['password'];
             $_SESSION['is_admin'] = $user->getIsAdmin();
-            echo $user->__tostring();
+            UserController::account();
+            return; 
         }
     }
 
@@ -54,11 +54,29 @@ Class UserController
             }else{
                 echo "Problème lors de la vérification";
             }
-            UserController::index();
+            UserController::account();
             return;
         } else {
             $view_name = "Views/Error/404.php";
             require_once "Views/Shared/layout.php";
         }
+    }
+
+    public static function changePassword(){
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $user = new User();
+            $user->setUsername($_POST["username"]);
+            $user->setPasswordHash(0);
+        }
+    }
+
+    public static function logout(){
+        session_destroy();
+        UserController::index();
+        return;
+    }
+    public static function account(){
+        $view_name = "Views/User/account.php";
+        require_once "Views/Shared/layout.php";
     }
 }

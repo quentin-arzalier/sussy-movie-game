@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $url = explode("?", $_SERVER['REQUEST_URI'])[0];
 
 // Pour transformer les /////controller///////action en /controller/action
