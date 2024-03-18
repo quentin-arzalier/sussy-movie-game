@@ -8,6 +8,10 @@
     box-sizing: border-box;
 }
 
+main {
+    max-width: 75vw;
+}
+
 .hidden{
     display: none !important;
 }
@@ -108,7 +112,15 @@ ul.movie-list {
     max-height: 60vh;
     overflow-y: scroll;
     padding: 0;
-    width: 75vw;
+    min-width: 75vw;
+    max-width: 75vw;
+    z-index: 20;
+}
+
+ul.movie-list.game-list {
+    min-width: 40vw;
+    width: 100%;
+    position: absolute;
 }
 
 
@@ -127,6 +139,7 @@ ul.movie-list > li:not(:last-child)
     border-bottom: 2px black solid;
 }
 ul.movie-list > li {
+    background-color: white;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -140,8 +153,11 @@ ul.movie-list > li {
 .movie-list-title{
     font-weight: bold;
     font-size: large;
+}
+.movie-list-title:not(:last-child){
     margin-bottom: .5em;
 }
+
 .movie-list-desc {
     color: gray;
 }
@@ -199,18 +215,19 @@ ul.movie-list > li {
     min-height: 50px;
     padding: 0 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.movie-info-part :first-child {
+.movie-info-part > :first-child {
     background-color: #374E59;
     border-radius: 10px 0 0 10px;
     color: white;
     width: 40%;
 }
 
-.movie-info-part :last-child {
+.movie-info-part > :last-child {
     background-color: #FFFFFF;
     border-radius: 0 10px 10px 0;
     color: black;
@@ -283,8 +300,7 @@ ul.movie-people-list-items::-webkit-scrollbar {
 .container {
     border: 2px solid black;
     border-radius: 2em;
-    background-color: white;
-    opacity: .5;
+    background-color: rgba(255, 255, 255, 0.5);
     padding: .5em 2em;
 }
 
@@ -300,3 +316,18 @@ button:hover {
     background-color: lightgray;
 }
 
+#game-attempts {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.movie-people-item.incorrect
+{
+    background-color: lightgray;
+    filter: grayscale(100%);
+}
+
+.movie-info-part.incorrect :last-child
+{
+    background-color: lightgray;
+}

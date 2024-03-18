@@ -89,5 +89,9 @@ VALUES(:id_director, :full_name, :profile_path);
         ));
     }
 
+    public function equals(Director $other):bool
+    {
+        return $this->getIdDirector() == $other->getIdDirector();
+    }
 
 }

@@ -4,7 +4,6 @@
  */
 foreach ($movies as $movie)
 {
-    usleep(500);
     $id_movie = $movie->getIdMovie();
     $id_param = urlencode($id_movie);
     $title = htmlspecialchars($movie->getOriginalName()); // TODO : Langue utilisateur

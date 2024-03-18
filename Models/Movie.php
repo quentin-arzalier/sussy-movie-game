@@ -26,6 +26,34 @@ class Movie extends CRUDAble
         parent::__construct();
     }
 
+    /**
+     * @param string $search
+     * @return array<Movie>|null
+     */
+    public static function GetMoviesByName(string $search): array|null
+    {
+        $mov_query_obj = new Movie();
+        $query = $mov_query_obj->getPDO()->prepare("
+SELECT m.* 
+FROM movie m
+LEFT JOIN movie_name mn ON mn.id_movie = m.id_movie AND mn.country_code = :user_country_code
+WHERE LOWER(COALESCE(mn.name ,m.original_name)) LIKE LOWER(:search);
+");
+        $params = array(
+            'user_country_code' => $_SESSION["country_code"] ?? "",
+            'search' => $search
+        );
+        if (strlen($search) > 2)
+        {
+            $params["search"] = "%$search%";
+        }
+        $response = $query->execute($params);
+        if (!$response)
+            return null;
+
+        return $query->fetchAll(PDO::FETCH_CLASS, 'Movie');
+    }
+
 
     public function getIdMovie(): int
     {
@@ -279,6 +307,9 @@ VALUES (:id_movie, :id_director);
         ));
     }
 
+    /**
+     * @return array<Actor>|null
+     */
     public function getActors(): array|null
     {
         $query = $this->getPDO()->prepare("
@@ -295,6 +326,9 @@ WHERE ma.id_movie = :id_movie;
         return $query->fetchAll(PDO::FETCH_CLASS, 'Actor');
     }
 
+    /**
+     * @return array<Director>|null
+     */
     public function getDirectors(): array|null
     {
         $query = $this->getPDO()->prepare("

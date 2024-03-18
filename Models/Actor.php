@@ -85,4 +85,9 @@ VALUES (:id_actor, :full_name, :profile_path);
         ));
     }
 
+    public function equals(Actor $other):bool
+    {
+        return $this->getIdActor() == $other->getIdActor();
+    }
+
 }

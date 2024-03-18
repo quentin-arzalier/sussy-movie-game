@@ -23,7 +23,7 @@ body.admin-portal {
     bottom: 0;
 }
 .admin-portal .container {
-    opacity: 1;
+    background-color: white;
 }
 
 .admin-portal nav {
