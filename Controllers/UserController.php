@@ -65,8 +65,14 @@ Class UserController
     public static function changePassword(){
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $user = new User();
-            $user->setUsername($_POST["username"]);
-            $user->setPasswordHash(0);
+            $reponse = $user->changePassword($_SESSION['login'], $_POST['old_password'], $_POST["new_password"]);
+            if($reponse){
+                echo 'mdp changé';
+
+            }else{
+                echo 'mdp non changé';
+            }
+            UserController::index();
         }
     }
 
@@ -78,5 +84,43 @@ Class UserController
     public static function account(){
         $view_name = "Views/User/account.php";
         require_once "Views/Shared/layout.php";
+    }
+
+    public static function admin(){
+        if($_SESSION['is_admin']){
+            $user = new User();
+            $users = $user->getAllUsers();
+            $view_name = "Views/User/admin.php";
+            require_once "Views/Shared/layout.php";
+        } else {
+            $view_name = "Views/Error/404.php";
+            require_once "Views/Shared/layout.php";
+        }
+    }
+
+    public static function updateAdmin(){
+        if($_SESSION["is_admin"] && $_SERVER["REQUEST_METHOD"] == "POST"){
+            $username = $_SERVER["username"];
+            $user = new User();
+            $user->updateAdmin($username);
+            $view_name = "Views/User/admin.php";
+            require_once "Views/Shared/layout.php";
+        } else {
+            $view_name = "Views/Error/404.php";
+            require_once "Views/Shared/layout.php";
+        }
+}
+
+    public static function deleteUser(){
+        if($_SESSION["is_admin"] && $_SERVER["REQUEST_METHOD"] == "POST"){
+            $username = $_SERVER["username"];
+            $user = new User();
+            $user->deleteUser($username);
+            $view_name = "Views/User/admin.php";
+            require_once "Views/Shared/layout.php";
+        } else {
+            $view_name = "Views/Error/404.php";
+            require_once "Views/Shared/layout.php";
+        }
     }
 }
