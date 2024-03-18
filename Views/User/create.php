@@ -1,45 +1,55 @@
 <form action="/user/create" method="post">
         <fieldset>
             <label>Nom d'utilisateur</label>
-            <input type="text" name="username" />
+            <input type="text" name="username" required />
             <label>Adresse e-mail</label>
-            <input type="text" name="email" />
+            <input type="email" name="email" required />
             <label>Mot de passe</label>
-            <input id="pwd" type="password" name="password">
-            <p id='message'></p>
+            <input id="pwd" type="password" name="password" required>
+            <ul id='list'>
+                <li id='message1'>
+                    <p>Ajouter : Majuscule</p>
+                </li>
+                <li id='message2'>
+                    <p>Ajouter : Minuscule</p>
+                </li>
+                <li id='message3'>
+                    <p>Ajouter : Chiffre</p>
+                </li>
+                <li id='message4'>
+                    <p>Ajouter : Carractère speciaux</p>
+                </li>
+                <li id='message5'>
+                    <p>Ajouter : Des caractères</p>
+                </li>
+            </ul>
             <label>Entrez le mot de passe à nouveau</label>
-            <input type="password" name="password_confirm">
+            <input type="password" name="password_confirm" required>
         </fieldset>
         <input id="button" type="submit" value="créer">
 </form>
 
 <script>
-    var button = document.getElementById('button');
-    var password = document.getElementById('pwd');
-    var message = document.getElementById('message');
-    button.disabled = true;
-    var regex = /[A-Z]/;
-    var regex2 = /[a-z]/; 
-    var regex3 = /[0-9]/;
-    var regex4 = /[!@#$%^&*(),.?":{}|<>]/;
-    function handlePasswordChange() {
-        if(regex.test(password.value) && regex2.test(password.value) && regex3.test(password.value) && regex4.test(password.value) && (password.value.length >= 8)){
-            password.style.color = 'green';
-            message.textContent = 'Ok';
-            message.style.color = 'green';
+    $(function(){
+        button.disabled = true;
+        $('#list').css('color', 'red');
+        var password = $('#pwd');
+        var regex = /[A-Z]/;
+        var regex2 = /[a-z]/; 
+        var regex3 = /[0-9]/;
+        var regex4 = /[!@#$%^&*(),.?":{}|<>]/;
+        function handlePasswordChange() {
+        if(regex.test(password.val()) && regex2.test(password.val()) && regex3.test(password.val()) && regex4.test(password.val()) && (password.val().length >= 8)){
             button.disabled = false;
-        } else {
-
-            password.style.color = 'red';
-            message.textContent = 'Mot de passe non sécurisé. Ajouter : ';
-            message.style.color = 'red';
+        }else{
             button.disabled = true;
-            if(!regex.test(password.value)) message.textContent = message.textContent + 'Majuscule, ';
-            if(!regex2.test(password.value)) message.textContent = message.textContent + 'Minuscule, ';
-            if(!regex3.test(password.value)) message.textContent = message.textContent + 'Chiffre, ';
-            if(!regex4.test(password.value)) message.textContent = message.textContent + 'Carractère speciaux, ';
-            if(!(password.value.length >= 8)) message.textContent = message.textContent + 'N importe quel caractère, ';
         }
+        $('#message1').css('color', regex.test(password.val()) ? 'green' : 'red');
+        $('#message2').css('color', regex2.test(password.val()) ? 'green' : 'red');
+        $('#message3').css('color', regex3.test(password.val()) ? 'green' : 'red');
+        $('#message4').css('color', regex4.test(password.val()) ? 'green' : 'red');
+        $('#message5').css('color', password.val().length >= 8 ? 'green' : 'red');
     }
-    password.addEventListener('input', handlePasswordChange);
+        password.on('input', handlePasswordChange);
+    })
 </script>
