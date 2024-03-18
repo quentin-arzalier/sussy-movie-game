@@ -1,0 +1,1 @@
+<h2>Bienvenue sur le portail administrateur!</h2>

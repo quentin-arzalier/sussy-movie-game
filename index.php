@@ -9,14 +9,6 @@ mb_internal_encoding('UTF-8');
 // Helpers
 require_once "Helpers/Functions.php";
 
-// Controllers
-require_once "Controllers/HomeController.php";
-include_once "Controllers/MovieController.php";
-include_once "Controllers/ApiController.php";
-include_once "Controllers/UserController.php";
-include_once "Controllers/DirectorController.php";
-include_once "Controllers/ActorController.php";
-
 // Models
 include_once 'Models/CRUDAble.php';
 include_once 'Models/Movie.php';

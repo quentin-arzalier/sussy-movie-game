@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $view_name
+ */
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -11,12 +16,47 @@
 </head>
 <body>
     <header>
-        <h1 class="main-title">The Sussy Movie Game</h1>
+        <h1 class="main-title">The Sussy <br> Movie Game</h1>
         <nav>
-            <a href="/">Home</a>
-            <a href="/movie/">Movies</a>
-            <a href="/user/">Account</a>
+            <a href="/"><i class="fa-solid fa-house"></i></a>
+            <?=(isset($_SESSION["login"]))
+            ? "
+            <a href='/user/account'><i class='fa-solid fa-user'></i></a>
+            <a href='/user/settings'><i class='fa-solid fa-gear'></i></a>
+            " : "
+            <a href='/user'><i class='fa-solid fa-right-to-bracket'></i></i></a>
+            "
+            ?>
         </nav>
+        <?php
+        if (key_exists("login", $_SESSION) && $_SESSION["login"] != "")
+        {
+            $admin_span = "";
+            if (key_exists("is_admin", $_SESSION) && $_SESSION["is_admin"])
+            {
+                $admin_span = "<span><a href='/admin'>Portail administrateur</a></span>";
+            }
+            echo "
+        <div class='container account-container'>
+            <span>Bonjour $_SESSION[login]!</span>
+            <div>
+                <a href='/user/account'>Profil</a>
+                |
+                <a href='/user/logout'>Déconnexion</a>
+            </div>
+            $admin_span
+        </div>
+            ";
+        }
+        else {
+            echo "
+        <div class='account-container'>
+            <a href='/user/'>Connexion</a>
+            <a href='/user/createpage'>Créer un compte</a>
+        </div>
+            ";
+        }
+        ?>
     </header>
     <main>
         <?php require_once $view_name ?>

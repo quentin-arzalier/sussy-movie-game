@@ -157,6 +157,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
+--
+-- Déchargement des données de la table `user`
+--
 
 INSERT INTO `user` (`username`, `email_address`, `password_hash`, `is_admin`, `token_verify`, `email_chek`) VALUES
 ('Aaa', 'Aaa@ab.c', 'aze', 0, '', 0),
