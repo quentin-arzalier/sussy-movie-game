@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var array<Movie> $movies
+ */
+?>
 
 <h2>Ajouter un film</h2>
 
@@ -34,7 +39,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/api/addMovieToDatabase",
+                url: "/admin/api/addMovieToDatabase",
                 data: {movie_id: movie_id},
                 success: function() {
                     alert("Film ajouté à la base de données!");
@@ -71,7 +76,7 @@
 
            $.ajax({
                type: "GET",
-               url: "/api/getNewMoviesFromAPI?name=" + searchBar.get(0).value,
+               url: "/admin/api/getNewMoviesFromAPI?name=" + searchBar.get(0).value,
                success: function(res) {
                    const movies = JSON.parse(res);
                    container.get(0).innerHTML = "";

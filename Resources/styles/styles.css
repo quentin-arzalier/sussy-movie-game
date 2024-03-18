@@ -36,6 +36,7 @@ header{
 
 nav {
     padding: 1em;
+    flex-grow: 1;
 }
 nav > a {
     margin-left: 1em;
@@ -268,4 +269,17 @@ ul.movie-people-list-items {
 
 ul.movie-people-list-items::-webkit-scrollbar {
     display: none;
+}
+
+.account-container {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    border-radius: 2em;
+    background-color: white;
+    height: 80%;
+    text-align: center;
+    padding: .5em 2em;
+    margin: .5em;
+    float: right;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var array<Movie> $movies
+ */
 foreach ($movies as $movie)
 {
     usleep(500);
@@ -25,6 +28,7 @@ foreach ($movies as $movie)
         $runtime_text = $minutes . "min";
 
 
+    /** @noinspection CssUnknownTarget */
     echo "
 <div class='movie-details' style='--background-url: url(\"$backdrop_url\")'>
     <div class='movie-title-card'>

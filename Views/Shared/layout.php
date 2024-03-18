@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $view_name
+ */
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,10 +18,37 @@
     <header>
         <h1 class="main-title">The Sussy Movie Game</h1>
         <nav>
-            <a href="/">Home</a>
-            <a href="/movie/">Movies</a>
-            <a href="/user/">Account</a>
+            <a href="/">Accueil</a>
         </nav>
+        <?php
+        if (key_exists("login", $_SESSION) && $_SESSION["login"] != "")
+        {
+            $admin_span = "";
+            if (key_exists("is_admin", $_SESSION) && $_SESSION["is_admin"])
+            {
+                $admin_span = "<span><a href='/admin'>Portail administrateur</a></span>";
+            }
+            echo "
+        <div class='account-container'>
+            <span>Bonjour $_SESSION[login]!</span>
+            <div>
+                <a href='/user/account'>Profil</a>
+                |
+                <a href='/user/logout'>Déconnexion</a>
+            </div>
+            $admin_span
+        </div>
+            ";
+        }
+        else {
+            echo "
+        <div class='account-container'>
+            <a href='/user/'>Connexion</a>
+            <a href='/user/createpage'>Créer un compte</a>
+        </div>
+            ";
+        }
+        ?>
     </header>
     <main>
         <?php require_once $view_name ?>
