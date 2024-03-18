@@ -16,43 +16,42 @@
 }
 
 body {
-    min-height: 99vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin: 0;
     align-items: center;
     font-family: Roboto, sans-serif;
+    background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Resources/img/Background.jpg");
 }
 
 header{
-    background-color: #374E59;
-    padding: 0;
-    border-radius: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
-nav {
-    padding: 1em;
-    flex-grow: 1;
+nav > a:not(:first-child) {
+    margin-left: 1em;
 }
 nav > a {
-    margin-left: 1em;
-    color: white;
+    color: lightgray;
     font-weight: bold;
+    font-size: x-large;
 }
 
 h1.main-title {
     font-family: "Film Premieres", sans-serif;
     font-weight: lighter;
-    filter: drop-shadow(2px 2px black) drop-shadow(0px 0px yellow);
+    filter:  drop-shadow(0px 0px .15rem yellow) drop-shadow(4px 4px black);
     color: #D91A2A;
-    margin: .5em;
+    margin: .25em 0 0 0;
     pointer-events: none;
     cursor: pointer;
     user-select: none;
+    font-size: 4em;
+    text-align: center;
 }
 
 a {
@@ -272,14 +271,32 @@ ul.movie-people-list-items::-webkit-scrollbar {
 }
 
 .account-container {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
     display: flex;
     flex-direction: column;
+    text-align: center;
+    margin: .5em;
+}
+
+.container {
     border: 2px solid black;
     border-radius: 2em;
     background-color: white;
-    height: 80%;
-    text-align: center;
+    opacity: .5;
     padding: .5em 2em;
-    margin: .5em;
-    float: right;
 }
+
+button {
+    font-family: Roboto, sans-serif;
+    font-size: 1em;
+    padding: .75em 1.5em;
+    border: solid 1px dimgrey;
+    border-radius: 1em;
+    background: white;
+}
+button:hover {
+    background-color: lightgray;
+}
+

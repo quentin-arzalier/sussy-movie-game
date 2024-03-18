@@ -49,6 +49,12 @@ if (file_exists($file_path))
 
 if (class_exists($controllerName) && method_exists($controllerName, $action))
 {
+    if (!isset($_SESSION["login"]) && ($controllerName != "UserController"))
+    {
+        require_once get_file_path(array("Controllers", "UserController.php"));
+        $controllerName = "UserController";
+        $action = "loginToContinue";
+    }
     $controllerName::$action();
 }
 else {
@@ -57,7 +63,7 @@ else {
     $view_name = "Views/Error/404.php";
     if (isset($admin_offset) && $admin_offset == 1)
     {
-        require_once "Views/Shared/admin_layout.php";
+        require_once "Views/Admin/Shared/admin_layout.php";
     }
     else
     {

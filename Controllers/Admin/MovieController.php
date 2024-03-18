@@ -8,8 +8,8 @@ class MovieController
         $movies = $mov->getAllMovies();
 
         //TODO : faire mieux
-        $view_name = "Views/Movie/index.php";
-        require_once "Views/Shared/admin_layout.php";
+        $view_name = "Views/Admin/Movie/index.php";
+        require_once "Views/Admin/Shared/admin_layout.php";
     }
 
     public static function add()
@@ -17,7 +17,7 @@ class MovieController
         $mov = new Movie();
         $movies = $mov->getAllMovies();
 
-        $view_name = "Views/Movie/add.php";
-        require_once "Views/Shared/admin_layout.php";
+        $view_name = "Views/Admin/Movie/add.php";
+        require_once "Views/Admin/Shared/admin_layout.php";
     }
 }

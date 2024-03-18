@@ -40,7 +40,7 @@ Class UserController
             $_SESSION['password'] = $_POST['password'];
             $_SESSION['is_admin'] = $user->getIsAdmin();
             UserController::account();
-            return; 
+            return;
         }
     }
 
@@ -77,6 +77,12 @@ Class UserController
     }
     public static function account(){
         $view_name = "Views/User/account.php";
+        require_once "Views/Shared/layout.php";
+    }
+
+    public static function loginToContinue()
+    {
+        $view_name = "Views/User/loginToContinue.php";
         require_once "Views/Shared/layout.php";
     }
 }

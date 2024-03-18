@@ -1,3 +1,40 @@
-.admin-portal header {
-    background-color: limegreen;
+.admin-portal header{
+    background-color: lightseagreen;
+    padding: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.admin-portal h1.main-title {
+    margin: .5em;
+    font-size: 2em;
+    filter:  drop-shadow(2px 2px black);
+}
+
+body.admin-portal {
+    background: none;
+}
+
+.admin-portal .account-container {
+    position: relative;
+    right: 0;
+    bottom: 0;
+}
+.admin-portal .container {
+    opacity: 1;
+}
+
+.admin-portal nav {
+    padding: 1em;
+    flex-grow: 1;
+}
+
+.admin-portal nav > a {
+    color: white;
+    font-size: unset;
+}
+.admin-portal nav > a:hover {
+    color: #36b3f6;
 }

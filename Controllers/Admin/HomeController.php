@@ -4,7 +4,7 @@ class HomeController
 {
     public static function index()
     {
-        $view_name = "Views/Home/index.php";
-        require_once "Views/Shared/admin_layout.php";
+        $view_name = "Views/Admin/Home/index.php";
+        require_once "Views/Admin/Shared/admin_layout.php";
     }
 }
