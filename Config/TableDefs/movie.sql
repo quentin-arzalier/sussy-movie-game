@@ -155,6 +155,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `token_verify` text NOT NULL,
   `email_chek` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`username`)
+  UNIQUE KEY `email_address` (`email_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 --

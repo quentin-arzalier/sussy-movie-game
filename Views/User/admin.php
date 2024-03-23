@@ -25,8 +25,8 @@
                     <td>$use_email</td>
                     <td>$user_is_admin</td>
                     <td>$user_email_chek</td>
-                    <td><a href='' data-usernam='admin' >$message</a></td>
-                    <td><a href='' data-usernam='delete' >Supprimer</a></td>
+                    <td><a href='' data-username='$username' id='admin' >$message</a></td>
+                    <td><a href='' data-username='$username' id='delete' >Supprimer</a></td>
                 </tr>
             ";
         } ?>
@@ -35,35 +35,41 @@
 </div>
 
 <script>
-    $("#delete").click(function(){
+
+     $("#admin").click(function(event){
+        event.preventDefault();
+        var username = $(this).data('username');
         $.ajax({
-        url : '/user/deleteUser',
-        type : 'POST',
-        data : 'user=' + $user
-        dataType : 'html'
-        success : function(reponse_html, statut){
-            $(reponse_html).appendTo("#reponse");
-        },
-            error : function(resultat, statut, erreur){
-        },
-            complete : function(resultat, statut){
-        }
+            url : '/user/updateAdmin',
+            type : 'POST',
+            data : 'username=' + username,
+            dataType : 'html',
+            success : function(reponse_html, status){
+                $(reponse_html).appendTo("#reponse");
+                currentRow.find('#admin').text('Supprimer administrateur');
+            },
+            error : function(){
+                alert("Une erreur a eu lieu, veuillez réessayer.")
+            }
         });
     });
 
-    // $("#admin").click(function(){
-    //     $.ajax({
-    //     url : '/user/updateAdmin',
-    //     type : 'POST',
-    //     data : 'user=' + $user
-    //     dataType : 'html'
-    //     success : function(reponse_html, statut){
-    //         $(reponse_html).appendTo("#reponse");
-    //     },
-    //         error : function(resultat, statut, erreur){
-    //     },
-    //         complete : function(resultat, statut){
-    //     }
-    //     });
-    // });
+    $("#delete").click(function(event){
+        event.preventDefault();
+        var username = $(this).data('username');
+        $.ajax({
+            url : '/user/deleteUser',
+            type : 'POST',
+            data : 'username=' + username,
+            dataType : 'html',
+            success : function(reponse_html, status){
+                $(reponse_html).appendTo("#reponse");
+                currentRow.remove();
+            },
+            error : function(){
+                    alert("Une erreur a eu lieu, veuillez réessayer.")
+            }
+        });
+    });
+   
 </script>    

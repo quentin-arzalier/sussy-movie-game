@@ -1,4 +1,4 @@
-<form action="/user/create" method="post">
+<form action="/user/create" method="post" class='container'>
         <fieldset>
             <label>Nom d'utilisateur</label>
             <input type="text" name="username" required />
@@ -28,6 +28,16 @@
         </fieldset>
         <input id="button" type="submit" value="créer">
 </form>
+<div>
+    <p>
+        <?php 
+        if (isset($_SESSION['message'])) {
+            echo $_SESSION['message'];
+            unset($_SESSION['message']);
+        }
+        ?>
+    </p>
+</div>
 
 <script>
     $(function(){

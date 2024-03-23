@@ -1,13 +1,8 @@
-<div>
-    <p>Nom d'utilisateur : <?php echo htmlspecialchars($_SESSION['login'])?></p>
-    <button id="pwd">Changer mot de passe</button>
-    <form id="newpwd" style="display:none;" action='/user/changePassword' method="post">
-    <fieldset>
-        <p>Entrez l'ancien mot de passe</p>
-        <input type="password" name="old_password">
-        <p>Entrez le nouveau mot de passe</p>
-        <input type="password" id='new_password' name="new_password">
-        <ul id='list'>
+<form action="/user/changePasswordForgotten" method="post" class='container'>
+        <fieldset>
+            <label>Nouveau mot de passe</label>
+            <input id="pwd" type="password" name="password" required>
+            <ul id='list'>
                 <li id='message1'>
                     <p>Ajouter : Majuscule</p>
                 </li>
@@ -24,33 +19,27 @@
                     <p>Ajouter : Des caractères</p>
                 </li>
             </ul>
-            <p>Entrez de nouveau le nouveau mot de passe</p>
-        <input type="password" name="new_password2">
-        <input type="submit" id="button" value="Changer mot de passe">
-        <p>
-            <?php 
-                if (isset($_SESSION['message'])) {
-                    echo $_SESSION['message'];
-                    unset($_SESSION['message']);
-                }
-            ?>
-        </p>
-    </fieldset>
-</fomr>
-    
+            <label>Entrez le mot de passe à nouveau</label>
+            <input type="password" name="password_confirm" required>
+        </fieldset>
+        <input id="button" type="submit" value="créer">
+</form>
+<div>
+    <p>
+        <?php 
+        if (isset($_SESSION['message'])) {
+            echo $_SESSION['message'];
+            unset($_SESSION['message']);
+        }
+        ?>
+    </p>
 </div>
 
 <script>
     $(function(){
-        $('#pwd').on('click',function(){
-            $('#newpwd').show();
-            $('#pwd').hide();
-        })
-    })
-    $(function(){
         button.disabled = true;
         $('#list').css('color', 'red');
-        var password = $('#new_password');
+        var password = $('#pwd');
         var regex = /[A-Z]/;
         var regex2 = /[a-z]/; 
         var regex3 = /[0-9]/;
