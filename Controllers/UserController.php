@@ -17,6 +17,18 @@ Class UserController
         require_once "Views/Shared/layout.php";
     }
 
+    public static function historical(){
+        if(empty($_SESSION['login'])){
+            $view_name = "Views/Error/404.php";
+            require_once "Views/Shared/layout.php";
+            return;
+        }
+        $userMovieHistory = new UserMovieHistory();
+        $histiryMovies = $userMovieHistory->getHistoricalMovies($_SESSION['login']);
+        $view_name = "Views/User/historical.php";
+        require_once "Views/Shared/layout.php";
+    }
+
     public static function newPassword(){
         if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['token'])){
             $_SESSION['token'] = $_GET['token'];

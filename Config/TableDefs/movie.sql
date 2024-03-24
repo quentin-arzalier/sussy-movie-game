@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS `actor`;
 CREATE TABLE IF NOT EXISTS `actor` (
   `id_actor` int(11) NOT NULL,
   `full_name` text NOT NULL,
-  `profile_path` VARCHAR(64) NULL,
+  `profile_path` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_actor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS `director`;
 CREATE TABLE IF NOT EXISTS `director` (
   `id_director` int(11) NOT NULL,
   `full_name` text NOT NULL,
-  `profile_path` VARCHAR(64) NULL,
+  `profile_path` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_director`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
@@ -62,7 +62,6 @@ CREATE TABLE IF NOT EXISTS `genre` (
   PRIMARY KEY (`id_genre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
-
 -- --------------------------------------------------------
 
 --
@@ -72,14 +71,13 @@ CREATE TABLE IF NOT EXISTS `genre` (
 DROP TABLE IF EXISTS `movie`;
 CREATE TABLE IF NOT EXISTS `movie` (
   `id_movie` int(11) NOT NULL,
-  `original_language` char(2) NOT NULL,
+  `original_name` varchar(256) NOT NULL,
   `release_date` date NOT NULL,
   `runtime` int(11) NOT NULL,
-  `backdrop_path` VARCHAR(64) NULL,
-  `poster_path` VARCHAR(64) NULL,
+  `poster_path` varchar(64) DEFAULT NULL,
+  `backdrop_path` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_movie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
-
 
 -- --------------------------------------------------------
 
@@ -91,7 +89,8 @@ DROP TABLE IF EXISTS `movie_actor`;
 CREATE TABLE IF NOT EXISTS `movie_actor` (
   `id_movie` int(11) NOT NULL,
   `id_actor` int(11) NOT NULL,
-  PRIMARY KEY (`id_actor`, `id_movie`)
+  PRIMARY KEY (`id_movie`,`id_actor`),
+  KEY `movie_actor_ibfk_1` (`id_actor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 -- --------------------------------------------------------
@@ -104,9 +103,8 @@ DROP TABLE IF EXISTS `movie_director`;
 CREATE TABLE IF NOT EXISTS `movie_director` (
   `id_movie` int(11) NOT NULL,
   `id_director` int(11) NOT NULL,
-  PRIMARY KEY (`id_movie`, `id_director`)
+  PRIMARY KEY (`id_movie`,`id_director`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
-
 
 -- --------------------------------------------------------
 
@@ -118,10 +116,8 @@ DROP TABLE IF EXISTS `movie_genre`;
 CREATE TABLE IF NOT EXISTS `movie_genre` (
   `id_movie` int(11) NOT NULL,
   `id_genre` int(11) NOT NULL,
-  PRIMARY KEY (`id_movie`, `id_genre` )
+  PRIMARY KEY (`id_movie`,`id_genre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
-
-
 
 -- --------------------------------------------------------
 
@@ -138,7 +134,18 @@ CREATE TABLE IF NOT EXISTS `movie_name` (
   KEY `id_movie` (`id_movie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `translations`
+--
+
+DROP TABLE IF EXISTS `translations`;
+CREATE TABLE IF NOT EXISTS `translations` (
+  `iso_639_1` char(2) NOT NULL,
+  `iso_3166_1` char(2) NOT NULL,
+  PRIMARY KEY (`iso_639_1`,`iso_3166_1`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 -- --------------------------------------------------------
 
@@ -183,7 +190,6 @@ CREATE TABLE IF NOT EXISTS `usermoviehistory` (
   KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
-
 --
 -- Contraintes pour les tables déchargées
 --
@@ -214,7 +220,6 @@ ALTER TABLE `movie_genre`
 --
 ALTER TABLE `movie_name`
   ADD CONSTRAINT `movie_name_ibfk_1` FOREIGN KEY (`id_movie`) REFERENCES `movie` (`id_movie`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 --
 -- Contraintes pour la table `usermoviehistory`
 --

@@ -17,6 +17,7 @@ include_once 'Models/Actor.php';
 include_once 'Models/Genre.php';
 include_once 'Models/Director.php';
 include_once 'Models/MovieName.php';
+include_once 'Models/UserMovieHistory.php';
 
 // router
 require_once 'router.php';
