@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `token_verify` text NOT NULL,
   `email_chek` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`username`)
+  PRIMARY KEY (`username`),
   UNIQUE KEY `email_address` (`email_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
@@ -163,10 +163,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`username`, `email_address`, `password_hash`, `is_admin`, `token_verify`, `email_chek`) VALUES
-('Aaa', 'Aaa@ab.c', 'aze', 0, '', 0),
-('Bb', 'B@b.b', 'admin', 1, '', 0),
-('Larpeha', '5@gmail.com', '$2y$10$E4QSsddHK9mgj4ix45SYcu9hMNoeSS0gLs0Ss24zGk7FUtm4m.2cK', 0, 'e986a4fdc41766d30158a45c6e7434fa91a5b37900b32c2152d6fa5253df1b48b62436fad1b39bfe014a89985afb67ce3509', 1),
-('zob', 'zob@init.fr', '$2y$10$oPbqD/4eUI./G4pIkhojPeCiCy6wsRk6ZVYc.KBl1OltnK/hxYm8i', 1, '406068983564b12da57a6fc740cfff0b2773cd0ed6b2443be46c65eb596329f596a6e0255ccbee41600e507bf73723880708', 1);
+('Larpeha', 'l@gmail.com', '$2y$10$E4QSsddHK9mgj4ix45SYcu9hMNoeSS0gLs0Ss24zGk7FUtm4m.2cK', 0, 'e986a4fdc41766d30158a45c6e7434fa91a5b37900b32c2152d6fa5253df1b48b62436fad1b39bfe014a89985afb67ce3509', 1),
+('zob', 'zob@free.fr', '$2y$10$oPbqD/4eUI./G4pIkhojPeCiCy6wsRk6ZVYc.KBl1OltnK/hxYm8i', 1, '406068983564b12da57a6fc740cfff0b2773cd0ed6b2443be46c65eb596329f596a6e0255ccbee41600e507bf73723880708', 1);
 COMMIT;
 
 -- --------------------------------------------------------
@@ -177,12 +175,12 @@ COMMIT;
 
 DROP TABLE IF EXISTS `usermoviehistory`;
 CREATE TABLE IF NOT EXISTS `usermoviehistory` (
-  `id_user` int(11) NOT NULL,
+  `username` varchar(64) NOT NULL,
   `id_movie` int(11) NOT NULL,
   `attempt_count` int(11) NOT NULL,
   `date_of_success` date NOT NULL DEFAULT current_timestamp(),
   KEY `id_movie` (`id_movie`),
-  KEY `id_user` (`id_user`)
+  KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 
@@ -222,7 +220,7 @@ ALTER TABLE `movie_name`
 --
 ALTER TABLE `usermoviehistory`
   ADD CONSTRAINT `usermoviehistory_ibfk_1` FOREIGN KEY (`id_movie`) REFERENCES `movie` (`id_movie`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usermoviehistory_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `usermoviehistory_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

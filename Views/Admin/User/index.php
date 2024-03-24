@@ -23,10 +23,10 @@
                 <tr>
                     <td>$username</td>
                     <td>$use_email</td>
-                    <td>$user_is_admin</td>
+                    <td id='is_admin-$username'>$user_is_admin</td>
                     <td>$user_email_chek</td>
-                    <td><a href='' data-username='$username' id='admin' >$message</a></td>
-                    <td><a href='' data-username='$username' id='delete' >Supprimer</a></td>
+                    <td><a href='' data-username='$username' id='admin-$username' >$message</a></td>
+                    <td><a href='' data-username='$username' id='delete-$username' >Supprimer</a></td>
                 </tr>
             ";
         } ?>
@@ -35,18 +35,26 @@
 </div>
 
 <script>
-
-     $("#admin").click(function(event){
+    $(document).on("click", "[id^='admin-']", function(event){
         event.preventDefault();
         var username = $(this).data('username');
+        var is_admin = document.getElementById('is_admin-' + username);
+        var adminLink = $(this);
+
         $.ajax({
-            url : '/user/updateAdmin',
+            url : '/admin/user/updateAdmin',
             type : 'POST',
             data : 'username=' + username,
             dataType : 'html',
             success : function(reponse_html, status){
                 $(reponse_html).appendTo("#reponse");
-                currentRow.find('#admin').text('Supprimer administrateur');
+                if (adminLink.text() === "Supprimer administrateur") {
+                    adminLink.text("Passer administrateur");
+                    is_admin.textContent ="0";
+                } else {
+                    adminLink.text("Supprimer administrateur");
+                    is_admin.textContent ="1";
+                }
             },
             error : function(){
                 alert("Une erreur a eu lieu, veuillez réessayer.")
@@ -54,19 +62,22 @@
         });
     });
 
-    $("#delete").click(function(event){
+    $(document).on("click", "[id^='delete-']", function(event){
         event.preventDefault();
         var username = $(this).data('username');
+        var row = $(this).closest('tr');
+        row.hide();
         $.ajax({
-            url : '/user/deleteUser',
+            url : '/admin/user/deleteUser',
             type : 'POST',
             data : 'username=' + username,
             dataType : 'html',
             success : function(reponse_html, status){
                 $(reponse_html).appendTo("#reponse");
-                currentRow.remove();
+                row.remove();
             },
             error : function(){
+                    row.show();
                     alert("Une erreur a eu lieu, veuillez réessayer.")
             }
         });

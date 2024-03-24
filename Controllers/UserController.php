@@ -136,33 +136,6 @@ Class UserController
         }
     }
 
-    public static function updateAdmin(){
-        //echo "coucou";
-        if($_SESSION["is_admin"] && $_SERVER["REQUEST_METHOD"] == "POST"){
-            $username = $_POST["username"];
-            $user = new User();
-            $user->updateAdmin($username);
-            $view_name = "Views/User/admin.php";
-            require_once "Views/Shared/layout.php";
-        } else {
-            $view_name = "Views/Error/404.php";
-            require_once "Views/Shared/layout.php";
-        }
-}
-
-    public static function deleteUser(){
-        if($_SESSION["is_admin"] && $_SERVER["REQUEST_METHOD"] == "POST"){
-            $username = $_POST["username"];
-            $user = new User();
-            $user->deleteUser($username);
-            $view_name = "Views/User/admin.php";
-            require_once "Views/Shared/layout.php";
-        } else {
-            $view_name = "Views/Error/404.php";
-            require_once "Views/Shared/layout.php";
-        }
-    }
-
     public static function passwordNotForgotten(){
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $user = new User();

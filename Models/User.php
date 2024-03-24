@@ -215,7 +215,7 @@ class User extends CRUDAble {
     }
 
 
-    public function changePassword($username, $oldpassword, $newpassword) { // TODO : ne fonctionne pas
+    public function changePassword($username, $oldpassword, $newpassword) {
         $this->setUsername($username);
         $new_password_hash = $this->createPasswordHash($newpassword);
         $req = $this->getPDO()->prepare("SELECT * FROM user 
