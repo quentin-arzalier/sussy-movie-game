@@ -148,7 +148,7 @@ Class UserController
         }
     }
 
-    public static function passwordNotForgotten(){
+    public static function passwordForgotten(){
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $user = new User();
             $user->forgotPassword($_POST["email"]);

@@ -257,6 +257,31 @@ WHERE md.id_movie = :id_movie;
         return $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
     }
 
+    public function addMovieHistorical($login, $id_movie, $attempt_count, $date_of_success){
+        try{
+            $req = $this->getPDO()->prepare("INSERT INTO usermoviehistory  (username, id_movie, attempt_count, date_of_success) VALUES (:username, :id_movie, :attempt_count, :date_of_success)')");
+            $req->execute(
+                array(
+                    'username' => $login,
+                    'id_movie' => $id_movie,
+                    'attempt_count' => $attempt_count,
+                    'date_of_success' => $date_of_success
+                )
+            );
+            if ($req->rowCount() > 0) {
+                return true;
+            } else {
+                throw new Exception("Aucune ligne affectée lors de l'insertion.");
+            }
+        } catch (PDOException $e) {
+            error_log("Erreur PDO : " . $e->getMessage());
+            return false;
+        } catch (Exception $e) {
+            error_log("Erreur : " . $e->getMessage());
+            return false;
+        }
+    }
+
     public function save(): bool {}
 }
 ?>

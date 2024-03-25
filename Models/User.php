@@ -172,12 +172,20 @@ class User extends CRUDAble {
      * @return int
      */
     public function verifyAccount($token) {
-        $req = $this->getPDO()->prepare("UPDATE user SET email_chek = 1 WHERE token_verify =:champ1");
+        $req = $this->getPDO()->prepare("UPDATE user SET email_chek = 1 WHERE token_verify =:token");
         $req->execute(
             array(
-                'champ1' => $token
+                'token' => $token
             )
         );
+        if($req->rowCount() > 0){
+            $req = $this->getPDO()->prepare("UPDATE user SET token_verify = '' WHERE token_verify =:token");
+            $req->execute(
+                array(
+                    'token' => $token
+                )
+            );
+        }
         return $req->rowCount();
     }
 
@@ -301,6 +309,14 @@ class User extends CRUDAble {
                 'token' => $token
             )
         );
+        if($req->rowCount() > 0){
+            $req = $this->getPDO()->prepare("UPDATE user SET token_verify = '' WHERE token_verify =:token");
+            $req->execute(
+                array(
+                    'token' => $token
+                )
+            );
+        }
         return $req->rowCount();
     }
 

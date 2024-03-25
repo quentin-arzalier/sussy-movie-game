@@ -19,7 +19,7 @@ $(function(){
 
         // Envoyer la requête AJAX
         $.ajax({
-            url: '/user/passwordNotForgotten',
+            url: '/user/passwordForgotten',
             type: 'POST',
             data: { email: email },
             success: function(response) {
