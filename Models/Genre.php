@@ -39,6 +39,12 @@ class Genre extends CRUDAble
         return $obj;
     }
 
+    public function getAllGenres(): array
+    {
+        $response = $this->getPDO()->query("SELECT * FROM genre");
+        return $response->fetchAll(PDO::FETCH_CLASS, 'Genre');
+    }
+
     public function get($genre_id): Genre|null
     {
         $query = $this->getPDO()->prepare("SELECT * FROM genre WHERE id_genre=:id_genre");
