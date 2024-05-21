@@ -1,7 +1,6 @@
 <?php
 
-class User extends CRUDAble
-{
+class User extends CRUDAble {
 
 
     /**
@@ -23,11 +22,6 @@ class User extends CRUDAble
      * @var boolean
      */
     private $is_admin;
-
-    /**
-     * @var boolean
-     */
-    private $is_verify;
 
     private $token_verify;
 
@@ -90,6 +84,13 @@ class User extends CRUDAble
     }
 
     /**
+     * @param string $token_verify
+     */
+    public function setTockenVerify($token_verify){
+        $this->token_verify = $token_verify;
+    }
+
+    /**
      * @return string
      */
     public function getTokenVerify() {
@@ -104,17 +105,10 @@ class User extends CRUDAble
     }
 
     /**
-     * @return boolean
+     * @param boolean $email_chek
      */
-    public function getIsVerify() {
-        return $this->is_verify;
-    }
-
-    /**
-     * @param boolean $is_verify
-     */
-    private function setIsVerify($is_verify) {
-        $this->is_verify = $is_verify;
+    private function setEmailChek($email_chek) {
+        $this->email_chek = $email_chek;
     }
 
     /**
@@ -133,7 +127,8 @@ class User extends CRUDAble
         $this->setEmailAddress($user->getEmailAddress());
         $this->setPasswordHash($user->getPasswordHash());
         $this->setIsAdmin($user->getIsAdmin());
-        $this->setIsVerify($user->getIsVerify());
+        $this->setEmailChek($user->getEmailChek());
+        $this->setTockenVerify($user->getTokenVerify());
     }
 
     public function newUser($username, $email_address, $password)
@@ -150,26 +145,47 @@ class User extends CRUDAble
                 'champ4' => $token_verify
             )
         );
-        $this->setUsername($username);
-        $this->setEmailAddress($email_address);
-        $this->setPasswordHash($password_hash);
-        $this->setIsAdmin(false);
-        $this->setIsVerify(false);
+        $req = $this->getPDO()->prepare("SELECT * FROM user 
+        WHERE username =:champ1");
+        $req->execute(
+            array(
+                'champ1' => $username,
+            )
+        );
+        $response = $req->fetchAll(PDO::FETCH_CLASS, 'User');
+        if (count($response) == 1) {
+            $user = $response[0];
+            $this->setUser($user);
+            $this->sendMail("verifyaccount", $token_verify, $this->getEmailAddress());
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        $verification_url = "http://sussy-movie-game/user/verifyaccount?token=$token_verify";
-        mail($this->getEmailAddress(), 'Vérifiez votre email pour The Sussy Movie Game', "Cliquez ici pour valider votre inscription à The Sussy Movie Game ! \n\n $verification_url");
+    private function sendMail($controller, $token_verify, $add_mail){
+            $verification_url = "http://sussy-movie-game/user/$controller?token=$token_verify";
+            mail($add_mail, 'Vérifiez votre email pour The Sussy Movie Game', "Cliquez ici pour valider votre inscription à The Sussy Movie Game ! \n\n $verification_url");
     }
 
     /**
      * @return int
      */
     public function verifyAccount($token) {
-        $req = $this->getPDO()->prepare("UPDATE user SET email_chek = 1 WHERE token_verify =:champ1");
+        $req = $this->getPDO()->prepare("UPDATE user SET email_chek = 1 WHERE token_verify =:token");
         $req->execute(
             array(
-                'champ1' => $token
+                'token' => $token
             )
         );
+        if($req->rowCount() > 0){
+            $req = $this->getPDO()->prepare("UPDATE user SET token_verify = '' WHERE token_verify =:token");
+            $req->execute(
+                array(
+                    'token' => $token
+                )
+            );
+        }
         return $req->rowCount();
     }
 
@@ -187,6 +203,10 @@ class User extends CRUDAble
         $response = $req->fetchAll(PDO::FETCH_CLASS, 'User');
         if (count($response) == 1) {
             $user = $response[0];
+            if (!$user->getEmailChek()){
+                $this->sendMail("verifyaccount", $user->getTokenVerify(), $user->getEmailAddress());
+                return false;  
+            } 
             $is_password = password_verify($password . HASH_SALT, $user->getPasswordHash());
             $this->setUser($user);
             return $is_password;
@@ -203,25 +223,22 @@ class User extends CRUDAble
     }
 
 
-    public function changePassword($username, $oldpassword, $newpassword) { // TODO : ne fonctionne pas
+    public function changePassword($username, $oldpassword, $newpassword) {
         $this->setUsername($username);
-        $old_password_hash = $this->createPasswordHash($oldpassword);
         $new_password_hash = $this->createPasswordHash($newpassword);
         $req = $this->getPDO()->prepare("SELECT * FROM user 
-        WHERE username =:champ1 AND password_hash =:old_password_hash");
+        WHERE username =:champ1");
         $req->execute(
             array(
-                'champ1' => $username,
-                'old_password_hash' => $old_password_hash
+                'champ1' => $username
             )
         );
         $response = $req->fetchAll(PDO::FETCH_CLASS, 'User');
-        var_dump($response);
         if (count($response) == 1) {
             $user = $response[0];
             if (password_verify($oldpassword . HASH_SALT, $user->getPasswordHash())) {
-                $req = $this->getPDO()->prepare("UPDATE password_hash FROM user 
-            WHERE username =:champ1 AND password_hash =:new_password_hash"); // pas bon voir updateAdmin
+                $req = $this->getPDO()->prepare("UPDATE user SET password_hash = :new_password_hash  
+            WHERE username =:champ1");
                 $req->execute(
                     array(
                         'champ1' => $username,
@@ -244,7 +261,7 @@ class User extends CRUDAble
     }
 
     public function deleteUser($username){
-        $req = $this->getPDO()->prepare('DELETE * FROM user WHERE username=:username');
+        $req = $this->getPDO()->prepare('DELETE FROM user WHERE username=:username');
         $req->execute(
             array(
                 'username' => $username
@@ -268,6 +285,39 @@ class User extends CRUDAble
                 'username' => $username  
             )
         );
+    }
+    public function forgotPassword($email){
+        $token_verify = bin2hex(random_bytes(50));
+        $req = $this->getPDO()->prepare('UPDATE user SET token_verify = :token WHERE email_address =:email');
+        $req->execute(
+            array(
+                'token' => $token_verify,
+                'email' => $email
+            )
+        );
+        if( $req->rowCount() > 0){
+            $this->sendMail("newPassword", $token_verify, $email);
+        }   
+    }
+
+    public function passwordfound($token, $password){
+        $password_hash = $this->createPasswordHash($password);
+        $req = $this->getPDO()->prepare("UPDATE user SET password_hash = :password_hash WHERE token_verify =:token");
+        $req->execute(
+            array(
+                'password_hash' => $password_hash,
+                'token' => $token
+            )
+        );
+        if($req->rowCount() > 0){
+            $req = $this->getPDO()->prepare("UPDATE user SET token_verify = '' WHERE token_verify =:token");
+            $req->execute(
+                array(
+                    'token' => $token
+                )
+            );
+        }
+        return $req->rowCount();
     }
 
     public function save(): bool {
