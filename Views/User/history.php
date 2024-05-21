@@ -1,17 +1,17 @@
 <?php
-    foreach ($histiryMovies as $histiryMovie)
+    foreach ($histiryMovies as $movie)
     {
-        $attempt_count = $histiryMovie->getAttemptCount() ;
-        $date_of_success = $histiryMovie->getDateOfSuccess();
-        $id_movie = $histiryMovie->getIdMovie();
+        $attempt_count = $movie->getAttemptCount() ;
+        $date_of_success = $movie->getDateOfSuccess();
+        $id_movie = $movie->getIdMovie();
         $id_param = urlencode($id_movie);
-        $title = htmlspecialchars($histiryMovie->getOriginalName()); // TODO : Langue utilisateur
-        $poster_url = $histiryMovie->getPosterUrl();
-        $backdrop_url = $histiryMovie->getBackdropUrl();
-        $release_date = htmlspecialchars($histiryMovie->getReleaseDate());
-        $runtime = htmlspecialchars($histiryMovie->getRuntime());
-        $actors = $histiryMovie->getActors();
-        $directors = $histiryMovie->getDirectors();
+        $title = htmlspecialchars($movie->getOriginalName()); // TODO : Langue utilisateur
+        $poster_url = $movie->getPosterUrl();
+        $backdrop_url = $movie->getBackdropUrl();
+        $release_date = htmlspecialchars($movie->getReleaseDate());
+        $runtime = htmlspecialchars($movie->getRuntime());
+        $actors = $movie->getActors();
+        $directors = $movie->getDirectors();
 
         $hours = floor($runtime/60);
         $minutes = $runtime-$hours*60;

@@ -244,7 +244,7 @@ WHERE md.id_movie = :id_movie;
         return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
     }
 
-    public function getHistoricalMovies($username) {
+    public function getHistoricalMoviesByName($username) {
         
         $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
         INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
@@ -257,6 +257,25 @@ WHERE md.id_movie = :id_movie;
         );
         return $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
     }
+
+    public function getHistoryMoviesByDate($username, $today) {
+        
+        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
+        INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
+        WHERE username = :username AND date_of_success = :today");
+        $req->execute(
+            array(
+                'username' => $username,
+                'today' => $today
+            )
+        );
+        $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
+        if($req->rowCount() > 0){
+            return false;
+        } else {
+            return true;
+        }
+    } 
 
     public function addMovieHistorical($login, $id_movie, $attempt_count, $date_of_success){
         try{

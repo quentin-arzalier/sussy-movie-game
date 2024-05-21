@@ -24,8 +24,8 @@ Class UserController
             return;
         }
         $userMovieHistory = new UserMovieHistory();
-        $histiryMovies = $userMovieHistory->getHistoricalMovies($_SESSION['login']);
-        $view_name = "Views/User/historical.php";
+        $histiryMovies = $userMovieHistory->getHistoricalMoviesByName($_SESSION['login']);
+        $view_name = "Views/User/history.php";
         require_once "Views/Shared/layout.php";
     }
 
