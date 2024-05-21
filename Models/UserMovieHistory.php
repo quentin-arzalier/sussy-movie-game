@@ -248,7 +248,8 @@ WHERE md.id_movie = :id_movie;
         
         $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
         INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
-        WHERE username = :username");
+        WHERE username = :username
+        ORDER BY date_of_success DESC");
         $req->execute(
             array(
                 'username' => $username
@@ -259,7 +260,7 @@ WHERE md.id_movie = :id_movie;
 
     public function addMovieHistorical($login, $id_movie, $attempt_count, $date_of_success){
         try{
-            $req = $this->getPDO()->prepare("INSERT INTO usermoviehistory  (username, id_movie, attempt_count, date_of_success) VALUES (:username, :id_movie, :attempt_count, :date_of_success)')");
+            $req = $this->getPDO()->prepare('INSERT INTO usermoviehistory  (username, id_movie, attempt_count, date_of_success) VALUES (:username, :id_movie, :attempt_count, :date_of_success)');
             $req->execute(
                 array(
                     'username' => $login,
