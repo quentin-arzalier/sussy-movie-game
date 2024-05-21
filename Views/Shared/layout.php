@@ -22,7 +22,7 @@
             <?=(isset($_SESSION["login"]))
             ? "
             <a href='/user/account'><i class='fa-solid fa-user'></i></a>
-            <a href='/user/historical'><i class='fa-solid fa-list'></i></a>
+            <a href='/user/history'><i class='fa-solid fa-list'></i></a>
             <a href='/user/settings'><i class='fa-solid fa-gear'></i></a>
             " : "
             <a href='/user'><i class='fa-solid fa-right-to-bracket'></i></a>

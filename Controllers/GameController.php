@@ -22,15 +22,15 @@ class GameController
         if($guess_id == $id_real_movie){
             $_SESSION['id_movie'] = $guess_id;
             $_SESSION['date_of_success'] = date('Y-m-d');
-            GameController::addMovieHistorical();
+            GameController::addMovieHistory();
         }
         $_SESSION['guessed_movies'][] = serialize($movie_attempt->serializeData());
         require_once get_file_path(array("Views", "Game", "attempt.php"));
     }
 
-    private static function addMovieHistorical(){
+    private static function addMovieHistory(){
         $userMovieHistory = new UserMovieHistory();
-        $rep = $userMovieHistory->addMovieHistorical($_SESSION['login'], $_SESSION["id_movie"], $_SESSION["attempt_count"], $_SESSION["date_of_success"]);
+        $rep = $userMovieHistory->addMovieHistory($_SESSION['login'], $_SESSION["id_movie"], $_SESSION["attempt_count"], $_SESSION["date_of_success"]);
         if(!$rep){
             print("Le film n'a pas été ajouté à l'historique.");
         }

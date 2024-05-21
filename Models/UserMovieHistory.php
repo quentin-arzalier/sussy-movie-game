@@ -244,7 +244,7 @@ WHERE md.id_movie = :id_movie;
         return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
     }
 
-    public function getHistoricalMoviesByName($username) {
+    public function getHistoryMovies($username) {
         
         $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
         INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
@@ -277,7 +277,26 @@ WHERE md.id_movie = :id_movie;
         }
     } 
 
-    public function addMovieHistorical($login, $id_movie, $attempt_count, $date_of_success){
+    public function getHistoryMoviesByDate($username, $today) {
+        
+        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
+        INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
+        WHERE username = :username AND date_of_success = :today");
+        $req->execute(
+            array(
+                'username' => $username,
+                'today' => $today
+            )
+        );
+        $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
+        if($req->rowCount() > 0){
+            return false;
+        } else {
+            return true;
+        }
+    } 
+
+    public function addMovieHistory($login, $id_movie, $attempt_count, $date_of_success){
         try{
             $req = $this->getPDO()->prepare('INSERT INTO usermoviehistory  (username, id_movie, attempt_count, date_of_success) VALUES (:username, :id_movie, :attempt_count, :date_of_success)');
             $req->execute(
@@ -300,6 +319,60 @@ WHERE md.id_movie = :id_movie;
             error_log("Erreur : " . $e->getMessage());
             return false;
         }
+    }
+
+    public function countAllHistories($login): int
+    {
+        $req = $this->getPDO()->prepare("
+SELECT COUNT(*)
+FROM usermoviehistory
+WHERE username = :login;
+");
+        $req->execute(
+            array(
+                'login' => $login
+            )
+        );
+        return $req->fetchAll(PDO::FETCH_NUM)[0][0];
+    }
+
+    public function getHistoriesPaginated($username, int $page) {
+
+        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
+    INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
+    WHERE username = :username
+    ORDER BY date_of_success DESC
+    LIMIT :limit OFFSET :offset");
+        $req->execute(
+            array(
+                'username' => $username,
+                'limit' => self::PAGE_SIZE,
+                'offset' => self::PAGE_SIZE * $page
+            )
+        );
+        return $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
+    }
+
+    public function getByDate($username, $date): UserMovieHistory|null {
+
+        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
+INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
+WHERE username = :username AND date_of_success = :date");
+        $res = $req->execute(
+            array(
+                'username' => $username,
+                'date' => $date
+            )
+        );
+        if (!$res)
+            return null;
+
+        $tmp = $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
+
+        if (!$tmp || count($tmp) == 0)
+            return null;
+
+        return $tmp[0];
     }
 
     public function save(): bool {}

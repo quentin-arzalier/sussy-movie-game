@@ -17,16 +17,66 @@ Class UserController
         require_once "Views/Shared/layout.php";
     }
 
-    public static function historical(){
+    public static function history(){
         if(empty($_SESSION['login'])){
             $view_name = "Views/Error/404.php";
             require_once "Views/Shared/layout.php";
             return;
         }
-        $userMovieHistory = new UserMovieHistory();
-        $histiryMovies = $userMovieHistory->getHistoricalMoviesByName($_SESSION['login']);
-        $view_name = "Views/User/history.php";
-        require_once "Views/Shared/layout.php";
+
+        $query_obj = new UserMovieHistory();
+        $total_histories = $query_obj->countAllHistories($_SESSION['login']);
+
+        if ($total_histories == 0)
+        {
+            $view_name = "Views/User/empty_history.php";
+            require_once "Views/Shared/layout.php";
+            $view_name = get_file_path(array("Views", "User", "empty_history.php"));
+            require_once get_file_path(array("Views", "Shared", "layout.php"));
+            return;
+        }
+
+
+
+        $curr_page = 1;
+        if (isset($_GET["page"]) && is_numeric($_GET["page"]) && (int)$_GET["page"] > 0)
+        {
+            $curr_page = (int)$_GET["page"];
+        }
+
+        $date_param = null;
+        if (isset($_GET["date"]))
+        {
+            $date_param = $_GET["date"];
+        }
+
+        $page_size = UserMovieHistory::PAGE_SIZE;
+
+        $max_page = (int)ceil($total_histories / $page_size);
+
+        if ($curr_page > $max_page)
+            $curr_page = $max_page;
+
+        $histories = $query_obj->getHistoriesPaginated($_SESSION["login"], $curr_page - 1);
+
+
+        if (count($histories) == 0 && $curr_page != 1)
+        {
+            $curr_page = 1;
+            $histories = $query_obj->getHistoriesPaginated($_SESSION["login"], $curr_page - 1);
+        }
+
+        $active_history = $histories[0];
+
+        if ($date_param != null)
+        {
+            $active_history = $query_obj->getByDate($_SESSION["login"], $date_param);
+            if ($active_history == null)
+                $active_history = $histories[0];
+        }
+
+        $view_name = get_file_path(array("Views", "User", "history.php"));
+        require_once get_file_path(array("Views", "Shared", "layout.php"));
     }
 
     public static function newPassword(){

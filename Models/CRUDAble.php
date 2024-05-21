@@ -1,6 +1,8 @@
 <?php
 abstract class CRUDAble
 {
+    const PAGE_SIZE = 10;
+
     private PDO|null $pdo;
 
     public function __construct()
