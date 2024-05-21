@@ -365,4 +365,10 @@ WHERE md.id_movie = :id_movie;
         return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
     }
 
+    public function countAllMovies(): int
+    {
+        $response = $this->getPDO()->query("SELECT COUNT(*) FROM movie");
+        return $response->fetchAll(PDO::FETCH_NUM)[0][0];
+    }
+
 }
