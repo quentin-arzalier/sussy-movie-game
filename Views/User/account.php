@@ -36,7 +36,7 @@
             ?>
         </p>
     </fieldset>
-</fomr>
+</form>
     
 </div>
 

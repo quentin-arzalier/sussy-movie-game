@@ -331,6 +331,16 @@ button:hover {
     flex-direction: column-reverse;
 }
 
+.movie-people-item.correct
+{
+    background-color: #BBFFC2;;
+}
+
+.movie-info-part.correct :last-child
+{
+    background-color: #BBFFC2;
+}
+
 .movie-people-item.incorrect
 {
     background-color: lightgray;

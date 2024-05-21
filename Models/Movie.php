@@ -137,6 +137,12 @@ WHERE LOWER(COALESCE(mn.name ,m.original_name)) LIKE LOWER(:search);
         return $response->fetchAll(PDO::FETCH_CLASS, 'Movie');
     }
 
+    public function getAllIdMovies(): array
+    {
+        $response = $this->getPDO()->query("SELECT id_movie FROM movie");
+        return $response->fetchAll(PDO::FETCH_COLUMN);
+    }
+
     public function get($movie_id): Movie|null
     {
         $query = $this->getPDO()->prepare("
