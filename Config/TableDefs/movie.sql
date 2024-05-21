@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : jeu. 29 fév. 2024 à 08:18
+-- Généré le : mar. 21 mai 2024 à 06:39
 -- Version du serveur : 11.2.2-MariaDB
 -- Version de PHP : 8.2.13
 
@@ -103,7 +103,8 @@ DROP TABLE IF EXISTS `movie_director`;
 CREATE TABLE IF NOT EXISTS `movie_director` (
   `id_movie` int(11) NOT NULL,
   `id_director` int(11) NOT NULL,
-  PRIMARY KEY (`id_movie`,`id_director`)
+  PRIMARY KEY (`id_movie`,`id_director`),
+  KEY `movie_director_ibfk_1` (`id_director`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 -- --------------------------------------------------------
@@ -116,7 +117,8 @@ DROP TABLE IF EXISTS `movie_genre`;
 CREATE TABLE IF NOT EXISTS `movie_genre` (
   `id_movie` int(11) NOT NULL,
   `id_genre` int(11) NOT NULL,
-  PRIMARY KEY (`id_movie`,`id_genre`)
+  PRIMARY KEY (`id_movie`,`id_genre`),
+  KEY `movie_genre_ibfk_1` (`id_genre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 -- --------------------------------------------------------
@@ -165,15 +167,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email_address` (`email_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
---
--- Déchargement des données de la table `user`
---
-
-INSERT INTO `user` (`username`, `email_address`, `password_hash`, `is_admin`, `token_verify`, `email_chek`) VALUES
-('Larpeha', 'l@gmail.com', '$2y$10$E4QSsddHK9mgj4ix45SYcu9hMNoeSS0gLs0Ss24zGk7FUtm4m.2cK', 0, 'e986a4fdc41766d30158a45c6e7434fa91a5b37900b32c2152d6fa5253df1b48b62436fad1b39bfe014a89985afb67ce3509', 1),
-('zob', 'zob@free.fr', '$2y$10$oPbqD/4eUI./G4pIkhojPeCiCy6wsRk6ZVYc.KBl1OltnK/hxYm8i', 1, '406068983564b12da57a6fc740cfff0b2773cd0ed6b2443be46c65eb596329f596a6e0255ccbee41600e507bf73723880708', 1);
-COMMIT;
-
 -- --------------------------------------------------------
 
 --
@@ -220,6 +213,7 @@ ALTER TABLE `movie_genre`
 --
 ALTER TABLE `movie_name`
   ADD CONSTRAINT `movie_name_ibfk_1` FOREIGN KEY (`id_movie`) REFERENCES `movie` (`id_movie`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 --
 -- Contraintes pour la table `usermoviehistory`
 --
