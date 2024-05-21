@@ -168,7 +168,7 @@ ul.movie-list > li {
     display: flex;
     --background-url: url("/Resources/img/no_poster.jpg");
     background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--background-url);
-    background-size: contain;
+    background-size: cover;
     aspect-ratio: 780 / 440;
     flex-direction: row;
     border: 8px solid #374E59;
@@ -305,6 +305,7 @@ ul.movie-people-list-items::-webkit-scrollbar {
     flex-direction: column;
     text-align: center;
     margin: .5em;
+    z-index: 10;
 }
 
 .container {
