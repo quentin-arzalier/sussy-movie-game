@@ -2,6 +2,7 @@ let currentTimeout;
 let movieIdsInDatabase;
 const searchBar = $("#movie-search-bar");
 const container = $("#movie-list-ajax");
+const spinner = $("#sussy-spinner");
 
 function CurriedOnMovieClick(movie_id)
 {
@@ -11,16 +12,19 @@ function CurriedOnMovieClick(movie_id)
         // On garde l'élément mais on le cache pour le remettre si jamais il y a erreur
         toRemove.classList.add("hidden");
 
+        spinner.fadeIn();
+
         $.ajax({
             type: "POST",
             url: "/admin/api/addMovieToDatabase",
             data: {movie_id: movie_id},
             success: function() {
                 alert("Film ajouté à la base de données!");
+                spinner.fadeOut();
                 movieIdsInDatabase.push(movie_id);
                 // On supprime réellement la ligne
                 container.get(0).removeChild(toRemove);
-                if (container.childNodes.length === 0)
+                if (container.get(0).childNodes.length === 0)
                 {
                     container.addClass("transparent");
                 }
@@ -28,6 +32,7 @@ function CurriedOnMovieClick(movie_id)
             error: function () {
                 // On réaffiche le film.
                 toRemove.classList.remove("hidden");
+                spinner.fadeOut();
                 alert("Le film n'a pas pu être ajouté, veuillez réessayer plus tard");
             }
         });
