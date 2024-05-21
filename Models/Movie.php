@@ -137,6 +137,20 @@ WHERE LOWER(COALESCE(mn.name ,m.original_name)) LIKE LOWER(:search);
         return $response->fetchAll(PDO::FETCH_CLASS, 'Movie');
     }
 
+    public function getAllMoviesPaginated(int $page): array|null
+    {
+        $query = $this->getPDO()->prepare("
+SELECT * FROM movie
+ORDER BY original_name
+LIMIT :limit OFFSET :offset
+");
+        $response = $query->execute(array('limit' => self::PAGE_SIZE, 'offset' => $page * self::PAGE_SIZE));
+        if (!$response)
+            return null;
+
+        return $query->fetchAll(PDO::FETCH_CLASS, 'Movie');
+    }
+
     public function get($movie_id): Movie|null
     {
         $query = $this->getPDO()->prepare("
@@ -343,6 +357,12 @@ WHERE md.id_movie = :id_movie;
             return null;
 
         return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
+    }
+
+    public function countAllMovies(): int
+    {
+        $response = $this->getPDO()->query("SELECT COUNT(*) FROM movie");
+        return $response->fetchAll(PDO::FETCH_NUM)[0][0];
     }
 
 }

@@ -20,7 +20,7 @@
 <header>
     <h1 class="main-title">The Sussy Movie Game</h1>
     <nav>
-        <a href="../../../index.php">Accueil</a>
+        <a href="/admin/">Accueil</a>
         <a href="/admin/movie">Gérer les films</a>
         <a href="/admin/movie/add">Ajouter un film</a>
         <a href="/admin/user">Gérer les utilisateurs</a>
