@@ -17,15 +17,15 @@ Class UserController
         require_once "Views/Shared/layout.php";
     }
 
-    public static function historical(){
+    public static function history(){
         if(empty($_SESSION['login'])){
             $view_name = "Views/Error/404.php";
             require_once "Views/Shared/layout.php";
             return;
         }
         $userMovieHistory = new UserMovieHistory();
-        $histiryMovies = $userMovieHistory->getHistoricalMovies($_SESSION['login']);
-        $view_name = "Views/User/historical.php";
+        $histiryMovies = $userMovieHistory->getHistoryMovies($_SESSION['login']);
+        $view_name = "Views/User/history.php";
         require_once "Views/Shared/layout.php";
     }
 
