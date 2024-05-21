@@ -3,6 +3,19 @@ class MovieController
 {
     public static function index()
     {
+
+        $query_obj = new Movie();
+        $total_movies = $query_obj->countAllMovies();
+
+
+        if ($total_movies == 0)
+        {
+            $view_name = get_file_path(array("Views", "Admin", "Movie", "no_movies.php"));
+            require_once get_file_path(array("Views", "Admin", "Shared", "admin_layout.php"));
+            return;
+        }
+
+
         $curr_page = 1;
         if (isset($_GET["page"]) && is_numeric($_GET["page"]) && (int)$_GET["page"] > 0)
         {
@@ -15,9 +28,6 @@ class MovieController
             $id_movie = (int)$_GET["id_movie"];
         }
 
-        $query_obj = new Movie();
-        $total_movies = $query_obj->countAllMovies();
-
         $page_size = Movie::PAGE_SIZE;
 
         $max_page = (int)ceil($total_movies / $page_size);
@@ -28,7 +38,7 @@ class MovieController
         $movies = $query_obj->getAllMoviesPaginated($curr_page - 1);
 
 
-        if (count($movies) == 0)
+        if (count($movies) == 0 && $curr_page != 1)
         {
             $curr_page = 1;
             $movies = $query_obj->getAllMoviesPaginated($curr_page - 1);

@@ -283,6 +283,60 @@ WHERE md.id_movie = :id_movie;
         }
     }
 
+    public function countAllHistories($login): int
+    {
+        $req = $this->getPDO()->prepare("
+SELECT COUNT(*)
+FROM usermoviehistory
+WHERE username = :login;
+");
+        $req->execute(
+            array(
+                'login' => $login
+            )
+        );
+        return $req->fetchAll(PDO::FETCH_NUM)[0][0];
+    }
+
+    public function getHistoriesPaginated($username, int $page) {
+
+        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
+    INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
+    WHERE username = :username
+    ORDER BY date_of_success DESC
+    LIMIT :limit OFFSET :offset");
+        $req->execute(
+            array(
+                'username' => $username,
+                'limit' => self::PAGE_SIZE,
+                'offset' => self::PAGE_SIZE * $page
+            )
+        );
+        return $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
+    }
+
+    public function getByDate($username, $date): UserMovieHistory|null {
+
+        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
+INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
+WHERE username = :username AND date_of_success = :date");
+        $res = $req->execute(
+            array(
+                'username' => $username,
+                'date' => $date
+            )
+        );
+        if (!$res)
+            return null;
+
+        $tmp = $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
+
+        if (!$tmp || count($tmp) == 0)
+            return null;
+
+        return $tmp[0];
+    }
+
     public function save(): bool {}
 }
 ?>

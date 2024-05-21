@@ -322,6 +322,9 @@ button {
     border-radius: 1em;
     background: white;
 }
+button:disabled{
+    background-color: lightgray;
+}
 button:not(:disabled):hover {
     background-color: lightgray;
     cursor: pointer;
@@ -372,6 +375,7 @@ button:not(:disabled):hover {
     border-radius: 1em 1em 0 0;
     padding: 1em 1em 0 1em;
     margin-bottom: 0;
+    background-color: white;
 }
 .content-with-side-nav > :first-child li {
     height: 10%;
@@ -411,4 +415,5 @@ button:not(:disabled):hover {
     padding: 0 1em;
     flex-grow: 1;
     text-align: center;
+    background-color: lightgray;
 }
