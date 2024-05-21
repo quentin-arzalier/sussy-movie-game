@@ -277,25 +277,6 @@ WHERE md.id_movie = :id_movie;
         }
     } 
 
-    public function getHistoryMoviesByDate($username, $today) {
-        
-        $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory
-        INNER JOIN movie ON usermoviehistory.id_movie = movie.id_movie
-        WHERE username = :username AND date_of_success = :today");
-        $req->execute(
-            array(
-                'username' => $username,
-                'today' => $today
-            )
-        );
-        $req->fetchAll(PDO::FETCH_CLASS, 'UserMovieHistory');
-        if($req->rowCount() > 0){
-            return false;
-        } else {
-            return true;
-        }
-    } 
-
     public function addMovieHistory($login, $id_movie, $attempt_count, $date_of_success){
         try{
             $req = $this->getPDO()->prepare('INSERT INTO usermoviehistory  (username, id_movie, attempt_count, date_of_success) VALUES (:username, :id_movie, :attempt_count, :date_of_success)');
