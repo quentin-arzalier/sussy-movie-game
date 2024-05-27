@@ -2,6 +2,7 @@ let currentTimeout;
 const searchBar = $("#movie-search-bar");
 const container = $("#movie-list-ajax");
 const attempts = $("#game-attempts");
+const successMessage = document.getElementById("timer");
 
 function CurriedOnMovieClick(movie_id) {
     return e => {
@@ -18,6 +19,14 @@ function CurriedOnMovieClick(movie_id) {
                 const div = document.createElement("div");
                 div.innerHTML = res;
                 attempts.get(0).appendChild(div);
+                // sélectionner l'élément avec la classe "movie-details"
+                const movieDetails = div.querySelector(".movie-details-correct");
+                if(movieDetails && movieDetails.classList.contains("movie-details-correct")){
+                    $(".custom-input").css("display", "none");
+                    $(".custom-input").css("pointer-events", "none");
+                    $("#success-message").html("Bravo !! Tu as trouvé le sussy movie d'aujourd'hui");
+                    setInterval(updateTime, 1000);
+                }
             },
             error: function () {
                 alert("Essai EN ECHEC");
@@ -65,3 +74,29 @@ searchBar.on("input", () => {
         });
     }, 350);
 });
+
+$(()=>{
+    const message = $("#success-message").text();
+    if(message.indexOf("Tu as déjà trouvé le sussy movie d'aujourd'hui. Revien demain pour un nouveau sussy movie !") !== -1){
+        setInterval(updateTime, 1000);
+    }
+});
+
+
+// Définir la fonction à exécuter toutes les secondes
+function updateTime() {
+    // Calculer le temps restant jusqu'à minuit
+    const now = new Date();
+    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    midnight.setHours(0, 0, 0, 0); // réinitialiser l'heure à 00:00:00.000
+    const timeLeft = midnight - now;
+
+    // Convertir le temps restant en minutes et secondes
+    const hours = Math.floor((timeLeft / 3600000));
+    const minutes = Math.floor((timeLeft % 3600000) / 60000);
+    const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+    // Afficher le temps restant dans l'élément HTML
+    successMessage.textContent = `Reviens dans ${hours} heure(s) ${minutes} minute(s) et ${seconds} seconde(s)`;
+}
+
