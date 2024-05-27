@@ -92,10 +92,11 @@ else if ($real_runtime < $guess_runtime)
     $runtime_arrow = '<i class="fa-solid fa-arrow-down"></i>';
 }
 
+$movie_details_class = ($movie_attempt->getIdMovie() == $real_movie->getIdMovie()) ? "movie-details-correct" : "movie-details";
 
 /** @noinspection CssUnknownTarget */
 echo "
-<div class='movie-details' style='--background-url: url(\"$backdrop_url\")'>
+<div class='$movie_details_class' style='--background-url: url(\"$backdrop_url\")'>
     <div class='movie-title-card'>
         <div class='movie-poster-container'>
            <img src='$poster_url' alt='poster'>

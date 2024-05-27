@@ -9,10 +9,13 @@
             </div>
 
             <ul class="movie-list transparent game-list" id="movie-list-ajax">
-            </ul>';
+            </ul>
+            <h2 id="success-message" style="color: green;"></h2>
+            <h3 id="timer"></h3>';
         }
         else {
-            echo "<h2 style='color: red;'>Tu as déjà trouvé le sussy movie d'aujourd'hui. Revien demain pour un nouveau sussy movie !</h2>";
+            echo '<h2 id="success-message" style="color: red;">Tu as déjà trouvé le sussy movie d\'aujourd\'hui. Revien demain pour un nouveau sussy movie !</h2>
+            <h3 id="timer"></h3>';
         }
     ?>
 </div>

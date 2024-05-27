@@ -184,6 +184,25 @@ ul.movie-list > li {
     width: 33%;
 }
 
+.movie-details-correct{
+    display: flex;
+    --background-url: url("/Resources/img/no_poster.jpg");
+    background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--background-url);
+    background-size: cover;
+    aspect-ratio: 780 / 440;
+    flex-direction: row;
+    border: 8px solid #374E59;
+    border-radius: 50px;
+    align-items: center;
+    margin-top: 1em;
+    min-height: 350px;
+}
+
+.movie-details-correct > * {
+    padding: 2em;
+    width: 33%;
+}
+
 .movie-find {
     display: flex;
     flex-direction: column;
@@ -490,4 +509,11 @@ button:not(:disabled):hover {
 .custom-alert.error-alert {
     background-color: #e85f6a;
     border-color: #D91A2A;
+}
+
+#success-message{
+    text-align: center;
+}
+#timer{
+    text-align: center;
 }
