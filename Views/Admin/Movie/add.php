@@ -17,7 +17,7 @@
 </ul>
 
 
-<script src="/Resources/scripts/admin_movie_list.js"></script>
+<script src="/resources/scripts/admin_movie_list.js"></script>
 <script>
     movieIdsInDatabase = [
         <?php

@@ -8,16 +8,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Resources/styles/styles.css">
-    <link rel="stylesheet" href="/Resources/styles/admin.css">
-    <link rel="stylesheet" href="/Resources/styles/spinner.css">
+    <link rel="stylesheet" href="/resources/styles/styles.css">
+    <link rel="stylesheet" href="/resources/styles/admin.css">
+    <link rel="stylesheet" href="/resources/styles/spinner.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://kit.fontawesome.com/fcd7e17e10.js" crossorigin="anonymous"></script>
     <title>Sussy Movie Game - Admin</title>
 </head>
 <body class="admin-portal">
-<script src="/Resources/scripts/custom_alert.js"></script>
+<script src="/resources/scripts/custom_alert.js"></script>
 <header>
     <h1 class="main-title">The Sussy Movie Game</h1>
     <nav>

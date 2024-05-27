@@ -14,14 +14,14 @@ $user_country_code_lower = strtolower($user->getCountryCode());
     <div id="user-country" class="country-container">
         <?php
             echo "
-        <img src='/Resources/img/flags/$user_country_code_lower.svg' alt='$user_country_name' width='32'/>
+        <img src='/resources/img/flags/$user_country_code_lower.svg' alt='$user_country_name' width='32'/>
         <span>$user_country_name</span>
             ";
         ?>
 
         <ul class="country-options hidden">
             <?php
-            $path = get_file_path(array("Resources", "img", "flags"));
+            $path = get_file_path(array("resources", "img", "flags"));
             $countries = scandir($path);
             foreach ($countries as $country) {
                 if (strlen($country) != 6)
@@ -31,7 +31,7 @@ $user_country_code_lower = strtolower($user->getCountryCode());
 
                 $name = htmlspecialchars(Locale::getDisplayRegion($locale, 'fr'));
 
-                $src = "/Resources/img/flags/$country";
+                $src = "/resources/img/flags/$country";
                 echo "
     <li class='country-container' data-code='$upperCode'>
         <img src='$src' alt='$name' width='32''/>
@@ -46,4 +46,4 @@ $user_country_code_lower = strtolower($user->getCountryCode());
 </div>
 
 
-<script src="/Resources/scripts/country_selection.js"></script>
+<script src="/resources/scripts/country_selection.js"></script>

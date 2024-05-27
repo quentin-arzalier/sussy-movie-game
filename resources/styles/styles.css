@@ -26,7 +26,7 @@ body {
     margin: 0;
     align-items: center;
     font-family: Roboto, sans-serif;
-    background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Resources/img/Background.jpg");
+    background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/resources/img/Background.jpg");
 }
 
 header{
@@ -167,7 +167,7 @@ ul.movie-list > li {
 
 .movie-details{
     display: flex;
-    --background-url: url("/Resources/img/no_poster.jpg");
+    --background-url: url("/resources/img/no_poster.jpg");
     background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--background-url);
     background-size: cover;
     aspect-ratio: 780 / 440;
@@ -186,7 +186,7 @@ ul.movie-list > li {
 
 .movie-details-correct{
     display: flex;
-    --background-url: url("/Resources/img/no_poster.jpg");
+    --background-url: url("/resources/img/no_poster.jpg");
     background: center no-repeat linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--background-url);
     background-size: cover;
     aspect-ratio: 780 / 440;
