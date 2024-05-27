@@ -71,6 +71,7 @@ h1.main-title {
 
 h2:first-child, h3:first-child{
     margin-top: 0;
+    text-align: center;
 }
 p:last-child {
     margin-bottom: 0;

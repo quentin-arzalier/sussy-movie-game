@@ -18,7 +18,6 @@
     <title>Sussy Movie Game - Admin</title>
 </head>
 <body class="admin-portal">
-<script src="/resources/scripts/custom_alert.js"></script>
 <header>
     <h1 class="main-title">The Sussy Movie Game</h1>
     <nav>
@@ -42,6 +41,7 @@
             <span>.</span>
         </div>
     </div>
+    <script src="/resources/scripts/custom_alert.js"></script>
 
     <?php require_once $view_name ?>
 </main>

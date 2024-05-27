@@ -13,3 +13,7 @@ function customAlert(message, isError)
         body.removeChild(newElt);
     }, 4000);
 }
+
+const spinner = $("#sussy-spinner");
+const startSpinner = () => spinner.fadeIn();
+const stopSpinner = () => spinner.fadeOut();

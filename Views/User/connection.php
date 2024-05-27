@@ -1,4 +1,5 @@
 <div class="container">
+    <h2>Connexion</h2>
     <form action="/user/connection" method="post" >
         <div class="custom-input">
             <label for="username-input">

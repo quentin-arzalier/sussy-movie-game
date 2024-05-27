@@ -1,4 +1,5 @@
 <form action="/user/create" method="post" class='container'>
+    <h2>Création de compte</h2>
     <div class="custom-input">
         <label for="username-input">
             <i class="fa-solid fa-user"></i>
@@ -55,7 +56,7 @@ $(function(){
     const majRegex = /[A-Z]/;
     const minRegex = /[a-z]/;
     const numRegex = /[0-9]/;
-    const speRegex = /[!@#$%^&*(),.?":{}|'<>]/;
+    const speRegex = /[!@#$%^&*(),.?":{}|'<>+-]/;
     function handlePasswordChange() {
         button.disabled = !(majRegex.test(password.val()) && minRegex.test(password.val()) && numRegex.test(password.val()) && speRegex.test(password.val()) && (password.val().length >= 8));
         $('#maj-message').css('color', majRegex.test(password.val()) ? 'green' : 'red');

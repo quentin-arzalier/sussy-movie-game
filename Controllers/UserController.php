@@ -214,7 +214,10 @@ Class UserController
     public static function passwordForgotten(){
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $user = new User();
-            $user->forgotPassword($_POST["email"]);
+            if (!$user->forgotPassword($_POST["email"]))
+            {
+                http_response_code(400);
+            }
         } else {
             $view_name = "Views/Error/404.php";
             require_once "Views/Shared/layout.php";

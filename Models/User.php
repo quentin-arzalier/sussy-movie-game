@@ -299,7 +299,8 @@ class User extends CRUDAble {
             )
         );
     }
-    public function forgotPassword($email){
+    public function forgotPassword($email): bool
+    {
         $token_verify = bin2hex(random_bytes(50));
         $req = $this->getPDO()->prepare('UPDATE user SET token_verify = :token WHERE email_address =:email');
         $req->execute(
@@ -310,7 +311,9 @@ class User extends CRUDAble {
         );
         if( $req->rowCount() > 0){
             $this->sendMail("newPassword", $token_verify, $email);
-        }   
+            return true;
+        }
+        return false;
     }
 
     public function passwordfound($token, $password){
