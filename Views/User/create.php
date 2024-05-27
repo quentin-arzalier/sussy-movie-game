@@ -1,9 +1,9 @@
 <form action="/user/create" method="post" class='container'>
         <fieldset>
             <label>Nom d'utilisateur</label>
-            <input type="text" name="username" required />
+            <input type="text" name="username" required>
             <label>Adresse e-mail</label>
-            <input type="email" name="email" required />
+            <input type="email" name="email" required>
             <label>Mot de passe</label>
             <input id="pwd" type="password" name="password" required>
             <ul id='list'>
