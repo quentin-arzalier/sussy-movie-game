@@ -35,4 +35,4 @@ if(!empty($_SESSION['guessed_movies'])){
 }
 ?>
 </div>
-<script src="/Resources/scripts/game.js"></script>
+<script src="/resources/scripts/game.js"></script>
