@@ -180,6 +180,19 @@ Class UserController
         require_once "Views/Shared/layout.php";
     }
 
+    public static function settings(){
+        if(empty($_SESSION['login'])){
+            $view_name = "Views/Error/404.php";
+            require_once "Views/Shared/layout.php";
+            return;
+        }
+
+        $user = (new User())->getByUserName($_SESSION['login']);
+
+        $view_name = get_file_path(array("Views", "User", "settings.php"));
+        require_once get_file_path(array("Views", "Shared", "layout.php"));
+    }
+
     public static function loginToContinue()
     {
         $view_name = "Views/User/loginToContinue.php";
@@ -225,5 +238,27 @@ Class UserController
             $_SESSION['message'] =  'Les mots de passe ne sont pas bon';
             UserController::newPassword();
         }
+    }
+
+    public static function setCountryCode()
+    {
+        if ($_SERVER["REQUEST_METHOD"] != "POST")
+        {
+            http_response_code(404); // Not Found
+            return;
+        }
+        if (!isset($_SESSION["login"]))
+        {
+            http_response_code(401); // Unauthorized
+            return;
+        }
+        if (!isset($_POST["country_code"]) || strlen($_POST["country_code"]) != 2)
+        {
+            http_response_code(400); // Bad Request
+            return;
+        }
+        $user = (new User())->getByUserName($_SESSION["login"]);
+        $user->setCountryCode(strtoupper($_POST["country_code"]));
+        $user->update();
     }
 }

@@ -29,7 +29,7 @@ function CurriedOnMovieClick(movie_id) {
                 }
             },
             error: function () {
-                alert("Essai EN ECHEC");
+                customAlert("Une erreur a eu lieu lors de votre essai, veuillez réessayer plus tard", true);
             }
         });
     }
@@ -69,7 +69,7 @@ searchBar.on("input", () => {
                     container.removeClass("transparent");
             },
             error: function () {
-                alert("Une erreur a eu lieu, veuillez réessayer.")
+                customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
             }
         });
     }, 350);

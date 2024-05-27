@@ -57,7 +57,7 @@
                 }
             },
             error : function(){
-                alert("Une erreur a eu lieu, veuillez réessayer.")
+                customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
             }
         });
     });
@@ -77,8 +77,8 @@
                 row.remove();
             },
             error : function(){
-                    row.show();
-                    alert("Une erreur a eu lieu, veuillez réessayer.")
+                row.show();
+                customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
             }
         });
     });

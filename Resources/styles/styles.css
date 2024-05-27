@@ -70,8 +70,6 @@ main{
     flex-grow: 1;
 }
 
-
-
 /* CUSTOM INPUTS */
 .custom-input {
     display: flex;
@@ -82,7 +80,7 @@ main{
     border: 1px solid rgba(58, 50, 43, 0.25);
     padding: 0.5em 0.75em;
 }
-.custom-input > label {
+.custom-input > :first-child {
     min-width: 50px;
     border-radius: .25em 0 0 .25em;
     background-color: lightgray;
@@ -95,9 +93,12 @@ main{
     align-items: center;
     justify-content: center;
 }
-.custom-input > input {
+.custom-input > :last-child {
     flex: 1;
     border-radius: 0 .25em .25em 0;
+    background-color: white;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -436,6 +437,78 @@ button:not(:disabled):hover {
     flex-grow: 1;
     text-align: center;
     background-color: lightgray;
+}
+
+.country-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.country-container span {
+    padding-left: 1em;
+    pointer-events: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.country-options li{
+    padding: .5em;
+    border-bottom: solid 2px black;
+    white-space: nowrap;
+}
+.country-options {
+    position: absolute;
+    position: absolute;
+    max-height: 20vh;
+    overflow: hidden;
+    top: 28px;
+    left: 0;
+    background-color: white;
+    padding: 0;
+    border: solid 2px black;
+    display: flex;
+    overflow-y: scroll;
+    flex-direction: column;
+}
+.country-options > :hover {
+     background-color: #36b3f6;
+ }
+.country-options::-webkit-scrollbar {
+     position: fixed;
+     display: none;
+ }
+
+@keyframes slide-from-top {
+    0% {
+        top: -100px;
+    }
+    20%, 80% {
+        top: 25px;
+    }
+    100% {
+        top: -100px;
+    }
+
+}
+
+.custom-alert {
+    position: fixed;
+    padding: 1em;
+    border: 2px solid;
+    border-radius: 1em;
+    font-size: larger;
+    font-weight: bold;
+    animation-name: slide-from-top;
+    animation-duration: 4s;
+}
+.custom-alert.success-alert {
+    background-color: #8bff97;
+    border-color: #29ff3a;
+}
+.custom-alert.error-alert {
+    background-color: #e85f6a;
+    border-color: #D91A2A;
 }
 
 #success-message{

@@ -17,6 +17,7 @@
     <title>Sussy Movie Game - Admin</title>
 </head>
 <body class="admin-portal">
+<script src="/Resources/scripts/custom_alert.js"></script>
 <header>
     <h1 class="main-title">The Sussy Movie Game</h1>
     <nav>

@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `token_verify` text NOT NULL,
   `email_chek` tinyint(1) NOT NULL DEFAULT 0,
+  `country_code` char(2) NOT NULL DEFAULT 'FR',
   PRIMARY KEY (`username`),
   UNIQUE KEY `email_address` (`email_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
@@ -219,7 +220,7 @@ ALTER TABLE `movie_name`
 --
 ALTER TABLE `usermoviehistory`
   ADD CONSTRAINT `usermoviehistory_ibfk_1` FOREIGN KEY (`id_movie`) REFERENCES `movie` (`id_movie`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usermoviehistory_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `usermoviehistory_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD UNIQUE(`username`, `date_of_success`); 
 COMMIT;
 

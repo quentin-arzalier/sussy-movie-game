@@ -15,6 +15,7 @@
     <title>Sussy Movie Game</title>
 </head>
 <body>
+    <script src="/Resources/scripts/custom_alert.js"></script>
     <header>
         <h1 class="main-title">The Sussy <br> Movie Game</h1>
         <nav>

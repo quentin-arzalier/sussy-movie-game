@@ -355,6 +355,31 @@ WHERE username = :username AND date_of_success = :date");
 
         return $tmp[0];
     }
+    public function getTranslatedNameForUser($username): string|null
+    {
+        $query = $this->getPDO()->prepare("
+SELECT COALESCE(mn.name, m.original_name) 
+FROM `movie` m
+JOIN `user` u ON u.username = :username
+LEFT JOIN `movie_name` mn ON mn.id_movie = m.id_movie AND mn.country_code = u.country_code
+WHERE m.id_movie = :id_movie
+LIMIT 1;
+    ");
+
+        $res = $query->execute(array(
+            "id_movie" => $this->getIdMovie(),
+            "username" => $username
+        ));
+        if (!$res)
+            return false;
+
+        $all = $query->fetchAll(PDO::FETCH_COLUMN);
+
+        if (count($all) != 1)
+            return false;
+
+        return $all[0];
+    }
 
     public function save(): bool {}
 }

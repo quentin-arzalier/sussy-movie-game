@@ -4,7 +4,9 @@
  * @var $movie_attempt Movie
  */
 
-$title = htmlspecialchars($movie_attempt->getOriginalName()); // TODO : Langue utilisateur
+$title = htmlspecialchars(isset($_SESSION["login"])
+    ? $movie_attempt->getTranslatedNameForUser($_SESSION["login"])
+    : $movie_attempt->getOriginalName());
 $poster_url = $movie_attempt->getPosterUrl();
 $backdrop_url = $movie_attempt->getBackdropUrl();
 
