@@ -220,7 +220,7 @@ ALTER TABLE `movie_name`
 --
 ALTER TABLE `usermoviehistory`
   ADD CONSTRAINT `usermoviehistory_ibfk_1` FOREIGN KEY (`id_movie`) REFERENCES `movie` (`id_movie`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usermoviehistory_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `usermoviehistory_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD UNIQUE(`username`, `date_of_success`); 
 COMMIT;
 
