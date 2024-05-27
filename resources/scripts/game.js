@@ -7,9 +7,10 @@ const successMessage = document.getElementById("timer");
 function CurriedOnMovieClick(movie_id) {
     return e => {
         e.preventDefault();
-        let toRemove = $(`li[data-id=${movie_id}]`).get(0);
         container.get(0).innerHTML = "";
         container.addClass("transparent");
+
+        startSpinner();
 
         $.ajax({
             type: "POST",
@@ -19,6 +20,7 @@ function CurriedOnMovieClick(movie_id) {
                 const div = document.createElement("div");
                 div.innerHTML = res;
                 attempts.get(0).appendChild(div);
+                stopSpinner();
                 // sélectionner l'élément avec la classe "movie-details"
                 const movieDetails = div.querySelector(".movie-details-correct");
                 if(movieDetails && movieDetails.classList.contains("movie-details-correct")){
@@ -30,6 +32,7 @@ function CurriedOnMovieClick(movie_id) {
             },
             error: function () {
                 customAlert("Une erreur a eu lieu lors de votre essai, veuillez réessayer plus tard", true);
+                stopSpinner();
             }
         });
     }

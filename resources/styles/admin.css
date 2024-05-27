@@ -29,6 +29,7 @@ body.admin-portal {
 .admin-portal nav {
     padding: 1em;
     flex-grow: 1;
+    margin: 0;
 }
 
 .admin-portal nav > a {

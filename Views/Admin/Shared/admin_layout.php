@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/styles/styles.css">
+    <link rel="stylesheet" href="/resources/styles/forms.css">
     <link rel="stylesheet" href="/resources/styles/admin.css">
     <link rel="stylesheet" href="/resources/styles/spinner.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -17,7 +18,6 @@
     <title>Sussy Movie Game - Admin</title>
 </head>
 <body class="admin-portal">
-<script src="/resources/scripts/custom_alert.js"></script>
 <header>
     <h1 class="main-title">The Sussy Movie Game</h1>
     <nav>
@@ -41,6 +41,7 @@
             <span>.</span>
         </div>
     </div>
+    <script src="/resources/scripts/custom_alert.js"></script>
 
     <?php require_once $view_name ?>
 </main>
