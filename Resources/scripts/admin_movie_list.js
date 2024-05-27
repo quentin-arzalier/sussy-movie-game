@@ -19,7 +19,7 @@ function CurriedOnMovieClick(movie_id)
             url: "/admin/api/addMovieToDatabase",
             data: {movie_id: movie_id},
             success: function() {
-                alert("Film ajouté à la base de données!");
+                customAlert("Film ajouté à la base de données!", false);
                 spinner.fadeOut();
                 movieIdsInDatabase.push(movie_id);
                 // On supprime réellement la ligne
@@ -33,7 +33,7 @@ function CurriedOnMovieClick(movie_id)
                 // On réaffiche le film.
                 toRemove.classList.remove("hidden");
                 spinner.fadeOut();
-                alert("Le film n'a pas pu être ajouté, veuillez réessayer plus tard");
+                customAlert("Le film n'a pas pu être ajouté, veuillez réessayer plus tard", true);
             }
         });
     }
@@ -78,7 +78,7 @@ searchBar.on("input", () => {
                 container.removeClass("transparent");
             },
             error: function () {
-                alert("Une erreur a eu lieu, veuillez réessayer.")
+                customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
             }
         });
     }, 350);

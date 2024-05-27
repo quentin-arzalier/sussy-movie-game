@@ -11,7 +11,9 @@ $attempt_count = $active_history->getAttemptCount() ;
 $date_of_success = $active_history->getDateOfSuccess();
 $id_movie = $active_history->getIdMovie();
 $id_param = urlencode($id_movie);
-$title = htmlspecialchars($active_history->getOriginalName()); // TODO : Langue utilisateur
+$title = htmlspecialchars(isset($_SESSION["login"])
+    ? $active_history->getTranslatedNameForUser($_SESSION["login"])
+    : $active_history->getOriginalName());
 $poster_url = $active_history->getPosterUrl();
 $backdrop_url = $active_history->getBackdropUrl();
 $release_date = htmlspecialchars($active_history->getReleaseDate());

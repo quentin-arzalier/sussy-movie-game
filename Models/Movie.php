@@ -26,26 +26,26 @@ class Movie extends CRUDAble
         parent::__construct();
     }
 
-    /**
-     * @param string $search
-     * @return array<Movie>|null
-     */
-    public static function GetMoviesByName(string $search): array|null
+    public static function GetMoviesByName(string $search, string $username): array|null
     {
         $mov_query_obj = new Movie();
         $query = $mov_query_obj->getPDO()->prepare("
 SELECT m.* 
-FROM movie m
-LEFT JOIN movie_name mn ON mn.id_movie = m.id_movie AND mn.country_code = :user_country_code
-WHERE LOWER(COALESCE(mn.name ,m.original_name)) LIKE LOWER(:search);
+FROM `movie` m
+JOIN `user` u ON u.username = :username
+LEFT JOIN `movie_name` mn ON mn.id_movie = m.id_movie AND mn.country_code = u.country_code
+WHERE LOWER(m.original_name) LIKE LOWER(:search_a)
+OR LOWER(COALESCE(mn.name ,'')) LIKE LOWER(:search_b);
 ");
         $params = array(
-            'user_country_code' => $_SESSION["country_code"] ?? "",
-            'search' => $search
+            'username' => $username,
+            'search_a' => $search,
+            'search_b' => $search,
         );
         if (strlen($search) > 2)
         {
-            $params["search"] = "%$search%";
+            $params["search_a"] = "%$search%";
+            $params["search_b"] = "%$search%";
         }
         $response = $query->execute($params);
         if (!$response)
@@ -363,6 +363,32 @@ WHERE md.id_movie = :id_movie;
             return null;
 
         return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
+    }
+
+    public function getTranslatedNameForUser($username): string|null
+    {
+        $query = $this->getPDO()->prepare("
+SELECT COALESCE(mn.name, m.original_name) 
+FROM `movie` m
+JOIN `user` u ON u.username = :username
+LEFT JOIN `movie_name` mn ON mn.id_movie = m.id_movie AND mn.country_code = u.country_code
+WHERE m.id_movie = :id_movie
+LIMIT 1;
+        ");
+
+        $res = $query->execute(array(
+            "id_movie" => $this->getIdMovie(),
+            "username" => $username
+        ));
+        if (!$res)
+            return false;
+
+        $all = $query->fetchAll(PDO::FETCH_COLUMN);
+
+        if (count($all) != 1)
+            return false;
+
+        return $all[0];
     }
 
     public function countAllMovies(): int

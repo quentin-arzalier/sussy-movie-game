@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `token_verify` text NOT NULL,
   `email_chek` tinyint(1) NOT NULL DEFAULT 0,
+  `country_code` char(2) NOT NULL DEFAULT 'FR',
   PRIMARY KEY (`username`),
   UNIQUE KEY `email_address` (`email_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;

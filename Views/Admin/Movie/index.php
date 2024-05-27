@@ -13,7 +13,9 @@
     <?php
     $id_movie = $active_movie->getIdMovie();
     $id_param = urlencode($id_movie);
-    $title = htmlspecialchars($active_movie->getOriginalName()); // TODO : Langue utilisateur
+    $title = htmlspecialchars(isset($_SESSION["login"])
+                ? $active_movie->getTranslatedNameForUser($_SESSION["login"])
+                : $active_movie->getOriginalName());
     $poster_url = $active_movie->getPosterUrl();
     $backdrop_url = $active_movie->getBackdropUrl();
     $release_date = htmlspecialchars($active_movie->getReleaseDate());
@@ -40,7 +42,9 @@
             <?php
             foreach ($movies as $movie)
             {
-                $movie_name = $movie->getOriginalName();
+                $movie_name = isset($_SESSION["login"])
+                    ? $movie->getTranslatedNameForUser($_SESSION["login"])
+                    : $movie->getOriginalName();
                 $movie_id = $movie->getIdMovie();
                 if ($active_movie->getIdMovie() == $movie_id)
                 {

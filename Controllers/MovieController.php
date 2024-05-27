@@ -2,12 +2,12 @@
 class MovieController {
     public static function searchMoviesInDatabase(): void
     {
-        if (!isset($_GET["search"]))
+        if (!isset($_GET["search"]) || !isset($_SESSION["login"]))
             return;
 
         $search = $_GET["search"];
 
-        $movies = Movie::GetMoviesByName($search);
+        $movies = Movie::GetMoviesByName($search, $_SESSION["login"]);
 
         echo "[";
 
@@ -16,7 +16,7 @@ class MovieController {
         foreach ($movies as $movie) {
             $id = $movie->getIdMovie();
             $poster = $movie->getPosterPath();
-            $title = $movie->getOriginalName();
+            $title = $movie->getTranslatedNameForUser($_SESSION["login"]);
             $potentialComma = ($i == $movie_count - 1) ? "" : ",";
             echo "
             {

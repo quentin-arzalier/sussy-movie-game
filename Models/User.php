@@ -26,6 +26,10 @@ class User extends CRUDAble {
     private $token_verify;
 
     private $email_chek;
+
+    private string $country_code;
+
+
     public function __construct() {
         parent::__construct();
     }
@@ -116,6 +120,14 @@ class User extends CRUDAble {
      */
     public function getEmailChek() {
         return $this->email_chek;
+    }
+
+    public function setCountryCode(string $country_code): void {
+        $this->country_code = $country_code;
+    }
+
+    public function getCountryCode(): string {
+        return strtoupper($this->country_code);
     }
 
     private function createPasswordHash($password) {
@@ -318,6 +330,45 @@ class User extends CRUDAble {
             );
         }
         return $req->rowCount();
+    }
+
+    public function getByUserName($username): User|null
+    {
+        $req = $this->getPDO()->prepare("
+SELECT * FROM user
+WHERE username = :username
+LIMIT 1");
+        $res = $req->execute(
+            array(
+                'username' => $username
+            )
+        );
+        if (!$res)
+            return null;
+
+        $tmp = $req->fetchAll(PDO::FETCH_CLASS, 'User');
+
+        if (!$tmp || count($tmp) == 0)
+            return null;
+
+        return $tmp[0];
+    }
+
+    public function update(): bool {
+        if (!isset($this->username) || $this->username == ""
+            || !isset($this->country_code) && strlen($this->country_code) != 2)
+            return false;
+
+        $req = $this->getPDO()->prepare("
+UPDATE user
+SET country_code = :country_code
+WHERE username = :username;
+        ");
+
+        return  $req->execute(array(
+            "country_code" => $this->getCountryCode(),
+            "username" => $this->getUsername()
+        ));
     }
 
     public function save(): bool {
