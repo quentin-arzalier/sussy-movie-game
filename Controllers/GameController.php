@@ -8,17 +8,23 @@ class GameController
             http_response_code(404);
             return;
         }
+        $id_real_movie = (new Movie())->randomMovie();
+        $real_movie = (new Movie())->get($id_real_movie);
         if(empty($_SESSION['attempt_count'])) $_SESSION['attempt_count'] = 1;
         else $_SESSION['attempt_count'] = $_SESSION['attempt_count'] + 1;
         $guess_id = $_POST["movie_id"];
         $movie_attempt = (new Movie())->get($guess_id);
-        $id_real_movie = GameController::randomMovie();
-        $real_movie = (new Movie())->get($id_real_movie);
+
+        if(empty($_SESSION['guessed_movies'])) {
+            $_SESSION['guessed_movies'] = array();
+        }
+
         if($guess_id == $id_real_movie){
             $_SESSION['id_movie'] = $guess_id;
             $_SESSION['date_of_success'] = date('Y-m-d');
             GameController::addMovieHistory();
         }
+        $_SESSION['guessed_movies'][] = serialize($movie_attempt->serializeData());
         require_once get_file_path(array("Views", "Game", "attempt.php"));
     }
 
@@ -28,13 +34,5 @@ class GameController
         if(!$rep){
             print("Le film n'a pas été ajouté à l'historique.");
         }
-    }
-
-    private static function randomMovie(): int{
-        $date = date('dmY');
-        srand($date);
-        $random = rand();
-        $id_movies = (new Movie())->getAllIdMovies();
-        return $id_movies[$random % count($id_movies)]; // retourn un id de film de manière aléatoir qui change chaque jour
     }
 }

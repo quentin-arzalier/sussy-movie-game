@@ -26,6 +26,33 @@ class Movie extends CRUDAble
         parent::__construct();
     }
 
+    public function serializeData()
+    {
+        return [
+            'id_movie' => $this->id_movie,
+            'original_name' => $this->original_name,
+            'release_date' => $this->release_date,
+            'runtime' => $this->runtime,
+            'backdrop_path' => $this->backdrop_path,
+            'poster_path' => $this->poster_path,
+        ];
+    }
+
+    // Méthode pour recréer l'objet à partir des données sérialisées
+    public static function deserializeData($data)
+    {
+        $movie = new self();
+        $movie->id_movie = $data['id_movie'];
+        $movie->original_name = $data['original_name'];
+        $movie->release_date = $data['release_date'];
+        $movie->runtime = $data['runtime'];
+        $movie->backdrop_path = $data['backdrop_path'];
+        $movie->poster_path = $data['poster_path'];
+        return $movie;
+    }
+
+
+
     public static function GetMoviesByName(string $search, string $username): array|null
     {
         $mov_query_obj = new Movie();
@@ -397,4 +424,11 @@ LIMIT 1;
         return $response->fetchAll(PDO::FETCH_NUM)[0][0];
     }
 
+    public static function randomMovie(): int{
+        $date = date('dmY');
+        srand($date);
+        $random = rand();
+        $id_movies = (new Movie())->getAllIdMovies();
+        return $id_movies[$random % count($id_movies)]; // retourn un id de film de manière aléatoir qui change chaque jour
+    }
 }
