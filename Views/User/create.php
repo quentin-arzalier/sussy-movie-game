@@ -1,32 +1,39 @@
 <form action="/user/create" method="post" class='container'>
-        <fieldset>
-            <label>Nom d'utilisateur</label>
-            <input type="text" name="username" required>
-            <label>Adresse e-mail</label>
-            <input type="email" name="email" required>
-            <label>Mot de passe</label>
-            <input id="pwd" type="password" name="password" required>
-            <ul id='list'>
-                <li id='message1'>
-                    <p>Ajouter : Majuscule</p>
-                </li>
-                <li id='message2'>
-                    <p>Ajouter : Minuscule</p>
-                </li>
-                <li id='message3'>
-                    <p>Ajouter : Chiffre</p>
-                </li>
-                <li id='message4'>
-                    <p>Ajouter : Carractère speciaux</p>
-                </li>
-                <li id='message5'>
-                    <p>Ajouter : Des caractères</p>
-                </li>
-            </ul>
-            <label>Entrez le mot de passe à nouveau</label>
-            <input type="password" name="password_confirm" required>
-        </fieldset>
-        <input id="button" type="submit" value="créer">
+    <div class="custom-input">
+        <label for="username-input">
+            <i class="fa-solid fa-user"></i>
+        </label>
+        <input id="username-input" type="text" name="username" placeholder="Nom d'utilisateur" required>
+    </div>
+    <div class="custom-input">
+        <label for="email-input">
+            <i class="fa-solid fa-envelope"></i>
+        </label>
+        <input id="email-input" type="email" name="email" placeholder="Adresse mail" required>
+    </div>
+    <div class="custom-input">
+        <label for="password-input">
+            <i class="fa-solid fa-key"></i>
+        </label>
+        <input id="password-input" type="password" name="password" placeholder="Mot de passe" required>
+    </div>
+    <div>
+        <span>Pour être valide, le mot de passe doit contenir au moins :</span>
+        <ul id='validation-list'>
+            <li id='maj-message'>une lettre majuscule</li>
+            <li id='min-message'>une lettre minuscule</li>
+            <li id='num-message'>un chiffre</li>
+            <li id='spe-message'>un caractère spécial</li>
+            <li id='nbc-message'>8 caractères</li>
+        </ul>
+    </div>
+    <div class="custom-input">
+        <label for="password-confirm-input">
+            <i class="fa-solid fa-key"></i>
+        </label>
+        <input id="password-confirm-input" type="password" name="password_confirm" placeholder="Confirmation du mot de passe" required>
+    </div>
+    <input id="button" type="submit" value="créer">
 </form>
 <div>
     <p>
@@ -40,26 +47,29 @@
 </div>
 
 <script>
-    $(function(){
-        button.disabled = true;
-        $('#list').css('color', 'red');
-        var password = $('#pwd');
-        var regex = /[A-Z]/;
-        var regex2 = /[a-z]/; 
-        var regex3 = /[0-9]/;
-        var regex4 = /[!@#$%^&*(),.?":{}|<>]/;
-        function handlePasswordChange() {
-        if(regex.test(password.val()) && regex2.test(password.val()) && regex3.test(password.val()) && regex4.test(password.val()) && (password.val().length >= 8)){
-            button.disabled = false;
-        }else{
-            button.disabled = true;
-        }
-        $('#message1').css('color', regex.test(password.val()) ? 'green' : 'red');
-        $('#message2').css('color', regex2.test(password.val()) ? 'green' : 'red');
-        $('#message3').css('color', regex3.test(password.val()) ? 'green' : 'red');
-        $('#message4').css('color', regex4.test(password.val()) ? 'green' : 'red');
-        $('#message5').css('color', password.val().length >= 8 ? 'green' : 'red');
+$(function(){
+    let currPwdValidTimeout = null;
+    button.disabled = true;
+    $('#validation-list').css('color', 'red');
+    const password = $('#password-input');
+    const majRegex = /[A-Z]/;
+    const minRegex = /[a-z]/;
+    const numRegex = /[0-9]/;
+    const speRegex = /[!@#$%^&*(),.?":{}|'<>]/;
+    function handlePasswordChange() {
+        button.disabled = !(majRegex.test(password.val()) && minRegex.test(password.val()) && numRegex.test(password.val()) && speRegex.test(password.val()) && (password.val().length >= 8));
+        $('#maj-message').css('color', majRegex.test(password.val()) ? 'green' : 'red');
+        $('#min-message').css('color', minRegex.test(password.val()) ? 'green' : 'red');
+        $('#num-message').css('color', numRegex.test(password.val()) ? 'green' : 'red');
+        $('#spe-message').css('color', speRegex.test(password.val()) ? 'green' : 'red');
+        $('#nbc-message').css('color', password.val().length >= 8 ? 'green' : 'red');
     }
-        password.on('input', handlePasswordChange);
-    })
+    password.on('input', () => {
+        if (currPwdValidTimeout)
+            clearTimeout(currPwdValidTimeout);
+        currPwdValidTimeout = setTimeout(() => {
+            handlePasswordChange();
+        }, 200);
+    });
+})
 </script>

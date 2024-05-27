@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/styles/styles.css">
+    <link rel="stylesheet" href="/resources/styles/forms.css">
     <link rel="stylesheet" href="/resources/styles/admin.css">
     <link rel="stylesheet" href="/resources/styles/spinner.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

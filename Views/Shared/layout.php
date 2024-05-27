@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/styles/styles.css">
+    <link rel="stylesheet" href="/resources/styles/forms.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://kit.fontawesome.com/fcd7e17e10.js" crossorigin="anonymous"></script>
@@ -52,8 +53,9 @@
         }
         else {
             echo "
-        <div class='account-container'>
+        <div class='container account-container'>
             <a href='/user/'>Connexion</a>
+            <hr>
             <a href='/user/createpage'>Créer un compte</a>
         </div>
             ";
