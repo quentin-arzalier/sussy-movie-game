@@ -144,7 +144,7 @@ OR LOWER(COALESCE(mn.name ,'')) LIKE LOWER(:search_b);
     public function getPosterUrl(): string
     {
         if ($this->getPosterPath() == null || $this->getPosterPath() == "")
-            return "/resources/img/no_poster.jpg";
+            return "/Resources/img/no_poster.jpg";
         return "https://image.tmdb.org/t/p/w185" . $this->getPosterPath();
     }
     public function getBackdropUrl(): string

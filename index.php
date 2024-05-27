@@ -8,6 +8,7 @@ header('Content-type: text/html; charset=utf-8');
 mb_internal_encoding('UTF-8');
 // Helpers
 require_once "Helpers/Functions.php";
+require_once "Helpers/PDOProvider.php";
 
 // Models
 include_once 'Models/CRUDAble.php';

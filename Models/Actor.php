@@ -42,7 +42,7 @@ Class Actor extends CRUDAble{
     public function getPictureUrl(): string
     {
         if ($this->getProfilePath() == null || $this->getProfilePath() == "")
-            return "/resources/img/no_picture.jpg";
+            return "/Resources/img/no_picture.jpg";
         return "https://image.tmdb.org/t/p/w45" . $this->getProfilePath();
     }
 
