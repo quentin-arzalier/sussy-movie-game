@@ -77,11 +77,10 @@ searchBar.on("input", () => {
 
 $(()=>{
     const message = $("#success-message").text();
-    if(message.indexOf("Tu as déjà trouvé le sussy movie d'aujourd'hui. Revien demain pour un nouveau sussy movie !") !== -1){
+    if(message.indexOf("Tu as déjà trouvé le sussy movie d\'aujourd\'hui. Reviens demain pour un nouveau sussy movie !") !== -1){
         setInterval(updateTime, 1000);
     }
 });
-
 
 // Définir la fonction à exécuter toutes les secondes
 function updateTime() {

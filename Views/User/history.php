@@ -82,11 +82,11 @@ else
 <?php
         /** @noinspection CssUnknownTarget */
         echo "
-    <div class='movie-details' style='--background-url: url(\"$backdrop_url\")'>
         <div class='movie-find'>
             <span>Trouvé le $date_of_success</span>
             <span>En $attempt_count coups</span>
         </div>
+    <div class='movie-details' style='--background-url: url(\"$backdrop_url\")'>
         <div class='movie-title-card'>
             <div class='movie-poster-container'>
             <img src='$poster_url' alt='poster'>
