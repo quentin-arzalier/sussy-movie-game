@@ -2,3 +2,4 @@
 Config/dbconfig.php
 Config/apiconfig.php
 Config/hashconfig.php
+/Config/FtpConfig/dbconfig.php

@@ -176,8 +176,9 @@ class User extends CRUDAble {
     }
 
     private function sendMail($controller, $token_verify, $add_mail){
-            $verification_url = "http://sussy-movie-game/user/$controller?token=$token_verify";
-            mail($add_mail, 'Vérifiez votre email pour The Sussy Movie Game', "Cliquez ici pour valider votre inscription à The Sussy Movie Game ! \n\n $verification_url");
+        $server_name = $_SERVER['SERVER_NAME'];
+        $verification_url = "$server_name/user/$controller?token=$token_verify";
+        mail($add_mail, 'Vérifiez votre email pour The Sussy Movie Game', "Cliquez ici pour valider votre inscription à The Sussy Movie Game ! \n\n $verification_url");
     }
 
     /**
