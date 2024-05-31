@@ -36,26 +36,28 @@ class ApiController
         $iteration_count = 1;
         $added_movie_count = 0;
 
-        while ($added_movie_count == 0 && $iteration_count <= 5)
+        while ($added_movie_count == 0)
         {
             $popular_url = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$iteration_count&api_key=" . API_KEY;
             $popular_json = file_get_contents_utf8($popular_url);
             $popular_obj = json_decode($popular_json, true);
+
+            // results n'est pas dans la liste quand on dépasse la pagination.
+            if (!isset($popular_obj["results"]))
+            {
+                http_response_code(204); // Already exists => no content
+                echo 0;
+                return;
+            }
 
             foreach ($popular_obj["results"] as $movie) {
                 if (self::addMovieWithTmdbId($movie["id"])){
                     $added_movie_count++;
                 }
             }
-            $iteration_count++;
         }
-        if ($added_movie_count == 0)
-        {
-            http_response_code(204); // Already exists => no content
-        }
-        else {
-            http_response_code(201); // Created
-        }
+
+        http_response_code(201); // Created
         echo $added_movie_count;
     }
 
