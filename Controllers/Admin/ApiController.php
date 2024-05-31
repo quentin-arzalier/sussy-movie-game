@@ -55,6 +55,7 @@ class ApiController
                     $added_movie_count++;
                 }
             }
+            $iteration_count++;
         }
 
         http_response_code(201); // Created
