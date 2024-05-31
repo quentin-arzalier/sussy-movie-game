@@ -23,12 +23,51 @@ class ApiController
 
         $movie_id = $_POST["movie_id"];
 
+        return self::addMovieWithTmdbId($movie_id);
+    }
+
+    public static function addPopularMovies(): void
+    {
+        if($_SERVER["REQUEST_METHOD"] != "POST") {
+            http_response_code(404);
+            return;
+        }
+
+        $iteration_count = 1;
+        $added_movie_count = 0;
+
+        while ($added_movie_count == 0 && $iteration_count <= 5)
+        {
+            $popular_url = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$iteration_count&api_key=" . API_KEY;
+            $popular_json = file_get_contents_utf8($popular_url);
+            $popular_obj = json_decode($popular_json, true);
+
+            foreach ($popular_obj["results"] as $movie) {
+                if (self::addMovieWithTmdbId($movie["id"])){
+                    $added_movie_count++;
+                }
+            }
+            $iteration_count++;
+        }
+        if ($added_movie_count == 0)
+        {
+            http_response_code(204); // Already exists => no content
+        }
+        else {
+            http_response_code(201); // Created
+        }
+        echo $added_movie_count;
+    }
+
+
+
+    private static function addMovieWithTmdbId($movie_id): bool
+    {
         if ((new Movie())->get($movie_id) != null)
         {
             http_response_code(409); // Already exists => conflict
             return false;
         }
-
 
         $id_param = urlencode($movie_id);
         $details_url = "https://api.themoviedb.org/3/movie/$id_param?api_key=" . API_KEY;
@@ -148,7 +187,7 @@ class ApiController
         {
             http_response_code(500);
             $mov->delete();
-            throw $e; // TODO : Remplacer par return false
+            return false;
         }
         return true;
     }

@@ -5,6 +5,7 @@
 ?>
 
 <h2>Ajouter un film</h2>
+<button id="add-popular-button">Ajouter films populaires</button>
 
 <div class="custom-input">
     <label for="movie-search-bar">

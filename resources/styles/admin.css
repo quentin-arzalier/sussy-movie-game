@@ -39,3 +39,13 @@ body.admin-portal {
 .admin-portal nav > a:hover {
     color: #36b3f6;
 }
+
+#add-popular-button {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    background-color: palegoldenrod;
+}
+#add-popular-button:hover {
+    background-color: lightgoldenrodyellow;
+}

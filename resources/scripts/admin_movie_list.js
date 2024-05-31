@@ -2,6 +2,7 @@ let currentTimeout;
 let movieIdsInDatabase;
 const searchBar = $("#movie-search-bar");
 const container = $("#movie-list-ajax");
+const addPopularButton = $("#add-popular-button");
 
 function CurriedOnMovieClick(movie_id)
 {
@@ -82,3 +83,28 @@ searchBar.on("input", () => {
         });
     }, 350);
 });
+
+addPopularButton.on("click", () => {
+    startSpinner();
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/api/addPopularMovies",
+        success: function(res) {
+            if (parseInt(res) > 0)
+            {
+                customAlert(`${res} nouveaux films ajoutés à la base de données!`, false);
+            }
+            else {
+                customAlert("Aucun nouveau film n'a été ajouté. Plus de films populaires disponibles.", true);
+            }
+        },
+        error: function () {
+            customAlert("Les films populaires n'ont pas pu être ajoutés.", true);
+        },
+        complete: function ()
+        {
+            stopSpinner();
+        }
+    });
+})
