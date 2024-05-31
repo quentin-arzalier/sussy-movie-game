@@ -96,7 +96,6 @@ class ApiController
                     if (!$mov->addGenre($genre["id"]))
                     {
                         http_response_code(500);
-                        echo "Error encountered while adding genre $genre[name] to movie $movie_id";
                         $mov->delete();
                         return false;
                     }
@@ -119,7 +118,6 @@ class ApiController
                 if (!MovieName::SaveManyMovieNames($movie_names))
                 {
                     http_response_code(500);
-                    echo "Error encountered while adding titles to movie $movie_id";
                     $mov->delete();
                     return false;
                 }
@@ -142,7 +140,6 @@ class ApiController
                         if (!$actor->save())
                         {
                             http_response_code(500);
-                            echo "Error encountered while adding actor $api_actor[name] to database";
                             $mov->delete();
                             return false;
                         }
@@ -152,7 +149,6 @@ class ApiController
                 if (!$mov->addManyActors($actors))
                 {
                     http_response_code(500);
-                    echo "Error encountered while adding actors to movie $movie_id";
                     $mov->delete();
                     return false;
                 }
@@ -169,7 +165,6 @@ class ApiController
                         if (!$director->save())
                         {
                             http_response_code(500);
-                            echo "Error encountered while adding director $api_crew[name] to database";
                             $mov->delete();
                             return false;
                         }
@@ -179,7 +174,6 @@ class ApiController
                 if (!$mov->addManyDirectors($directors))
                 {
                     http_response_code(500);
-                    echo "Error encountered while adding directors to movie $movie_id";
                     $mov->delete();
                     return false;
                 }
