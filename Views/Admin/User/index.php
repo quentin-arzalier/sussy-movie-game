@@ -54,11 +54,11 @@
                 $(reponse_html).appendTo("#reponse");
                 if (adminLink.text() === "Supprimer administrateur") {
                     adminLink.text("Passer administrateur");
-                    is_admin.textContent ="0";
+                    is_admin.innerHTML = '<i class="fa-solid fa-times"></i>';
                     customAlert("L'utilisateur n'est plus administrateur", false);
                 } else {
                     adminLink.text("Supprimer administrateur");
-                    is_admin.textContent ="1";
+                    is_admin.innerHTML = '<i class="fa-solid fa-check"></i>';
                     customAlert("L'utilisateur est désormais administrateur", false);
                 }
             },
