@@ -1,6 +1,6 @@
 <?php
 
-Class Actor extends CRUDAble{
+Class Actor extends CRUDAble implements JsonSerializable {
 
     private int $id_actor;
 
@@ -88,6 +88,11 @@ VALUES (:id_actor, :full_name, :profile_path);
     public function equals(Actor $other):bool
     {
         return $this->getIdActor() == $other->getIdActor();
+    }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
     }
 
 }

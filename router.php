@@ -16,6 +16,7 @@ $count = count($url_parts);
 $controllerName = "HomeController";
 $action = "index";
 $admin_offset = 0;
+$routeParam = null;
 
 if ($count > 1 && $url_parts[1] == "admin")
 {
@@ -24,7 +25,6 @@ if ($count > 1 && $url_parts[1] == "admin")
         $admin_offset = 1;
     }
     else {
-        // TODO : Voir si not found ou si unauthorized
         goto not_found;
     }
 }
@@ -36,6 +36,11 @@ if ($count > 1 + $admin_offset && strlen($url_parts[1 + $admin_offset]) > 0)
 if ($count > 2 + $admin_offset && strlen($url_parts[2 + $admin_offset]) > 0)
 {
     $action = strtolower($url_parts[2 + $admin_offset]);
+}
+if ($admin_offset == 0 && $controllerName == 'ApiController' && $count > 3 && strlen($url_parts[3]) > 0)
+{
+    $action = $action . 'Details';
+    $routeParam = strtolower($url_parts[3]);
 }
 
 $path_array = array("Controllers", $controllerName . ".php");
@@ -49,13 +54,19 @@ if (file_exists($file_path))
 
 if (class_exists($controllerName) && method_exists($controllerName, $action))
 {
-    if (!isset($_SESSION["login"]) && ($controllerName != "UserController"))
+    if (!isset($_SESSION["login"]) && $controllerName != "UserController" && $controllerName != "ApiController")
     {
         require_once get_file_path(array("Controllers", "UserController.php"));
         $controllerName = "UserController";
         $action = "loginToContinue";
     }
-    $controllerName::$action();
+    if ($routeParam != null)
+    {
+        $controllerName::$action($routeParam);
+    }
+    else {
+        $controllerName::$action();
+    }
 }
 else {
     not_found:

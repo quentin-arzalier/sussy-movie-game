@@ -1,5 +1,5 @@
 <?php
-class Movie extends CRUDAble
+class Movie extends CRUDAble implements JsonSerializable
 {
     /**
      * Id du film tel qu'indiqué par TMDB
@@ -393,6 +393,24 @@ WHERE md.id_movie = :id_movie;
     }
 
     /**
+     * @return array<MovieName>|null
+     */
+    public function getTranslations(): array|null
+    {
+        $query = $this->getPDO()->prepare("
+SELECT mn.*
+FROM movie_name mn
+WHERE mn.id_movie =  :id_movie;
+        ");
+
+        $response = $query->execute(array('id_movie' => $this->getIdMovie()));
+        if (!$response)
+            return null;
+
+        return $query->fetchAll(PDO::FETCH_CLASS, 'MovieName');
+    }
+
+    /**
      * @return array<Genre>|null
      */
     public function getTop3Genres(): array|null {
@@ -450,5 +468,10 @@ LIMIT 1;
         $random = rand();
         $id_movies = (new Movie())->getAllIdMovies();
         return $id_movies[$random % count($id_movies)]; // retourn un id de film de manière aléatoir qui change chaque jour
+    }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
     }
 }

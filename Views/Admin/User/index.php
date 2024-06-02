@@ -2,12 +2,12 @@
     <table>
         <thead>
             <tr>
-                <td>UserName</td>
-                <td>Email</td>
-                <td>Is Admin</td>
-                <td>Email chek</td>
-                <td>Manager Administrateur</td>
-                <td>Manager compte</td>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>Is Admin</th>
+                <th>Email chek</th>
+                <th>Manager Administrateur</th>
+                <th>Manager compte</th>
             </tr>
         </thead>
         <tbody>
@@ -51,9 +51,11 @@
                 if (adminLink.text() === "Supprimer administrateur") {
                     adminLink.text("Passer administrateur");
                     is_admin.textContent ="0";
+                    customAlert("L'utilisateur n'est plus administrateur", false);
                 } else {
                     adminLink.text("Supprimer administrateur");
                     is_admin.textContent ="1";
+                    customAlert("L'utilisateur est désormais administrateur", false);
                 }
             },
             error : function(){
@@ -75,6 +77,7 @@
             success : function(reponse_html, status){
                 $(reponse_html).appendTo("#reponse");
                 row.remove();
+                customAlert("L'utilisateur a été supprimé avec succès", false);
             },
             error : function(){
                 row.show();

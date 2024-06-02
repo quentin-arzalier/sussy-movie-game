@@ -1,5 +1,5 @@
 <?php
-Class MovieName extends CRUDAble{
+Class MovieName extends CRUDAble implements JsonSerializable {
 
     private int $id_movie;
 
@@ -121,5 +121,10 @@ VALUES (:id_movie, :country_code, :name);
             'country_code' => $this->getCountryCode(),
             'name' => $this->getName(),
         ));
+    }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
     }
 }

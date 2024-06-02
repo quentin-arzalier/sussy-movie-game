@@ -1,5 +1,5 @@
 <?php
-    class UserMovieHistory extends CRUDAble{
+    class UserMovieHistory extends CRUDAble implements JsonSerializable {
 
     /**
      * @var string
@@ -403,5 +403,13 @@ LIMIT 1;
     }
 
     public function save(): bool {}
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
+
 }
+
+
 ?>

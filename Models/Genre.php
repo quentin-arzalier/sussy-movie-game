@@ -1,6 +1,6 @@
 <?php
 
-class Genre extends CRUDAble
+class Genre extends CRUDAble implements JsonSerializable
 {
 
     private int $id_genre;
@@ -77,5 +77,11 @@ VALUES (:id_genre, :genre);
     public function equals(Genre $other):bool
     {
         return $this->getIdGenre() == $other->getIdGenre();
+    }
+
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
     }
 }

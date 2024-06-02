@@ -1,5 +1,5 @@
 <?php
-Class Director extends CRUDAble{
+Class Director extends CRUDAble implements JsonSerializable {
 
     private int $id_director;
     private string $full_name;
@@ -94,4 +94,10 @@ VALUES(:id_director, :full_name, :profile_path);
         return $this->getIdDirector() == $other->getIdDirector();
     }
 
+
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
 }

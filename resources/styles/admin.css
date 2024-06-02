@@ -49,3 +49,27 @@ body.admin-portal {
 #add-popular-button:hover {
     background-color: lightgoldenrodyellow;
 }
+
+.admin-portal main {
+    margin-top: 2em;
+}
+
+.admin-portal table {
+    background-color: black;
+}
+
+.admin-portal table th {
+    background-color: #308680;
+    padding: .25em 1em;
+    text-align: center;
+}
+.admin-portal table td {
+    padding: .25em 1em;
+    text-align: center;
+}
+.admin-portal table tr:nth-child(odd) td {
+    background-color: #8cc9c5;
+}
+.admin-portal table tr:nth-child(even) td {
+    background-color: #b7fff7;
+}
