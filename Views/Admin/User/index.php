@@ -19,7 +19,7 @@
             $user_is_admin = $user->getIsAdmin() == 1
                 ? '<i class="fa-solid fa-check"></i>'
                 : '<i class="fa-solid fa-times"></i>';
-            $user_is_admin ? $message = "Supprimer administrateur" : $message = "Passer administrateur";
+            $user->getIsAdmin() == 1 ? $message = "Supprimer administrateur" : $message = "Passer administrateur";
             $user_email_chek = $user->getEmailChek() == 1
                 ? '<i class="fa-solid fa-check"></i>'
                 : '<i class="fa-solid fa-times"></i>';
