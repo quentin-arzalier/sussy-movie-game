@@ -36,41 +36,5 @@
     </div>
     <input id="button" type="submit" value="créer">
 </form>
-<div>
-    <p>
-        <?php 
-        if (isset($_SESSION['message'])) {
-            echo $_SESSION['message'];
-            unset($_SESSION['message']);
-        }
-        ?>
-    </p>
-</div>
 
-<script>
-$(function(){
-    let currPwdValidTimeout = null;
-    button.disabled = true;
-    $('#validation-list').css('color', 'red');
-    const password = $('#password-input');
-    const majRegex = /[A-Z]/;
-    const minRegex = /[a-z]/;
-    const numRegex = /[0-9]/;
-    const speRegex = /[!@#$%^&*(),.?":{}|'<>+-]/;
-    function handlePasswordChange() {
-        button.disabled = !(majRegex.test(password.val()) && minRegex.test(password.val()) && numRegex.test(password.val()) && speRegex.test(password.val()) && (password.val().length >= 8));
-        $('#maj-message').css('color', majRegex.test(password.val()) ? 'green' : 'red');
-        $('#min-message').css('color', minRegex.test(password.val()) ? 'green' : 'red');
-        $('#num-message').css('color', numRegex.test(password.val()) ? 'green' : 'red');
-        $('#spe-message').css('color', speRegex.test(password.val()) ? 'green' : 'red');
-        $('#nbc-message').css('color', password.val().length >= 8 ? 'green' : 'red');
-    }
-    password.on('input', () => {
-        if (currPwdValidTimeout)
-            clearTimeout(currPwdValidTimeout);
-        currPwdValidTimeout = setTimeout(() => {
-            handlePasswordChange();
-        }, 200);
-    });
-})
-</script>
+<script src="/resources/scripts/password_verif.js"></script>

@@ -20,14 +20,13 @@
     <header>
         <h1 class="main-title">The Sussy <br> Movie Game</h1>
         <nav>
-            <a href="/"><i class="fa-solid fa-house"></i></a>
+            <a href="/" title="home"><i class="fa-solid fa-house"></i></a>
             <?=(isset($_SESSION["login"]))
             ? "
-            <a href='/user/account'><i class='fa-solid fa-user'></i></a>
-            <a href='/user/history'><i class='fa-solid fa-list'></i></a>
-            <a href='/user/settings'><i class='fa-solid fa-gear'></i></a>
+            <a href='/user/account' title='compte'><i class='fa-solid fa-user'></i></a>
+            <a href='/user/history' title='historique'><i class='fa-solid fa-list'></i></a>
             " : "
-            <a href='/user'><i class='fa-solid fa-right-to-bracket'></i></a>
+            <a href='/user' title='connexion'><i class='fa-solid fa-right-to-bracket'></i></a>
             " 
             ?>
         </nav>
@@ -43,9 +42,9 @@
         <div class='container account-container'>
             <span>Bonjour $_SESSION[login]!</span>
             <div>
-                <a href='/user/account'>Profil</a>
+                <a href='/user/account' title='profil'>Profil</a>
                 |
-                <a href='/user/logout'>Déconnexion</a>
+                <a href='/user/logout' title='déconnexion'>Déconnexion</a>
             </div>
             $admin_span
         </div>
@@ -54,9 +53,9 @@
         else {
             echo "
         <div class='container account-container'>
-            <a href='/user/'>Connexion</a>
+            <a href='/user/' title='connexion'>Connexion</a>
             <hr>
-            <a href='/user/createpage'>Créer un compte</a>
+            <a href='/user/createpage' title='création de compte'>Créer un compte</a>
         </div>
             ";
         }
@@ -76,6 +75,21 @@
 
         <?php require_once $view_name ?>
     </main>
+    <script>
+        <?php
+        if (isset($_SESSION["message"]))
+        {
+            echo "customAlert(`$_SESSION[message]`, false);";
+            unset($_SESSION["message"]);
+        }
+        if (isset($_SESSION["errorMessage"]))
+        {
+            echo "customAlert(`$_SESSION[errorMessage]`, true);";
+            unset($_SESSION["errorMessage"]);
+        }
+        ?>
+
+    </script>
     <footer>Réalisé dans le cadre du cours de Développement web au 4e semestre du CNAM IEM</footer>
 </body>
 </html>

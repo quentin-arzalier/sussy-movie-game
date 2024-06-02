@@ -15,16 +15,6 @@
         </div>
         <input type="submit" value="S'identifier">
     </form>
-    <div>
-        <p>
-            <?php
-                if (isset($_SESSION['message'])) {
-                    echo $_SESSION['message'];
-                    unset($_SESSION['message']);
-                }
-            ?>
-        </p>
-    </div>
     <p>Vous n'avez pas de compte? <a href="/user/createpage">Créez le dès maintenant!</a></p>
     <p>Vous avez oublié votre mot de passe? <a href="/user/forgotPassword">Cliquez ici pour le réinitialiser.</a></p>
 </div>
