@@ -2,10 +2,10 @@
     <table>
         <thead>
             <tr>
-                <th>UserName</th>
+                <th>Nom d'utilisateur</th>
                 <th>Email</th>
-                <th>Is Admin</th>
-                <th>Email chek</th>
+                <th>Administrateur?</th>
+                <th>Email vérifié?</th>
                 <th>Manager Administrateur</th>
                 <th>Manager compte</th>
             </tr>
@@ -16,9 +16,13 @@
         foreach ($users as $user) {
             $username = $user->getUsername();
             $use_email = $user->getEmailAddress();
-            $user_is_admin = $user->getIsAdmin();
+            $user_is_admin = $user->getIsAdmin() == 1
+                ? '<i class="fa-solid fa-check"></i>'
+                : '<i class="fa-solid fa-times"></i>';
             $user_is_admin ? $message = "Supprimer administrateur" : $message = "Passer administrateur";
-            $user_email_chek = $user->getEmailChek();
+            $user_email_chek = $user->getEmailChek() == 1
+                ? '<i class="fa-solid fa-check"></i>'
+                : '<i class="fa-solid fa-times"></i>';
             echo "
                 <tr>
                     <td>$username</td>
