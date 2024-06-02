@@ -73,4 +73,9 @@ VALUES (:id_genre, :genre);
             "genre" => $this->getGenre()
         ));
     }
+
+    public function equals(Genre $other):bool
+    {
+        return $this->getIdGenre() == $other->getIdGenre();
+    }
 }

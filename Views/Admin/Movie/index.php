@@ -22,6 +22,7 @@
     $runtime = htmlspecialchars($active_movie->getRuntime());
     $actors = $active_movie->getActors();
     $directors = $active_movie->getDirectors();
+    $genres = $active_movie->getTop3Genres();
 
     $hours = floor($runtime/60);
     $minutes = $runtime-$hours*60;
@@ -99,27 +100,34 @@
                 <span>Durée du film : </span>
                 <span>$runtime_text</span>
             </div>
+            <div class='movie-info-part movie-genres'>
+                <span>Genres</span>";
+                foreach ($genres as $genre) {
+                    $genre_name = htmlspecialchars($genre->getGenre());
+                    echo "<span>$genre_name</span>";
+                }
+            echo "</div>
+        </div>
+        <div class='movie-info'>
             <div class='movie-people-list'>
                 <span>Réalisation :</span>
                 <ul class='movie-people-list-items'>";
-            foreach ($directors as $director)
-            {
-                $dir_param = urlencode($director->getIdDirector());
-                $dir_name = htmlspecialchars($director->getFullName());
-                $dir_url = $director->getPictureUrl();
-                echo "
+    foreach ($directors as $director)
+    {
+        $dir_param = urlencode($director->getIdDirector());
+        $dir_name = htmlspecialchars($director->getFullName());
+        $dir_url = $director->getPictureUrl();
+        echo "
                     <li class='movie-people-item'>
                         <img src='$dir_url' alt='picture'>
                         <span>$dir_name</span>
                     </li>
                 ";
-            }
+    }
 
-            echo "
+    echo "
                 </ul>
             </div>
-        </div>
-        <div class='movie-actors'>
             <div class='movie-people-list'>
                 <span>Casting :</span>
                 <ul class='movie-people-list-items'>";

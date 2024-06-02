@@ -20,6 +20,7 @@ $release_date = htmlspecialchars($active_history->getReleaseDate());
 $runtime = htmlspecialchars($active_history->getRuntime());
 $actors = $active_history->getActors();
 $directors = $active_history->getDirectors();
+$genres = $active_history->getTop3Genres();
 
 $hours = floor($runtime/60);
 $minutes = $runtime-$hours*60;
@@ -69,7 +70,11 @@ else
             $first_nb = $page_size * ($curr_page - 1) + 1;
             $last_nb = $first_nb + count($histories) - 1   ;
 
-            echo "<span>Historiques $first_nb à $last_nb sur $total_histories</span>";
+            echo "
+        <span>Historiques<br>
+        $first_nb à $last_nb<br>
+        sur $total_histories</span>
+    ";
 
             if ($next_page <= $max_page)
                 echo "<a href='/user/history?date=$active_date_param&page=$next_page'><button><i class='fa-solid fa-arrow-right'></i></button></a>";
@@ -83,7 +88,8 @@ else
         /** @noinspection CssUnknownTarget */
         echo "
         <div class='movie-find'>
-            <span>Trouvé le $date_of_success</span>
+            <span>Trouvé le</span>
+            <span>$date_of_success</span>
             <span>En $attempt_count coups</span>
         </div>
     <div class='movie-details' style='--background-url: url(\"$backdrop_url\")'>
@@ -102,27 +108,37 @@ else
                 <span>Durée du film : </span>
                 <span>$runtime_text</span>
             </div>
+            
+            <div class='movie-info-part movie-genres'>
+                <span>Genres</span>";
+                foreach ($genres as $genre) {
+                    $genre_name = htmlspecialchars($genre->getGenre());
+                    echo "<span>$genre_name</span>";
+                }
+                echo "
+            </div>
+        </div>
+        <div class='movie-info'>
+        
             <div class='movie-people-list'>
                 <span>Réalisation :</span>
                 <ul class='movie-people-list-items'>";
-            foreach ($directors as $director)
-            {
-                $dir_param = urlencode($director->getIdDirector());
-                $dir_name = htmlspecialchars($director->getFullName());
-                $dir_url = $director->getPictureUrl();
-                echo "
-                    <li class='movie-people-item'>
-                        <img src='$dir_url' alt='picture'>
-                        <span>$dir_name</span>
-                    </li>
-                ";
-            }
+                    foreach ($directors as $director)
+                    {
+                        $dir_param = urlencode($director->getIdDirector());
+                        $dir_name = htmlspecialchars($director->getFullName());
+                        $dir_url = $director->getPictureUrl();
+                        echo "
+                                        <li class='movie-people-item'>
+                                            <img src='$dir_url' alt='picture'>
+                                            <span>$dir_name</span>
+                                        </li>
+                                    ";
+                    }
 
-            echo "
+                    echo "
                 </ul>
             </div>
-        </div>
-        <div class='movie-actors'>
             <div class='movie-people-list'>
                 <span>Casting :</span>
                 <ul class='movie-people-list-items'>";

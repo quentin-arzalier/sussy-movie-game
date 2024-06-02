@@ -244,6 +244,27 @@ WHERE md.id_movie = :id_movie;
         return $query->fetchAll(PDO::FETCH_CLASS, 'Director');
     }
 
+        /**
+         * @return array<Genre>|null
+         */
+        public function getTop3Genres(): array|null
+        {
+            $query = $this->getPDO()->prepare("
+SELECT g.*
+FROM genre g
+NATURAL JOIN movie_genre mg
+WHERE mg.id_movie = :id_movie
+ORDER BY mg.id_genre
+LIMIT 3;
+        ");
+
+            $response = $query->execute(array('id_movie' => $this->getIdMovie()));
+            if (!$response)
+                return null;
+
+            return $query->fetchAll(PDO::FETCH_CLASS, 'Genre');
+        }
+
     public function getHistoryMovies($username) {
         
         $req = $this->getPDO()->prepare("SELECT * FROM usermoviehistory

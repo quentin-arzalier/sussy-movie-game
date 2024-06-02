@@ -14,11 +14,30 @@ $guess_release_year = substr($movie_attempt->getReleaseDate(), 0, 4); // Date is
 $guess_runtime = $movie_attempt->getRuntime();
 $guess_actors = $movie_attempt->getActors();
 $guess_directors = $movie_attempt->getDirectors();
+$guess_genres = $movie_attempt->getTop3Genres();
 
 $real_release_year = substr($real_movie->getReleaseDate(), 0, 4);
 $real_runtime = $real_movie->getRuntime();
 $real_actors = $real_movie->getActors();
 $real_directors = $real_movie->getDirectors();
+$real_genres = $real_movie->getTop3Genres();
+
+$correct_genres = array();
+$incorrect_genres = array();
+
+foreach ($guess_genres as $guess_genre) {
+    $found = false;
+    foreach ($real_genres as $real_genre) {
+        if ($real_genre->equals($guess_genre))
+        {
+            $correct_genres[] = $guess_genre;
+            $found = true;
+            break;
+        }
+    }
+    if (!$found)
+        $incorrect_genres[] = $guess_genre;
+}
 
 $correct_actors = array();
 $incorrect_actors = array();
@@ -112,6 +131,20 @@ echo "
             <span>Durée du film : </span>
             <span>$runtime_text $runtime_arrow</span>
         </div>
+        <div class='movie-info-part movie-genres'>
+            <span>Genres</span>";
+            foreach ($correct_genres as $genre) {
+                $genre_name = htmlspecialchars($genre->getGenre());
+                echo "<span class='correct'>$genre_name</span>";
+            }
+            foreach ($incorrect_genres as $genre) {
+                $genre_name = htmlspecialchars($genre->getGenre());
+                echo "<span class='incorrect'>$genre_name</span>";
+            }
+            echo "
+        </div>
+    </div>
+    <div class='movie-info'>
         <div class='movie-people-list'>
             <span>Réalisation :</span>
             <ul class='movie-people-list-items'>";
@@ -142,9 +175,7 @@ foreach ($incorrect_directors as $director)
 
 echo "
             </ul>
-        </div>
-    </div>
-    <div class='movie-actors'>
+        </div> 
         <div class='movie-people-list'>
             <span>Casting :</span>
             <ul class='movie-people-list-items'>";
