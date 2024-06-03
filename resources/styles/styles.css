@@ -546,6 +546,60 @@ button:not(:disabled):hover {
     text-align: center;
 }
 
+#how-to-play-section {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+}
+
+#how-to-play-section > div {
+    position: relative;
+    max-width: 500px;
+    background-color: white;
+    border: 1px black solid;
+    border-radius: 0.75em;
+    padding: 1em 3em;
+    max-height: 99vh;
+    overflow-y: scroll;
+}
+
+#how-to-play-section .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#how-to-play-section > div::-webkit-scrollbar {
+    width: 5px;
+    position: fixed;
+    display: none;
+}
+
+#how-to-play-section img {
+    width: 100%;
+}
+
+#how-to-play-button {
+    position: fixed;
+    bottom: 2em;
+    left: 2em;
+    background-color: rgba(111, 136, 255, 0.9);
+    color: white;
+}
+#how-to-play-button:hover {
+    background-color: rgba(161, 178, 255, 0.9);
+}
+
 @media (max-width: 1387px) {
     .content-with-side-nav{
         display: block;

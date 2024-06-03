@@ -74,6 +74,37 @@
         <script src="/resources/scripts/custom_alert.js"></script>
 
         <?php require_once $view_name ?>
+
+        <button id="how-to-play-button">
+            <i class="fa-solid fa-circle-info"></i>
+        </button>
+        <section id="how-to-play-section" style="display: none">
+            <div>
+                <h2>The Sussy Movie Game</h2>
+                <button class="close-button">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+                <hr>
+                <h3>Qu'est-ce que c'est</h3>
+                <p>
+                    The sussy movie game est un jeu de devinettes dans lequel vous devrez deviner un nouveau film chaque jour.
+                    Le film vient de la liste des films les plus populaires de The Movie Database : <a href="https://www.themoviedb.org/movie/top-rated">Voir la liste ici</a>
+                </p>
+                <hr>
+                <h3>Comment jouer</h3>
+                <p>
+                    Une fois connecté, une barre de recherche apparaît sur la page d'accueil de l'application.
+                    Cherchez seulement un film dans notre liste et cliquez sur votre choix pour obtenir un récapitulatif.
+                </p>
+                <img src="/resources/img/tutorial.png" alt="tutorial-screenshot" width="500">
+                <p>
+                    Basez vous sur les informations pour trouver le film du jour!
+                </p>
+                <h3>Bonne chance!</h3>
+            </div>
+        </section>
+
+        <script src="/resources/scripts/how_to_play.js"></script>
     </main>
     <script>
         <?php
