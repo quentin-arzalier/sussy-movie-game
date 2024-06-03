@@ -1,0 +1,9 @@
+lien du site : https://sussy-movie-game.alwaysdata.net/
+lien GitHub : https://github.com/quentin-arzalier/sussy-movie-game
+
+login admin : admin
+password admin : P4$$w0rd
+
+login public : public
+password public : Public1%
+
