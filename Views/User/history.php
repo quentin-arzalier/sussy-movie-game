@@ -71,9 +71,7 @@ else
             $last_nb = $first_nb + count($histories) - 1   ;
 
             echo "
-        <span>Historiques<br>
-        $first_nb à $last_nb<br>
-        sur $total_histories</span>
+        <span>Historiques $first_nb à $last_nb sur $total_histories</span>
     ";
 
             if ($next_page <= $max_page)
