@@ -104,9 +104,8 @@ Class UserController
                 $_SESSION['message'] = 'Veuillez vérifier votre mail';
                 UserController::index();
             } else {
-                $_SESSION['errorMessage'] = 'Erreur veuillez réessayer';
+                $_SESSION['errorMessage'] = "L'adresse email ou le nom d'utilisateur n'est pas disponible.";
                 UserController::createpage();
-            
             }
             return;
         }

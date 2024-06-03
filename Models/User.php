@@ -148,29 +148,36 @@ class User extends CRUDAble {
         $password_hash = $this->createPasswordHash($password);
         $token_verify = bin2hex(random_bytes(50));
 
-        $req = $this->getPDO()->prepare('INSERT INTO user (username, email_address, password_hash, token_verify) VALUES (:champ1, :champ2, :champ3, :champ4)');
-        $req->execute(
-            array(
-                'champ1' => $username,
-                'champ2' => $email_address,
-                'champ3' => $password_hash,
-                'champ4' => $token_verify
-            )
-        );
-        $req = $this->getPDO()->prepare("SELECT * FROM user 
+        try {
+            $req = $this->getPDO()->prepare('
+INSERT INTO user (username, email_address, password_hash, token_verify) 
+VALUES (:champ1, :champ2, :champ3, :champ4)');
+            $req->execute(
+                array(
+                    'champ1' => $username,
+                    'champ2' => $email_address,
+                    'champ3' => $password_hash,
+                    'champ4' => $token_verify
+                )
+            );
+            $req = $this->getPDO()->prepare("SELECT * FROM user 
         WHERE username =:champ1");
-        $req->execute(
-            array(
-                'champ1' => $username,
-            )
-        );
-        $response = $req->fetchAll(PDO::FETCH_CLASS, 'User');
-        if (count($response) == 1) {
-            $user = $response[0];
-            $this->setUser($user);
-            $this->sendMail("verifyaccount", $token_verify, $this->getEmailAddress());
-            return true;
-        } else {
+            $req->execute(
+                array(
+                    'champ1' => $username,
+                )
+            );
+            $response = $req->fetchAll(PDO::FETCH_CLASS, 'User');
+            if (count($response) == 1) {
+                $user = $response[0];
+                $this->setUser($user);
+                $this->sendMail("verifyaccount", $token_verify, $this->getEmailAddress());
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e)
+        {
             return false;
         }
     }

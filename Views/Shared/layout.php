@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Un site de devinettes avec un nouveau film à trouver chaque jour!">
     <link rel="stylesheet" href="/resources/styles/styles.css">
     <link rel="stylesheet" href="/resources/styles/forms.css">
     <link rel="stylesheet" href="/resources/styles/spinner.css">
@@ -75,7 +76,7 @@
 
         <?php require_once $view_name ?>
 
-        <button id="how-to-play-button">
+        <button id="how-to-play-button" title="Comment jouer?">
             <i class="fa-solid fa-circle-info"></i>
         </button>
         <section id="how-to-play-section" style="display: none">
