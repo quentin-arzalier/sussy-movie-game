@@ -609,19 +609,6 @@ button:not(:disabled):hover {
         margin-top: 16px;
     }
 }
-/*@media (max-width: 1000px) {
-    .movie-details-correct, .movie-details{
-        aspect-ratio: 800 / 600
-    }
-
-    #poster{
-        padding-left: 20px
-    }
-
-    .movie-info{
-        padding-right: 0;
-    }
-}*/
 
 @media (max-width: 969px) {
     nav > a {

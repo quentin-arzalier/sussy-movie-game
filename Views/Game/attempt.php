@@ -118,7 +118,7 @@ echo "
 <div class='$movie_details_class' style='--background-url: url(\"$backdrop_url\")'>
     <div class='movie-title-card'>
         <div class='movie-poster-container'>
-           <img id='poster' src='$poster_url' alt='poster'>
+           <img class='poster' src='$poster_url' alt='poster'>
         </div>
         <span>$title</span>
     </div>
