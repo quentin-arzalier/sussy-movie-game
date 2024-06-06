@@ -45,12 +45,8 @@
         var is_admin = document.getElementById('is_admin-' + username);
         var adminLink = $(this);
 
-        $.ajax({
-            url : '/admin/user/updateAdmin',
-            type : 'POST',
-            data : 'username=' + username,
-            dataType : 'html',
-            success : function(reponse_html, status){
+        $.post("/admin/user/updateAdmin", { username: username })
+            .done(function(reponse_html) {
                 $(reponse_html).appendTo("#reponse");
                 if (adminLink.text() === "Supprimer administrateur") {
                     adminLink.text("Passer administrateur");
@@ -61,11 +57,10 @@
                     is_admin.innerHTML = '<i class="fa-solid fa-check"></i>';
                     customAlert("L'utilisateur est désormais administrateur", false);
                 }
-            },
-            error : function(){
+            })
+            .fail(function() {
                 customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
-            }
-        });
+            });
     });
 
     $(document).on("click", "[id^='delete-']", function(event){
@@ -73,21 +68,20 @@
         var username = $(this).data('username');
         var row = $(this).closest('tr');
         row.hide();
-        $.ajax({
-            url : '/admin/user/deleteUser',
-            type : 'POST',
-            data : 'username=' + username,
-            dataType : 'html',
-            success : function(reponse_html, status){
+
+        $.post("/admin/user/deleteUser", { username: username })
+            .done(function(reponse_html) {
                 $(reponse_html).appendTo("#reponse");
                 row.remove();
                 customAlert("L'utilisateur a été supprimé avec succès", false);
-            },
-            error : function(){
+            })
+            .fail(function() {
                 row.show();
                 customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
-            }
-        });
+            })
+            .always(function() {
+                // Code à exécuter dans tous les cas
+            });
     });
    
 </script>    

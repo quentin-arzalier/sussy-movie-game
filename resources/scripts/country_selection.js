@@ -17,18 +17,16 @@ country_options.on("click", (e) => {
     country_input.find("span").get(0).innerText = li.find("span").get(0).innerText;
 
     startSpinner();
-    $.ajax({
-        type: "POST",
-        url: "/user/setCountryCode",
-        data: {country_code: code},
-        success: function() {
-            stopSpinner();
+
+    $.post("/user/setCountryCode", { country_code: code })
+        .done(function() {
             country_options_container.get(0).classList.add("hidden");
             customAlert("Pays changé avec succès!", false);
-        },
-        error: function () {
-            stopSpinner();
+        })
+        .fail(function() {
             customAlert("Le pays n'a pas pu être sélectionné, veuillez réessayer plus tard", true);
-        }
-    });
+        })
+        .always(function() {
+            stopSpinner();
+        });
 });

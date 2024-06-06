@@ -14,13 +14,9 @@ function CurriedOnMovieClick(movie_id)
 
         startSpinner();
 
-        $.ajax({
-            type: "POST",
-            url: "/admin/api/addMovieToDatabase",
-            data: {movie_id: movie_id},
-            success: function() {
+        $.post("/admin/api/addMovieToDatabase", {movie_id: movie_id})
+            .done(function() {
                 customAlert("Film ajouté à la base de données!", false);
-                stopSpinner();
                 movieIdsInDatabase.push(movie_id);
                 // On supprime réellement la ligne
                 container.get(0).removeChild(toRemove);
@@ -28,14 +24,15 @@ function CurriedOnMovieClick(movie_id)
                 {
                     container.addClass("transparent");
                 }
-            },
-            error: function () {
+            })
+            .fail(function() {
                 // On réaffiche le film.
                 toRemove.classList.remove("hidden");
-                stopSpinner();
                 customAlert("Le film n'a pas pu être ajouté, veuillez réessayer plus tard", true);
-            }
-        });
+            })
+            .always(function() {
+                stopSpinner();
+            });
     }
 }
 
@@ -53,10 +50,8 @@ searchBar.on("input", () => {
             return;
         }
 
-        $.ajax({
-            type: "GET",
-            url: "/admin/api/getNewMoviesFromAPI?name=" + searchBar.get(0).value,
-            success: function(res) {
+        $.get("/admin/api/getNewMoviesFromAPI?name=" + searchBar.get(0).value)
+            .done(function(res) {
                 const movies = JSON.parse(res);
                 container.get(0).innerHTML = "";
                 for (const movie of movies.results) {
@@ -76,21 +71,18 @@ searchBar.on("input", () => {
                     container.get(0).appendChild(li);
                 }
                 container.removeClass("transparent");
-            },
-            error: function () {
+            })
+            .fail(function() {
                 customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
-            }
-        });
+            });
     }, 350);
 });
 
 addPopularButton.on("click", () => {
     startSpinner();
 
-    $.ajax({
-        type: "POST",
-        url: "/admin/api/addPopularMovies",
-        success: function(res) {
+    $.post("/admin/api/addPopularMovies", { })
+        .done(function(res) {
             if (parseInt(res) > 0)
             {
                 customAlert(`${res} nouveaux films ajoutés à la base de données!`, false);
@@ -98,13 +90,11 @@ addPopularButton.on("click", () => {
             else {
                 customAlert("Aucun nouveau film n'a été ajouté. Plus de films populaires disponibles.", true);
             }
-        },
-        error: function () {
+        })
+        .fail(function() {
             customAlert("Les films populaires n'ont pas pu être ajoutés.", true);
-        },
-        complete: function ()
-        {
+        })
+        .always(function() {
             stopSpinner();
-        }
-    });
+        });
 })

@@ -12,15 +12,11 @@ function CurriedOnMovieClick(movie_id) {
 
         startSpinner();
 
-        $.ajax({
-            type: "POST",
-            url: "/game/GuessMovie",
-            data: {movie_id: movie_id},
-            success: function (res) {
+        $.post("/game/GuessMovie", { movie_id: movie_id })
+            .done(function() {
                 const div = document.createElement("div");
                 div.innerHTML = res;
                 attempts.get(0).appendChild(div);
-                stopSpinner();
                 // sélectionner l'élément avec la classe "movie-details"
                 const movieDetails = div.querySelector(".movie-details-correct");
                 if(movieDetails && movieDetails.classList.contains("movie-details-correct")){
@@ -29,12 +25,13 @@ function CurriedOnMovieClick(movie_id) {
                     $("#success-message").html("Bravo !! Tu as trouvé le sussy movie d'aujourd'hui");
                     setInterval(updateTime, 1000);
                 }
-            },
-            error: function () {
+            })
+            .fail(function() {
                 customAlert("Une erreur a eu lieu lors de votre essai, veuillez réessayer plus tard", true);
+            })
+            .always(function() {
                 stopSpinner();
-            }
-        });
+            });
     }
 }
 
@@ -50,10 +47,8 @@ searchBar.on("input", () => {
             return;
         }
 
-        $.ajax({
-            type: "GET",
-            url: "/movie/searchMoviesInDatabase?search=" + searchBar.get(0).value,
-            success: function (res) {
+        $.get("/movie/searchMoviesInDatabase?search=" + searchBar.get(0).value)
+            .done(function(res) {
                 const movies = JSON.parse(res);
                 container.get(0).innerHTML = "";
                 for (const movie of movies) {
@@ -70,11 +65,10 @@ searchBar.on("input", () => {
                 }
                 if (movies.length > 0)
                     container.removeClass("transparent");
-            },
-            error: function () {
+            })
+            .fail(function() {
                 customAlert("Une erreur a eu lieu, veuillez réessayer.", true)
-            }
-        });
+            });
     }, 350);
 });
 

@@ -21,21 +21,17 @@ $(function(){
         const email = $('#email-input').val();
         startSpinner();
         // Envoyer la requête AJAX
-        $.ajax({
-            url: '/user/passwordForgotten',
-            type: 'POST',
-            data: { email: email },
-            success: function(response) {
-                // Afficher le message de succès
-                stopSpinner();
+
+        $.post("/user/passwordForgotten", { email: email })
+            .done(function() {
                 customAlert("Email de réinitialisation envoyé", false);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                // Gérer les erreurs éventuelles
-                stopSpinner();
+            })
+            .fail(function() {
                 customAlert("Le compte associé n'existe pas", true);
-            }
-        });
+            })
+            .always(function() {
+                stopSpinner();
+            });
     });
 });
 </script>
