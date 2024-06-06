@@ -97,7 +97,7 @@
                     Une fois connecté, une barre de recherche apparaît sur la page d'accueil de l'application.
                     Cherchez seulement un film dans notre liste et cliquez sur votre choix pour obtenir un récapitulatif.
                 </p>
-                <img src="/resources/img/tutorial.png" alt="tutorial-screenshot" width="500">
+                <img class="ajax-image" data-src="/resources/img/tutorial.png" alt="tutorial-screenshot" width="500" src="">
                 <p>
                     Basez vous sur les informations pour trouver le film du jour!
                 </p>
@@ -123,5 +123,8 @@
 
     </script>
     <footer>Réalisé dans le cadre du cours de Développement web au 4e semestre du CNAM IEM</footer>
+
+
+    <script src="/resources/scripts/ajax_image.js" defer></script>
 </body>
 </html>
